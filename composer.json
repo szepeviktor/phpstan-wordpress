@@ -1,0 +1,24 @@
+{
+	"name": "szepeviktor/phpstan-wordpress",
+	"description": "WordPress extensions for PHPStan",
+	"license": "MIT",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require": {
+		"php": "~7.1",
+		"phpstan/phpstan": "^0.11.6",
+		"giacocorsiglia/wordpress-stubs": "^5.1"
+	},
+	"require-dev": {
+		"consistence/coding-standard": "^3.8",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+		"jakub-onderka/php-parallel-lint": "^1.0",
+		"phpstan/phpstan-strict-rules": "^0.11",
+		"slevomat/coding-standard": "^5.0.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"PHPStan\\WordPress\\": "src/"
+		}
+	}
+}

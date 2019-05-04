@@ -1,0 +1,6 @@
+{
+	"require": {
+		"php": "~7.1",
+		"szepeviktor/phpstan-wordpress": "^0.1.0"
+	}
+}
