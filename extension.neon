@@ -19,3 +19,5 @@ parameters:
     autoload_files:
         - %rootDir%/../../giacocorsiglia/wordpress-stubs/wordpress-stubs.php
         - %rootDir%/../../szepeviktor/phpstan-wordpress/bootstrap.php
+    dynamicConstantNames:
+        - WP_DEBUG

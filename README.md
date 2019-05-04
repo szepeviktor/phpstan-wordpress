@@ -1,5 +1,7 @@
 # WordPress extensions for PHPStan
 
+[![CircleCI](https://circleci.com/gh/szepeviktor/phpstan-wordpress.svg?style=svg)](https://circleci.com/gh/szepeviktor/phpstan-wordpress)
+
 - [PHPStan](https://github.com/phpstan/phpstan)
 - [WordPress](https://wordpress.org/)
 
@@ -9,3 +11,23 @@
 1. Set up PHPStan, see `example/phpstan.neon` - if you don't use composer autoloading add `autoload_files:` and/or `autoload_directories:`
 1. Get packages `composer update --classmap-authoritative`
 1. Start analysis `vendor/bin/phpstan analyze`
+
+### Make you code testable
+
+- Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
+- Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
+- Add proper PHPDoc blocks to classes, properties, methods, functions
+- Handle these only in your main plugin file
+    - Define constants, e.g. `MYPLUGIN_PATH`
+    - Call register_activation_hook, register_deactivation_hook, register_uninstall_hook
+    - Class autoloading
+    - Load translations
+    - Support WP-CLI
+    - Decide [what to load](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wordpress/_core-is.php#L58-L100)
+- Avoid using core constants, use core functions or `MYPLUGIN_PATH`
+- Avoid bad parts of PHP
+    - functions: extract, compact, list
+- If you need robust code try avoiding all kinds of type casting,
+  see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
+- If you are not bound by PHP 5.x consider following
+  [Neutron PHP Standard]( https://github.com/Automattic/phpcs-neutron-standard)

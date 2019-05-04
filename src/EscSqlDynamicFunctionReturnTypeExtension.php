@@ -8,6 +8,7 @@ namespace PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicFunctionReturnTypeExtension;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
@@ -24,9 +25,14 @@ class EscSqlDynamicFunctionReturnTypeExtension implements DynamicFunctionReturnT
 	public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
 	{
 		$argsCount = count($functionCall->args);
-		if ($argsCount < 1) {
-			return new NullType();
+		if ($argsCount === 0) {
+			return ParametersAcceptorSelector::selectFromArgs(
+				$scope,
+				$functionCall->args,
+				$functionReflection->getVariants()
+			)->getReturnType();
 		}
+
 		$dataArg = $functionCall->args[0]->value;
 		$dataArgType = $scope->getType($dataArg);
 		if ($dataArgType instanceof ArrayType) {

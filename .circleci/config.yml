@@ -1,0 +1,11 @@
+jobs:
+  test:
+    docker:
+      - image: circleci/php:7.2.17-stretch
+    branches:
+      only:
+        - master
+    steps:
+      - checkout
+      - run: composer install
+      - run: vendor/bin/phpstan analyze

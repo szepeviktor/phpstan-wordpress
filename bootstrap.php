@@ -1,7 +1,7 @@
 <?php
 
 // Core constants
-define( 'ABSPATH', dirname( __DIR__ ) . '/' );
+define( 'ABSPATH', '' );
 define( 'WP_DEBUG', true );
 define( 'MINUTE_IN_SECONDS', 60 );
 define( 'HOUR_IN_SECONDS',   60 * MINUTE_IN_SECONDS );
@@ -13,8 +13,3 @@ define( 'OBJECT', 'OBJECT' );
 define( 'OBJECT_K', 'OBJECT_K' );
 define( 'ARRAY_A', 'ARRAY_A' );
 define( 'ARRAY_N', 'ARRAY_N' );
-
-/* Allow calls on $wpdb
-global $wpdb;
-$wpdb = new \wpdb( '', '', '', '' );
-*/
