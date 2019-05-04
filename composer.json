@@ -6,7 +6,7 @@
 	"prefer-stable": true,
 	"require": {
 		"php": "~7.1",
-		"phpstan/phpstan": "^0.11.6",
+		"phpstan/phpstan": "^0.11.5",
 		"giacocorsiglia/wordpress-stubs": "^5.1"
 	},
 	"require-dev": {
