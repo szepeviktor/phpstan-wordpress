@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
     - image: circleci/php:7.2.17-stretch
     steps:
