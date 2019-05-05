@@ -27,7 +27,7 @@
 - Avoid using core constants, use core functions or `MYPLUGIN_PATH`
 - Avoid bad parts of PHP
     - functions: extract, compact, list
-- If you need robust code try avoiding all kinds of type casting,
+- If you need robust code try avoiding all kinds of type casting (e.g. `if` needs a boolean),
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5.x consider following
   [Neutron PHP Standard]( https://github.com/Automattic/phpcs-neutron-standard)

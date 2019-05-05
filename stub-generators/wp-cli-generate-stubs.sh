@@ -20,4 +20,5 @@ rm -v php/WP_CLI/PackageManagerEventSubscriber.php
 if [ ! -x vendor/bin/generate-stubs ]; then
     composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
 fi
-vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=wp-cli-stubs-${PLUGIN_VERSION}.php ./php/
+vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=wp-cli-stubs-${PLUGIN_VERSION}.php \
+    ./php/ ./vendor/wp-cli/php-cli-tools/lib/
