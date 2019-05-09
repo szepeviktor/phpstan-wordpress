@@ -1,6 +1,6 @@
 # WordPress extensions for PHPStan
 
-[![CircleCI](https://circleci.com/gh/szepeviktor/phpstan-wordpress.svg?style=svg)](https://circleci.com/gh/szepeviktor/phpstan-wordpress)
+[![CircleCI](https://circleci.com/gh/szepeviktor/phpstan-wordpress.svg?style=svg)](https://circleci.com/gh/szepeviktor/phpstan-wordpress) [![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
 
 - [PHPStan](https://github.com/phpstan/phpstan)
 - [WordPress](https://wordpress.org/)
