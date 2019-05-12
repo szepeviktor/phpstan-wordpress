@@ -29,6 +29,10 @@ Get_legacy_files()
     while read -r CLASS; do
         grep -r -l "^${CLASS}"
     done < <(Get_legacy_classes)
+}
+
+Get_problematic_files()
+{
     # Globals
     echo "includes/shipping/flat-rate/includes/settings-flat-rate.php"
     echo "includes/shipping/legacy-flat-rate/includes/settings-flat-rate.php"
@@ -43,11 +47,14 @@ if ! grep -q 'Plugin Name:\s\+WooCommerce' ./woocommerce.php 2>/dev/null; then
     exit 10
 fi
 
-# Delete class files
+# Delete files
 Get_legacy_files | sort -u | grep '^includes/api/legacy/v[12]/' | xargs -r -- rm -v
+Get_problematic_files | xargs -r -- rm -v
 
 # Generate stubs
 if [ ! -x vendor/bin/generate-stubs ]; then
     composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
 fi
-vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=woocommerce-stubs-${PLUGIN_VERSION}.php ./includes/
+vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=woocommerce-stubs-${PLUGIN_VERSION}.php ./woocommerce.php ./includes/
+
+echo "[WARNING] WooCommerce version 3.6.1 has known invalid PHPDoc blocks." 1>&2
