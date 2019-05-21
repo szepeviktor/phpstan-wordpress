@@ -12,6 +12,13 @@
 1. Get packages `composer update --classmap-authoritative`
 1. Start analysis `vendor/bin/phpstan analyze`
 
+### What this extension does
+
+- Makes it possible to run PHPStan on WordPress plugins and themes
+- Loads giacocorsiglia/wordpress-stubs package
+- Defines some core constants
+- Handles special functions and classes e.g. `is_wp_error()`
+
 ### Make you code testable
 
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
@@ -26,7 +33,7 @@
     - Decide [what to load](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wordpress/_core-is.php#L58-L100)
 - Avoid using core constants, use core functions or `MYPLUGIN_PATH`
 - Avoid bad parts of PHP
-    - functions: extract, compact, list
+    - functions: eval, extract, compact, list
 - If you need robust code try avoiding all kinds of type casting (e.g. `if` needs a boolean),
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5.x consider following
