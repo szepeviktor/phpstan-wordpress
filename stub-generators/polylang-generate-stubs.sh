@@ -7,7 +7,7 @@ PLUGIN_VERSION="2.5.3"
 
 # Check plugin
 if ! grep -q 'Plugin Name:\s\+Polylang' ./polylang.php 2>/dev/null; then
-    echo "Please extract WooCommerce into the current directory!" 1>&2
+    echo "Please extract Polylang into the current directory!" 1>&2
     echo "git clone https://github.com/polylang/polylang.git" 1>&2
     exit 10
 fi
