@@ -2,12 +2,10 @@
 	"name": "szepeviktor/phpstan-wordpress",
 	"description": "WordPress extensions for PHPStan",
 	"license": "MIT",
-	"minimum-stability": "dev",
-	"prefer-stable": true,
 	"require": {
 		"php": "~7.1",
-		"phpstan/phpstan": "^0.11.5",
-		"giacocorsiglia/wordpress-stubs": "^5.1"
+		"giacocorsiglia/wordpress-stubs": "^5.1",
+		"phpstan/phpstan": "^0.11.5"
 	},
 	"require-dev": {
 		"consistence/coding-standard": "^3.8",
@@ -20,5 +18,7 @@
 		"psr-4": {
 			"PHPStan\\WordPress\\": "src/"
 		}
-	}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
 }
