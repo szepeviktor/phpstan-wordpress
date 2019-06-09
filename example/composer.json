@@ -1,8 +1,9 @@
 {
 	"require": {
-		"php": "~7.1"
+		"php": ">=7.1"
 	},
 	"require-dev": {
+		"phpstan/phpstan-shim": "^0.11.5",
 		"szepeviktor/phpstan-wordpress": "^0.1.0"
 	},
 	"autoload": {
