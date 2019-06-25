@@ -15,6 +15,10 @@ services:
         class: PHPStan\WordPress\EscSqlDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: PHPStan\WordPress\GetPostDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
     autoload_files:
         - %rootDir%/../../giacocorsiglia/wordpress-stubs/wordpress-stubs.php
