@@ -5,6 +5,7 @@ jobs:
     - image: circleci/php:7.2.17-stretch
     steps:
     - checkout
+    - run: composer validate
     - run: composer install
     - run: vendor/bin/phpstan analyze
 workflows:
