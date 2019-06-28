@@ -19,7 +19,7 @@
 - Defines some core constants
 - Handles special functions and classes e.g. `is_wp_error()`
 
-### Make you code testable
+### Make your code testable
 
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
 - Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
