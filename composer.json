@@ -1,7 +1,7 @@
 {
 	"name": "szepeviktor/phpstan-wordpress",
-	"description": "WordPress extensions for PHPStan",
 	"type": "phpstan-extension",
+	"description": "WordPress extensions for PHPStan",
 	"license": "MIT",
 	"require": {
 		"php": "~7.1",
@@ -15,17 +15,17 @@
 		"phpstan/phpstan-strict-rules": "^0.11",
 		"slevomat/coding-standard": "^5.0.4"
 	},
+	"extra": {
+		"phpstan": {
+			"includes": [
+				"extension.neon"
+			]
+		}
+	},
 	"autoload": {
 		"psr-4": {
 			"PHPStan\\WordPress\\": "src/"
 		}
-	},
-	"extra": {
-	    "phpstan": {
-	      "includes": [
-	        "extension.neon"
-	      ]
-	    }
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true
