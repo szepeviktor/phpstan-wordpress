@@ -2,7 +2,7 @@
 
 // Add this to your tests/phpstan/bootstrap.php file.
 function phpstan_error_handler( $errno, $errstr, $errfile, $errline ) {
-    if ( E_NOTICE !== $errno ) {
+    if ( E_NOTICE !== $errno && strpos($errstr, '/tmp/phpstan/') === false ) {
         throw new \ErrorException( $errstr, 0, $errno, $errfile, $errline );
     }
 }

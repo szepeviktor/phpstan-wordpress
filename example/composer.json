@@ -1,14 +1,19 @@
 {
-	"require": {
-		"php": ">=7.1"
-	},
-	"require-dev": {
-		"phpstan/phpstan-shim": "^0.11.5",
-		"szepeviktor/phpstan-wordpress": "^0.1.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"": "inc/"
-		}
-	}
+    "name": "my-project/wordpress",
+    "description": "WordPress project.",
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpstan/phpstan-shim": "^0.11.5",
+        "szepeviktor/phpstan-wordpress": "^0.1.0"
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "autoload": {
+        "psr-4": {
+            "": "inc/"
+        }
+    }
 }
