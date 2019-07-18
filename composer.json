@@ -1,32 +1,32 @@
 {
-	"name": "szepeviktor/phpstan-wordpress",
-	"type": "phpstan-extension",
-	"description": "WordPress extensions for PHPStan",
-	"license": "MIT",
-	"require": {
-		"php": "~7.1",
-		"giacocorsiglia/wordpress-stubs": "^5.1",
-		"phpstan/phpstan": "^0.11.5"
-	},
-	"require-dev": {
-		"consistence/coding-standard": "^3.8",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-		"jakub-onderka/php-parallel-lint": "^1.0",
-		"phpstan/phpstan-strict-rules": "^0.11",
-		"slevomat/coding-standard": "^5.0.4"
-	},
-	"extra": {
-		"phpstan": {
-			"includes": [
-				"extension.neon"
-			]
-		}
-	},
-	"autoload": {
-		"psr-4": {
-			"PHPStan\\WordPress\\": "src/"
-		}
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true
+    "name": "szepeviktor/phpstan-wordpress",
+    "type": "phpstan-extension",
+    "description": "WordPress extensions for PHPStan",
+    "license": "MIT",
+    "require": {
+        "php": "~7.1",
+        "giacocorsiglia/wordpress-stubs": "^5.1",
+        "phpstan/phpstan": "^0.11.5"
+    },
+    "require-dev": {
+        "consistence/coding-standard": "^3.8",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+        "jakub-onderka/php-parallel-lint": "^1.0",
+        "phpstan/phpstan-strict-rules": "^0.11",
+        "slevomat/coding-standard": "^5.0.4"
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPStan\\WordPress\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
