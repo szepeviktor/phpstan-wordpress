@@ -7,6 +7,7 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
     level: max
+    inferPrivatePropertyTypeFromConstructor: true
     paths:
         - %currentWorkingDirectory%/inc/
 #    excludes_analyse:
