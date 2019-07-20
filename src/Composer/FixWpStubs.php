@@ -11,10 +11,10 @@ class FixWpStubs
 {
 	const STUBSFILE = '/giacocorsiglia/wordpress-stubs/wordpress-stubs.php';
 
-	public static function php73Polyfill(Event $event)
+	public static function php73Polyfill(Event $event): int
 	{
 		if (! class_exists('\Symfony\Polyfill\Php73\Php73')) {
-			return;
+			return 0;
 		}
 
 		$io = $event->getIO();

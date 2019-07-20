@@ -1,5 +1,6 @@
 includes:
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     level: max
     paths:
@@ -7,4 +8,7 @@ parameters:
     ignoreErrors:
         -
             path: %rootDir%/../../../src/GetPostDynamicFunctionReturnTypeExtension.php
-            message: "#^Strict comparison using === between 'OBJECT'\\|PhpParser\\\\Node\\\\Expr and '(ARRAY_N|ARRAY_A)' will always evaluate to false\\.$#"
+            message: "#^Strict comparison using === between 'OBJECT'\\|PhpParser\\\\Node\\\\Expr and '(ARRAY_N|ARRAY_A|OBJECT)' will always evaluate to false\\.$#"
+        -
+            path: %rootDir%/../../../src/GetPostDynamicFunctionReturnTypeExtension.php
+            message: "#^Strict comparison using !== between PhpParser\\\\Node\\\\Expr and 'OBJECT' will always evaluate to true\\.$#"

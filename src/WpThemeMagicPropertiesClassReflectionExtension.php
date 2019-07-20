@@ -23,7 +23,7 @@ class WpThemeMagicPropertiesClassReflectionExtension implements PropertiesClassR
 		if ($classReflection->getName() !== 'WP_Theme') {
 			return false;
 		}
-		return in_array($propertyName, $this->properties);
+		return in_array($propertyName, $this->properties, true);
 	}
 
 	public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection {
