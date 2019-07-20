@@ -3,7 +3,7 @@
 # Generate WooCommerce stubs.
 #
 
-PLUGIN_VERSION="3.6.1"
+PLUGIN_VERSION="3.6.5"
 
 Get_legacy_classes()
 {
@@ -57,4 +57,6 @@ if [ ! -x vendor/bin/generate-stubs ]; then
 fi
 vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=woocommerce-stubs-${PLUGIN_VERSION}.php ./woocommerce.php ./includes/
 
-echo "[WARNING] WooCommerce version 3.6.1 has known invalid PHPDoc blocks." 1>&2
+echo "Fixing invalid PHPDoc blocks in WooCommerce version 3.6.* ..."
+sed -e 's#@return array\|WC_Error#@return array|WP_Error#' -i woocommerce-stubs-${PLUGIN_VERSION}.php
+sed -e 's#@return string\| Message#@return string Message#' -i woocommerce-stubs-${PLUGIN_VERSION}.php
