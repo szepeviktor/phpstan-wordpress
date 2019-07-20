@@ -17,23 +17,26 @@ class FixWpStubs
 			return;
 		}
 
-		echo 'Removing duplicate is_countable() ... ';
+		$io = $event->getIO();
+		$io->write('Removing duplicate is_countable() ...');
+
 		$vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
 		$stubsFile = $vendorDir . self::STUBSFILE;
 
 		$stubs = file_get_contents($stubsFile);
 		if ($stubs === false) {
-			echo 'WordPress stubs not found.';
-			return;
+			$io->writeError('WordPress stubs not found.');
+			return 10;
 		}
 		$fixedStubs = preg_replace('/(\n)(function is_countable)/', '$1// $2', $stubs);
 
 		$numberOfBytes = file_put_contents($stubsFile, $fixedStubs);
-		$message = 'OK.';
 		if ($numberOfBytes === false) {
-			$message = 'FAILED.';
+			$io->writeError('FAILED.');
+			return 11;
 		}
 
-		echo $message . "\n";
+		$io->write('OK.');
+		return 0;
 	}
 }
