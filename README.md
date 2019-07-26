@@ -8,7 +8,7 @@
 ### Usage
 
 1. Set up Composer, add `szepeviktor/phpstan-wordpress`, autoload your plugin or theme, see `example/composer.json`
-1. Set up PHPStan, see `example/phpstan.neon` - if you don't use Composer autoloading add `autoload_files:` and/or `autoload_directories:`
+1. Set up PHPStan, see `example/phpstan.neon.dist` - if you don't use Composer autoloading add `autoload_files:` and/or `autoload_directories:`
 1. Get packages `composer update --classmap-authoritative`
 1. Start analysis `vendor/bin/phpstan analyze`
 
@@ -26,7 +26,7 @@
 - Add proper PHPDoc blocks to classes, properties, methods, functions
 - Handle these only in your main plugin file
     - Define constants, e.g. `MYPLUGIN_PATH`
-    - Call register_activation_hook, register_deactivation_hook, register_uninstall_hook
+    - Call `register_activation_hook`, `register_deactivation_hook`, `register_uninstall_hook`
     - Class autoloading
     - Load translations
     - Support WP-CLI
@@ -37,4 +37,4 @@
 - If you need robust code try avoiding all kinds of type casting (e.g. `if` needs a boolean),
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5.x consider following
-  [Neutron PHP Standard]( https://github.com/Automattic/phpcs-neutron-standard)
+  [Neutron PHP Standard](https://github.com/Automattic/phpcs-neutron-standard)
