@@ -5,7 +5,7 @@
         "php": ">=7.1"
     },
     "require-dev": {
-        "phpstan/phpstan-shim": "^0.12.0",
+        "phpstan/phpstan-shim": "^0.11.0",
         "szepeviktor/phpstan-wordpress": "^0.2.0"
     },
     "config": {
