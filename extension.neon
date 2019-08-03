@@ -25,4 +25,5 @@ parameters:
         - %rootDir%/../../szepeviktor/phpstan-wordpress/bootstrap.php
     dynamicConstantNames:
         - WP_DEBUG
+        - WP_DEBUG_LOG
         - WP_CLI
