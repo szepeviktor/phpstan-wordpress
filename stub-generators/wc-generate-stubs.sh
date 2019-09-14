@@ -3,7 +3,9 @@
 # Generate WooCommerce stubs.
 #
 
-PLUGIN_VERSION="3.6.5"
+PLUGIN_VERSION="3.7.0"
+
+GENERATE_STUBS_COMMAND="vendor/bin/generate-stubs"
 
 Get_legacy_classes()
 {
@@ -48,15 +50,16 @@ if ! grep -q 'Plugin Name:\s\+WooCommerce' ./woocommerce.php 2>/dev/null; then
 fi
 
 # Delete files
-Get_legacy_files | sort -u | grep '^includes/api/legacy/v[12]/' | xargs -r -- rm -v
+Get_legacy_files | sort -u | grep '^includes/legacy/api/v[12]/' | xargs -r -- rm -v
 Get_problematic_files | xargs -r -- rm -v
 
 # Generate stubs
-if [ ! -x vendor/bin/generate-stubs ]; then
+if hash generate-stubs 2>/dev/null; then
+    GENERATE_STUBS_COMMAND="generate-stubs"
+elif hash generate-stubs.phar 2>/dev/null; then
+    GENERATE_STUBS_COMMAND="generate-stubs.phar"
+elif [ ! -x vendor/bin/generate-stubs ]; then
     composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
 fi
-vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=woocommerce-stubs-${PLUGIN_VERSION}.php ./woocommerce.php ./includes/
-
-echo "Fixing invalid PHPDoc blocks in WooCommerce version 3.6.* ..."
-sed -e 's#@return array\|WC_Error#@return array|WP_Error#' -i woocommerce-stubs-${PLUGIN_VERSION}.php
-sed -e 's#@return string\| Message#@return string Message#' -i woocommerce-stubs-${PLUGIN_VERSION}.php
+"$GENERATE_STUBS_COMMAND" --functions --classes --interfaces --traits --out=woocommerce-stubs-${PLUGIN_VERSION}.php \
+    ./woocommerce.php ./includes/ ./packages/*/src/
