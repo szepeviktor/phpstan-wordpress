@@ -1,7 +1,7 @@
 <?php
 
 // Core constants
-define( 'ABSPATH', '' );
+define( 'ABSPATH', './' );
 define( 'WP_DEBUG', true );
 define( 'WP_DEBUG_LOG', true );
 define( 'MINUTE_IN_SECONDS', 60 );
