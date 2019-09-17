@@ -13,7 +13,8 @@ class FixWpStubs
 
 	public static function php73Polyfill(Event $event): int
 	{
-		if (! class_exists('\Symfony\Polyfill\Php73\Php73')) {
+		// Bail out if PHP version is lower than 7.3 and Symfony polyfill is not present.
+		if (-1 === version_compare(PHP_VERSION, '7.3') && ! class_exists('\Symfony\Polyfill\Php73\Php73')) {
 			return 0;
 		}
 
