@@ -32,3 +32,4 @@ parameters:
         - '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
         # WP-CLI accepts a class as callable
         - '/^Parameter #2 \$callable of static method WP_CLI::add_command\(\) expects callable\(\): mixed, \S+ given\.$/'
+        # Please consider commenting ignores: issue URL or reason of ignore
