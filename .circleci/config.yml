@@ -4,6 +4,7 @@ jobs:
     docker:
     - image: circleci/php:7.2.17-stretch
     steps:
+    - run: sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     - checkout
     - run: composer validate
     - run: composer install
