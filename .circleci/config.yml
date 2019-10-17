@@ -6,8 +6,8 @@ jobs:
     steps:
     - run: sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     - checkout
-    - run: composer validate
-    - run: composer install
+    - run: composer validate --strict
+    - run: composer install --no-interaction --no-suggest
     - run: vendor/bin/phpstan analyze
 workflows:
   version: 2
