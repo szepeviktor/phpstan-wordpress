@@ -4,6 +4,8 @@
 define( 'ABSPATH', './' );
 define( 'WP_DEBUG', true );
 define( 'WP_DEBUG_LOG', true );
+// There is no core function to read WPMU_PLUGIN_DIR.
+define( 'WPMU_PLUGIN_DIR', './' );
 define( 'MINUTE_IN_SECONDS', 60 );
 define( 'HOUR_IN_SECONDS',   60 * MINUTE_IN_SECONDS );
 define( 'DAY_IN_SECONDS',    24 * HOUR_IN_SECONDS );
