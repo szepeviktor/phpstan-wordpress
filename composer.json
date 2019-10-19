@@ -2,11 +2,18 @@
     "name": "szepeviktor/phpstan-wordpress",
     "type": "phpstan-extension",
     "description": "WordPress extensions for PHPStan",
+    "keywords": [
+        "static analysis",
+        "code analysis",
+        "code analyse",
+        "wordpress",
+        "phpstan"
+    ],
     "license": "MIT",
     "require": {
         "php": "~7.1",
-        "phpstan/phpstan": "^0.11.8",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
+        "phpstan/phpstan": "^0.11.8",
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
