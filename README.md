@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/szepeviktor/phpstan-wordpress.svg?style=svg)](https://circleci.com/gh/szepeviktor/phpstan-wordpress)
 [![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
 [![Packagist](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
 
 - [PHPStan](https://github.com/phpstan/phpstan)
 - [WordPress](https://wordpress.org/)
