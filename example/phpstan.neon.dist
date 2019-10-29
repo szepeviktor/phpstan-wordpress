@@ -1,5 +1,4 @@
 #$ composer update --optimize-autoloader
-#$ sed -e 's#^function is_countable(#// &#' -i vendor/giacocorsiglia/wordpress-stubs/wordpress-stubs.php
 #$ vendor/bin/phpstan analyze
 
 includes:
