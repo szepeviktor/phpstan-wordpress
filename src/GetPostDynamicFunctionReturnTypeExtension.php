@@ -22,7 +22,7 @@ class GetPostDynamicFunctionReturnTypeExtension implements DynamicFunctionReturn
 {
 	public function isFunctionSupported(FunctionReflection $functionReflection): bool
 	{
-		return $functionReflection->getName() === 'get_post';
+		return in_array($functionReflection->getName(), ['get_post', 'get_page_by_path'], true);
 	}
 
 	public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
