@@ -1,7 +1,7 @@
 <?php
 /**
  * Data-only class for nav menu item objects.
- * Created to help static analysis.
+ * Created to aid static analysis.
  *
  * @package WordPress
  * @see wp_setup_nav_menu_item()
