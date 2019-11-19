@@ -12,13 +12,13 @@
 
 1. Set up Composer, add `szepeviktor/phpstan-wordpress`, autoload your plugin or theme, see `example/composer.json`
 1. Set up PHPStan, see `example/phpstan.neon.dist` - if you don't use Composer autoloading add `autoload_files:` and/or `autoload_directories:`
-1. Get packages `composer update --classmap-authoritative`
+1. Get packages `composer update --optimize-autoloader`
 1. Start analysis `vendor/bin/phpstan analyze`
 
 ### What this extension does
 
 - Makes it possible to run PHPStan on WordPress plugins and themes
-- Loads giacocorsiglia/wordpress-stubs package
+- Loads `php-stubs/wordpress-stubs` package
 - Defines some core constants
 - Handles special functions and classes e.g. `is_wp_error()`
 
