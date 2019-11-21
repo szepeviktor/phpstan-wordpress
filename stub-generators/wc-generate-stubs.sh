@@ -3,6 +3,10 @@
 # Generate WooCommerce stubs.
 #
 
+###
+### Ready-to-use stubs: https://github.com/php-stubs/woocommerce-stubs
+###
+
 PLUGIN_VERSION="3.7.0"
 
 GENERATE_STUBS_COMMAND="vendor/bin/generate-stubs"
