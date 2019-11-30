@@ -15,6 +15,10 @@
 1. Get packages `composer update --optimize-autoloader`
 1. Start analysis `vendor/bin/phpstan analyze`
 
+### Usage in WooCommerce webshops
+
+Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
+
 ### What this extension does
 
 - Makes it possible to run PHPStan on WordPress plugins and themes
@@ -33,11 +37,12 @@
     - Class autoloading
     - Load translations
     - Support WP-CLI
-    - Decide [what to load](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wordpress/_core-is.php#L58-L100)
+    - Decide [what to load](https://github.com/szepeviktor/Toolkit4WP/blob/master/src/Is.php#L64-L73)
+    - Start you plugin in a hook (`plugins_loaded`) - not with direct execution
 - Avoid using core constants, use core functions or `MYPLUGIN_PATH`
 - Avoid bad parts of PHP
     - functions: eval, extract, compact, list
 - If you need robust code try avoiding all kinds of type casting (e.g. `if` needs a boolean),
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5.x consider following
-  [Neutron PHP Standard](https://github.com/Automattic/phpcs-neutron-standard)
+  [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
