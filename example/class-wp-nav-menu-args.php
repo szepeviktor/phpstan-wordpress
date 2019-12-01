@@ -1,6 +1,6 @@
 <?php
 /**
- * Data-only class for displaying navigation menu.
+ * Data object for displaying navigation menu.
  * Created to aid static analysis.
  *
  * @package WordPress

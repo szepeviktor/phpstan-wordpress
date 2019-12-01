@@ -3,9 +3,6 @@
 
 includes:
     # @see https://github.com/phpstan/phpstan/blob/master/conf/bleedingEdge.neon
-    # Regular phpstan installation
-    #- vendor/phpstan/phpstan/conf/bleedingEdge.neon
-    # PHAR installation
     - phar://phpstan.phar/conf/bleedingEdge.neon
     # Include this extension
     - vendor/szepeviktor/phpstan-wordpress/extension.neon

@@ -1,6 +1,6 @@
 <?php
 /**
- * Data-only class for nav menu item objects.
+ * Data object for nav menu item objects.
  * Created to aid static analysis.
  *
  * @package WordPress
