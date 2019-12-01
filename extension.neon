@@ -29,3 +29,8 @@ parameters:
         - WP_CLI
     earlyTerminatingFunctionCalls:
         - wp_die
+        - wp_send_json
+        - wp_send_json_success
+        - wp_send_json_error
+        - wp_nonce_ays
+        - dead_db
