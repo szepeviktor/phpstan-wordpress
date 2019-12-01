@@ -27,3 +27,5 @@ parameters:
         - WP_DEBUG
         - WP_DEBUG_LOG
         - WP_CLI
+    earlyTerminatingFunctionCalls:
+        - wp_die
