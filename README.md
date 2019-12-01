@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/szepeviktor/phpstan-wordpress.svg?style=svg)](https://circleci.com/gh/szepeviktor/phpstan-wordpress)
 [![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
-[![Packagist](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
+[![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress/stats)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
 
 - [PHPStan](https://github.com/phpstan/phpstan)
@@ -22,7 +22,7 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 ### What this extension does
 
 - Makes it possible to run PHPStan on WordPress plugins and themes
-- Loads `php-stubs/wordpress-stubs` package
+- Loads [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs) package
 - Defines some core constants
 - Handles special functions and classes e.g. `is_wp_error()`
 
