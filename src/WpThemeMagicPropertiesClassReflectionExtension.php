@@ -12,7 +12,7 @@ use PHPStan\Reflection\Dummy\DummyPropertyReflection;
 
 class WpThemeMagicPropertiesClassReflectionExtension implements PropertiesClassReflectionExtension
 {
-	/** @var array */
+	/** @var array<int, string> */
 	private $properties = array(
 		'name', 'title', 'version', 'parent_theme', 'template_dir', 'stylesheet_dir', 'template', 'stylesheet',
 		'screenshot', 'description', 'author', 'tags', 'theme_root', 'theme_root_uri',

@@ -13,15 +13,15 @@
     "require": {
         "php": "~7.1",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
-        "phpstan/phpstan": "^0.11.8",
+        "phpstan/phpstan": "^0.12.0",
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
         "composer/composer": "^1.8.6",
         "consistence/coding-standard": "^3.8",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
         "jakub-onderka/php-parallel-lint": "^1.0",
-        "phpstan/phpstan-strict-rules": "^0.11",
+        "phpstan/phpstan-strict-rules": "^0.12",
         "slevomat/coding-standard": "^5.0.4"
     },
     "extra": {
