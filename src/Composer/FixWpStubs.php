@@ -9,7 +9,7 @@ use Composer\Script\Event;
 
 class FixWpStubs
 {
-	const STUBSFILE = '/giacocorsiglia/wordpress-stubs/wordpress-stubs.php';
+	const STUBSFILE = '/php-stubs/wordpress-stubs/wordpress-stubs.php';
 
 	public static function php73Polyfill(Event $event): int
 	{
