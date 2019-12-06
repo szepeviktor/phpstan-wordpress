@@ -31,7 +31,7 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
 - Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
 - Add proper PHPDoc blocks to classes, properties, methods, functions
-- Handle these only in your main plugin file
+- Handle these only in your [main plugin file](https://github.com/kingkero/wordpress-demoplugin/blob/master/wordpress-demoplugin.php)
     - Define constants, e.g. `MYPLUGIN_PATH`
     - Call `register_activation_hook`, `register_deactivation_hook`, `register_uninstall_hook`
     - Class autoloading
