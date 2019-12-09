@@ -33,12 +33,12 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - Add proper PHPDoc blocks to classes, properties, methods, functions
 - Handle these only in your [main plugin file](https://github.com/kingkero/wordpress-demoplugin/blob/master/wordpress-demoplugin.php)
     - Define constants, e.g. `MYPLUGIN_PATH`
-    - Call `register_activation_hook`, `register_deactivation_hook`, `register_uninstall_hook`
+    - Call `register_activation_hook()`, `register_deactivation_hook()`, `register_uninstall_hook()`
     - Class autoloading
     - Load translations
     - Support WP-CLI
     - Decide [what to load](https://github.com/szepeviktor/Toolkit4WP/blob/master/src/Is.php#L64-L73)
-    - Start you plugin in a hook (`plugins_loaded`) - not with direct execution
+    - Start your plugin in a hook (`plugins_loaded`) - without direct execution
 - Avoid using core constants, use core functions or `MYPLUGIN_PATH`
 - Avoid bad parts of PHP
     - functions: eval, extract, compact, list
