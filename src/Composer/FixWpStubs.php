@@ -26,7 +26,7 @@ class FixWpStubs
 
 		$stubs = file_get_contents($stubsFile);
 		if ($stubs === false) {
-			$io->writeError('WordPress stubs not found.');
+			$io->writeError("GiacoCorsiglia's (outdated) WordPress stubs not found.");
 			return 10;
 		}
 		$fixedStubs = preg_replace('/(\n)(function is_countable)/', '$1// $2', $stubs);
