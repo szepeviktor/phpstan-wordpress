@@ -1,7 +1,8 @@
 <?php
 /**
- * Data object for displaying navigation menu.
- * Created to aid static analysis.
+ * Value object for displaying navigation menus.
+ *
+ * Created to aid static analysis by PHPStan.
  *
  * @package WordPress
  * @see wp_nav_menu()

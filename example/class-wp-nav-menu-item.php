@@ -1,7 +1,8 @@
 <?php
 /**
- * Data object for nav menu item objects.
- * Created to aid static analysis.
+ * Value object for nav menu item objects.
+ *
+ * Created to aid static analysis by PHPStan.
  *
  * @package WordPress
  * @see wp_setup_nav_menu_item()
@@ -134,6 +135,27 @@ class WP_Nav_Menu_Item {
 	 * @var bool
 	 */
 	public $_invalid; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+
+	/**
+	 * Whether the menu item represents the active menu item.
+	 *
+	 * @var bool
+	 */
+	public $current;
+
+	/**
+	 * Whether the menu item represents an parent menu item.
+	 *
+	 * @var bool
+	 */
+	public $current_item_parent;
+
+	/**
+	 * Whether the menu item represents an ancestor menu item.
+	 *
+	 * @var bool
+	 */
+	public $current_item_ancestor;
 
 	/* Copy of WP_Post */
 
