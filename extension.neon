@@ -26,6 +26,7 @@ parameters:
     dynamicConstantNames:
         - WP_DEBUG
         - WP_DEBUG_LOG
+        - EMPTY_TRASH_DAYS
         - WP_CLI
     earlyTerminatingFunctionCalls:
         - wp_die
