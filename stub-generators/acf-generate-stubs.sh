@@ -36,3 +36,6 @@ if [ ! -x vendor/bin/generate-stubs ]; then
 fi
 # Functions only
 vendor/bin/generate-stubs --functions --out=acf-stubs-${PLUGIN_VERSION}.php ./includes/
+
+# Remove determine_locale()
+sed -e '/^function determine_locale()/{N;N;d}' -i acf-stubs-${PLUGIN_VERSION}.php
