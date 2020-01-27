@@ -35,7 +35,5 @@
         "psr-4": {
             "PHPStan\\WordPress\\": "src/"
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
