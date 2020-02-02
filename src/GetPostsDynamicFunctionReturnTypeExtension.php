@@ -42,16 +42,16 @@ class GetPostsDynamicFunctionReturnTypeExtension implements DynamicFunctionRetur
 
 		// Called with an array argument
 		if ($argumentType instanceof ConstantArrayType) {
-			$filter = $argumentType['fields'] ?? 'all';
+			$fields = $argumentType['fields'] ?? 'all';
 		}
 		// Called with a string argument
 		if ($argumentType instanceof ConstantStringType) {
 			parse_str($argumentType, $variables);
-			$filter = $variables['fields'] ?? 'all';
+			$fields = $variables['fields'] ?? 'all';
 		}
 
 		// Without constant argument return default return type
-		if (! isset($filter)) {
+		if (! isset($fields)) {
 			return ParametersAcceptorSelector::selectFromArgs(
 				$scope,
 				$functionCall->args,
@@ -59,7 +59,7 @@ class GetPostsDynamicFunctionReturnTypeExtension implements DynamicFunctionRetur
 			)->getReturnType();
 		}
 
-		switch ($filter) {
+		switch ($fields) {
 			case 'ids':
 				return new ArrayType(new IntegerType(), new IntegerType());
 			case 'id=>parent':
