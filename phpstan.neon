@@ -12,3 +12,10 @@ parameters:
         -
             path: %rootDir%/../../../src/GetPostDynamicFunctionReturnTypeExtension.php
             message: "#^Strict comparison using !== between PhpParser\\\\Node\\\\Expr and 'OBJECT' will always evaluate to true\\.$#"
+        # Accessing value of function arguments.
+        -
+            message: "#^Cannot access offset 'fields' on PHPStan\\\\Type\\\\Constant\\\\ConstantArrayType\\.$#"
+            path: src/GetPostsDynamicFunctionReturnTypeExtension.php
+        -
+            message: "#^Parameter \\#1 \\$encoded_string of function parse_str expects string, PHPStan\\\\Type\\\\Constant\\\\ConstantStringType given\\.$#"
+            path: src/GetPostsDynamicFunctionReturnTypeExtension.php
