@@ -42,11 +42,21 @@ class GetPostsDynamicFunctionReturnTypeExtension implements DynamicFunctionRetur
 
 		// Called with an array argument
 		if ($argumentType instanceof ConstantArrayType) {
-			$fields = $argumentType['fields'] ?? 'all';
+			foreach($argumentType->getKeyTypes() as $index => $key) {
+				if (! $key instanceof ConstantStringType || $key->getValue() !== 'fields') {
+					continue;
+				}
+
+				$fieldsType = $argumentType->getValueTypes()[$index];
+				if ($fieldsType instanceof ConstantStringType) {
+					$fields = $fieldsType->getValue();
+				}
+				break;
+			}
 		}
 		// Called with a string argument
 		if ($argumentType instanceof ConstantStringType) {
-			parse_str($argumentType, $variables);
+			parse_str($argumentType->getValue(), $variables);
 			$fields = $variables['fields'] ?? 'all';
 		}
 
