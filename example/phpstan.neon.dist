@@ -9,9 +9,6 @@ includes:
 parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
-    paths:
-        - %currentWorkingDirectory%/inc/
-#    excludes_analyse:
 #    autoload_files:
 #        # Missing constants, function and class stubs
 #        - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
@@ -21,6 +18,10 @@ parameters:
 #        - %currentWorkingDirectory%/myplugin-functions.php
 #    autoload_directories:
 #        - %currentWorkingDirectory%/inc/
+    paths:
+        - %currentWorkingDirectory%/inc/
+#    excludes_analyse:
+#        - %currentWorkingDirectory%/inc/views/
     ignoreErrors:
         # Uses func_get_args()
         - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'

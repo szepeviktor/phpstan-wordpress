@@ -5,6 +5,8 @@
 [![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress/stats)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
 
+Static analysis for the WordPress ecosystem.
+
 - [PHPStan](https://github.com/phpstan/phpstan)
 - [WordPress](https://wordpress.org/)
 
