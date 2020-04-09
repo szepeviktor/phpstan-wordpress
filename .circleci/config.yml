@@ -8,6 +8,8 @@ jobs:
     - checkout
     - run: composer validate --strict
     - run: composer install --no-interaction --no-suggest
+    - run: vendor/bin/parallel-lint bootstrap.php src/
+    - run: vendor/bin/phpcs --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength bootstrap.php src/
     - run: vendor/bin/phpstan analyze
 workflows:
   version: 2
