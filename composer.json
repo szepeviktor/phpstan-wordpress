@@ -20,7 +20,7 @@
         "composer/composer": "^1.8.6",
         "consistence/coding-standard": "^3.8",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
-        "jakub-onderka/php-parallel-lint": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^0.12",
         "slevomat/coding-standard": "^5.0.4"
     },

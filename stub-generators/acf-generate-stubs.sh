@@ -28,14 +28,15 @@ if ! grep -q 'Plugin Name:\s\+Advanced Custom Fields' ./acf.php 2>/dev/null; the
     exit 10
 fi
 
-Fix_phpdoc
-
 # Generate stubs
 if [ ! -x vendor/bin/generate-stubs ]; then
     composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
 fi
+
 # Functions only
 vendor/bin/generate-stubs --functions --out=acf-stubs-${PLUGIN_VERSION}.php ./includes/
+
+Fix_phpdoc
 
 # Remove determine_locale()
 sed -e '/^function determine_locale()/{N;N;d}' -i acf-stubs-${PLUGIN_VERSION}.php

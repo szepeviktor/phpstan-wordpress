@@ -28,11 +28,11 @@ if ! grep -q 'Plugin Name:\s\+Advanced Custom Fields PRO' ./acf.php 2>/dev/null;
     exit 10
 fi
 
-Fix_phpdoc
-
 # Generate stubs
 if [ ! -x vendor/bin/generate-stubs ]; then
     composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
 fi
 # Functions only
 vendor/bin/generate-stubs --functions --out=acf-pro-stubs-${PLUGIN_VERSION}.php ./includes/ ./pro/
+
+Fix_phpdoc
