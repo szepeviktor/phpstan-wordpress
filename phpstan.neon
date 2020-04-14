@@ -4,11 +4,12 @@ includes:
 parameters:
     level: max
     paths:
-        - %rootDir%/../../../src/
+        - bootstrap.php
+        - src/
     ignoreErrors:
         -
-            path: %rootDir%/../../../src/GetPostDynamicFunctionReturnTypeExtension.php
+            path: src/GetPostDynamicFunctionReturnTypeExtension.php
             message: "#^Strict comparison using === between 'OBJECT'\\|PhpParser\\\\Node\\\\Expr and '(ARRAY_N|ARRAY_A|OBJECT)' will always evaluate to false\\.$#"
         -
-            path: %rootDir%/../../../src/GetPostDynamicFunctionReturnTypeExtension.php
+            path: src/GetPostDynamicFunctionReturnTypeExtension.php
             message: "#^Strict comparison using !== between PhpParser\\\\Node\\\\Expr and 'OBJECT' will always evaluate to true\\.$#"
