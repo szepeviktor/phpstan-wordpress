@@ -7,7 +7,7 @@
 
 Static analysis for the WordPress ecosystem.
 
-- [PHPStan](https://github.com/phpstan/phpstan)
+- [PHPStan](https://phpstan.org/)
 - [WordPress](https://wordpress.org/)
 
 ### Usage
