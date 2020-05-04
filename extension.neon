@@ -25,8 +25,8 @@ services:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
     autoload_files:
-        - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
-        - %rootDir%/../../szepeviktor/phpstan-wordpress/bootstrap.php
+        - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
+        - bootstrap.php
     dynamicConstantNames:
         - WP_DEBUG
         - WP_DEBUG_LOG
