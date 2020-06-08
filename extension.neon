@@ -24,7 +24,7 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
-    autoload_files:
+    bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
         - bootstrap.php
     dynamicConstantNames:
