@@ -19,6 +19,12 @@ define('WEEK_IN_SECONDS', 7 * DAY_IN_SECONDS);
 define('MONTH_IN_SECONDS', 30 * DAY_IN_SECONDS);
 define('YEAR_IN_SECONDS', 365 * DAY_IN_SECONDS);
 
+// Constants for expressing human-readable data sizes in their respective number of bytes.
+define('KB_IN_BYTES', 1024);
+define('MB_IN_BYTES', 1024 * KB_IN_BYTES);
+define('GB_IN_BYTES', 1024 * MB_IN_BYTES);
+define('TB_IN_BYTES', 1024 * GB_IN_BYTES);
+
 // wpdb method parameters.
 define('OBJECT', 'OBJECT');
 define('OBJECT_K', 'OBJECT_K');
