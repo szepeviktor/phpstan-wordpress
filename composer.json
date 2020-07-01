@@ -18,10 +18,10 @@
     },
     "require-dev": {
         "composer/composer": "^1.8.6",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^0.12",
-        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.4.3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2"
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.4.3"
     },
     "extra": {
         "phpstan": {
@@ -34,5 +34,15 @@
         "psr-4": {
             "PHPStan\\WordPress\\": "src/"
         }
+    },
+    "scripts": {
+        "test": [
+            "@test:syntax",
+            "@test:cs",
+            "@test:phpstan"
+        ],
+        "test:cs": "phpcs --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength bootstrap.php src/",
+        "test:phpstan": "phpstan analyze",
+        "test:syntax": "parallel-lint bootstrap.php src/"
     }
 }
