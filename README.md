@@ -44,6 +44,7 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - Avoid using core constants, use core functions or `MYPLUGIN_PATH`
 - Avoid bad parts of PHP
     - functions: eval, extract, compact, list
+    - [type juggling](https://www.php.net/manual/en/language.types.type-juggling.php): `$a = '15'; if ($a) ...`
 - If you need robust code try avoiding all kinds of type casting (e.g. `if` needs a boolean),
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5.x consider following

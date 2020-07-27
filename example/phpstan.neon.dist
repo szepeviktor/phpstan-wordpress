@@ -9,9 +9,10 @@ includes:
 parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
-#    autoload_files:
+#    bootstrapFiles:
 #        # Missing constants, function and class stubs
 #        - %currentWorkingDirectory%/tests/phpstan/bootstrap.php
+#    scanFiles:
 #        # Plugin stubs
 #        - %currentWorkingDirectory%/tests/phpstan/PLUGIN-stubs.php
 #        # Procedural code
