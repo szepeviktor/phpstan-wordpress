@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // phpcs:disable Squiz.PHP.DiscouragedFunctions,NeutronStandard.Constants.DisallowDefine
 
-// Directoy constants.
+// Directory constants.
 define('ABSPATH', './');
 define('WP_CONTENT_DIR', ABSPATH . 'wp-content');
 define('WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins');
