@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace PHPStan\WordPress;
 
+use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
@@ -31,9 +32,8 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $output = 'OBJECT';
-        $argsCount = count($functionCall->args);
-        if ($argsCount >= 2 && $functionCall->args[1]->value !== 'OBJECT') {
-            $output = $functionCall->args[1]->value;
+        if (count($functionCall->args) >= 2 && $functionCall->args[1]->value instanceof ConstFetch) {
+            $output = $functionCall->args[1]->value->name->getLast();
         }
         if ($output === 'ARRAY_A') {
             return TypeCombinator::union(new ArrayType(new StringType(), new MixedType()), new NullType());
