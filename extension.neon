@@ -26,7 +26,6 @@ services:
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
-        - bootstrap.php
     dynamicConstantNames:
         - WP_DEBUG
         - WP_DEBUG_LOG
