@@ -14,7 +14,8 @@
         "php": "~7.1",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
         "phpstan/phpstan": "^0.12.26",
-        "symfony/polyfill-php73": "^1.12.0"
+        "symfony/polyfill-php73": "^1.12.0",
+        "php-stubs/wordpress-globals": "^0.2.0"
     },
     "require-dev": {
         "composer/composer": "^1.8.6",
@@ -41,8 +42,8 @@
             "@test:cs",
             "@test:phpstan"
         ],
-        "test:cs": "phpcs --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength bootstrap.php src/",
+        "test:cs": "phpcs --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength src/",
         "test:phpstan": "phpstan analyze",
-        "test:syntax": "parallel-lint bootstrap.php src/"
+        "test:syntax": "parallel-lint src/"
     }
 }
