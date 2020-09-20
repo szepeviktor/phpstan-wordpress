@@ -49,3 +49,4 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5.x consider following
   [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
+- Do not enable `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` to keep your code testable
