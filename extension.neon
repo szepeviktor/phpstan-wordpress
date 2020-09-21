@@ -43,5 +43,3 @@ parameters:
         \WP_CLI:
             - WP_CLI::error
             - WP_CLI::halt
-            - WP_CLI::launch
-            - WP_CLI::runcommand
