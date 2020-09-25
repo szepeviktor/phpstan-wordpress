@@ -23,6 +23,10 @@ services:
         class: PHPStan\WordPress\GetPostsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: PHPStan\WordPress\GetTaxonomiesDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
