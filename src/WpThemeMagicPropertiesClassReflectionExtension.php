@@ -14,6 +14,7 @@ use PHPStan\Reflection\Dummy\DummyPropertyReflection;
 
 class WpThemeMagicPropertiesClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
     /** @var array<int, string> */
     private $properties = [
         'name', 'title', 'version', 'parent_theme', 'template_dir', 'stylesheet_dir', 'template', 'stylesheet',
