@@ -25,7 +25,7 @@ class FixWpStubs
         $io->write('Removing duplicate is_countable() ...');
 
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
-        $stubsFile = $vendorDir . self::STUBSFILE;
+        $stubsFile = sprintf('%s%s', $vendorDir, self::STUBSFILE);
 
         // phpcs:ignore WordPress.WP.AlternativeFunctions
         $stubs = file_get_contents($stubsFile);

@@ -3,6 +3,9 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
     level: max
+    # WpThemeMagicPropertiesClassReflectionExtension needs WP_Theme
+    scanFiles:
+        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
     paths:
         - bootstrap.php
         - src/

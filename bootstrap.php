@@ -30,3 +30,9 @@ define('OBJECT', 'OBJECT');
 define('OBJECT_K', 'OBJECT_K');
 define('ARRAY_A', 'ARRAY_A');
 define('ARRAY_N', 'ARRAY_N');
+
+// Constants from WP_Filesystem.
+define('FS_CONNECT_TIMEOUT', 30);
+define('FS_TIMEOUT', 30);
+define('FS_CHMOD_DIR', 0755);
+define('FS_CHMOD_FILE', 0644);
