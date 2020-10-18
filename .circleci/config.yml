@@ -2,9 +2,9 @@ version: 2
 jobs:
   test:
     docker:
-    - image: circleci/php:7.3-stretch
+    - image: php:8.0.0RC2-zts-buster
     steps:
-    - run: sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    #- run: sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     - checkout
     - run: composer validate --strict
     - run: composer install --no-interaction --no-suggest
