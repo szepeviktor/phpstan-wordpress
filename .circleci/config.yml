@@ -10,7 +10,7 @@ jobs:
     - run: php composer-setup.php
     - run: php -r "unlink('composer-setup.php');"
     - run: php composer.phar self-update
-    - run: sudo mv composer.phar /usr/local/bin/composer
+    - run: mv -v composer.phar /usr/local/bin/composer
     - checkout
     - run: composer validate --strict
     - run: composer install --no-interaction --no-suggest
