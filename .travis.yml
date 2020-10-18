@@ -1,0 +1,26 @@
+# TravisCI configuration for szepeviktor/phpstan-wordpress
+
+language: php
+os:
+  - linux
+dist: bionic
+
+php:
+  - "7.4"
+  - "7.1"
+  - "nightly"
+
+cache:
+  directories:
+    - "${HOME}/.composer/cache"
+
+before_install:
+  - composer validate --strict
+
+install:
+  - composer update --no-interaction --no-suggest
+
+script:
+  - composer test:syntax -- --no-progress
+  - composer test:cs
+  - composer test:phpstan -- --ansi --memory-limit=1G --no-progress
