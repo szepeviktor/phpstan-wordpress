@@ -20,3 +20,4 @@ workflows:
           branches:
             only:
             - master
+            - php8
