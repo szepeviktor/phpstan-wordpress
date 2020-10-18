@@ -10,7 +10,7 @@ jobs:
     - run: composer install --no-interaction --no-suggest
     - run: composer test:syntax -- --no-progress
     - run: composer test:cs
-    - run: composer test:phpstan -- --no-progress
+    - run: composer test:phpstan -- --memory-limit=1G --no-progress
 workflows:
   version: 2
   workflow:
