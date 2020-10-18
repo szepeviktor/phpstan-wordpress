@@ -5,6 +5,12 @@ jobs:
     - image: php:8.0.0RC2-zts-buster
     steps:
     #- run: sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    - run: php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - run: php -r "if (hash_file('SHA384', 'composer-setup.php') === 'c31c1e292ad7be5f49291169c0ac8f683499edddcfd4e42232982d0fd193004208a58ff6f353fde0012d35fdd72bc394') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - run: php composer-setup.php
+    - run: php -r "unlink('composer-setup.php');"
+    - run: php composer.phar self-update
+    - run: sudo mv composer.phar /usr/local/bin/composer
     - checkout
     - run: composer validate --strict
     - run: composer install --no-interaction --no-suggest
