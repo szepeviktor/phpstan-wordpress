@@ -15,10 +15,10 @@ use PHPStan\Reflection\Dummy\DummyPropertyReflection;
 class WpThemeMagicPropertiesClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension
 {
     /** @var array<int, string> */
-    private $properties = [
+    private $properties = [ // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
         'name', 'title', 'version', 'parent_theme', 'template_dir', 'stylesheet_dir', 'template', 'stylesheet',
         'screenshot', 'description', 'author', 'tags', 'theme_root', 'theme_root_uri',
-    ]; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    ];
 
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
     {
