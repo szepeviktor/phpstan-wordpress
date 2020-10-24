@@ -2,7 +2,7 @@
     "name": "company/wordpress-project",
     "description": "WordPress project.",
     "require": {
-        "php": ">=7.1"
+        "php": "^7.1"
     },
     "require-dev": {
         "szepeviktor/phpstan-wordpress": "^0.6.0"
