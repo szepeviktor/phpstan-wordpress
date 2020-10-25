@@ -10,12 +10,51 @@ Static analysis for the WordPress ecosystem.
 - [PHPStan](https://phpstan.org/)
 - [WordPress](https://wordpress.org/)
 
+### Installation
+
+Add this package to your project.
+
+```bash
+composer require --dev szepeviktor/phpstan-wordpress
+```
+
+Make PHPStan find it automatically using `phpstan/extension-installer`.
+
+```bash
+composer require --dev phpstan/extension-installer
+```
+
+Or manually include it in your `phpstan.neon`.
+
+```neon
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+```
+
+### Configuration
+
+Needs no extra configuration. :smiley: Simply configure PHPStan - for example - this way.
+
+```neon
+parameters:
+    level: 5
+    paths:
+        - plugin.php
+        - inc/
+```
+
+Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
+
+:bulb: Use Composer autoloader or a
+[custom autoloader](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wp-install/wordpress-autoloader.php)!
+
 ### Usage
 
-1. Set up Composer, add `szepeviktor/phpstan-wordpress`, autoload your plugin or theme, see `example/composer.json`
-1. Set up PHPStan, see `example/phpstan.neon.dist` - if you don't use Composer autoloading add `autoload_files:` and/or `autoload_directories:`
-1. Get packages `composer update --optimize-autoloader`
-1. Start analysis `vendor/bin/phpstan analyze`
+Just start the analysis: `vendor/bin/phpstan analyze`
+then fix an error and `GOTO 10`!
+
+You find futher information in the `example` directory
+e.g. [`example/phpstan.neon.dist`](/example/phpstan.neon.dist)
 
 ### Usage in WooCommerce webshops
 
