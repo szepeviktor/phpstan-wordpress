@@ -72,21 +72,21 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
 - Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
 - Add proper PHPDoc blocks to classes, properties, methods, functions
-- Handle these only in your [main plugin file](https://github.com/kingkero/wordpress-demoplugin/blob/master/wordpress-demoplugin.php),
-  another [main plugin file](https://github.com/pryley/site-reviews/blob/v5.0.1/site-reviews.php) example
+- Handle these only in your [main plugin file](https://github.com/kingkero/wordpress-demoplugin/blob/master/wordpress-demoplugin.php).
+  Here is another [main plugin file](https://github.com/pryley/site-reviews/blob/v5.0.1/site-reviews.php) example.
     - Define constants, e.g. `MYPLUGIN_PATH`
     - Call `register_activation_hook()`, `register_deactivation_hook()`, `register_uninstall_hook()`
-    - Class autoloading
+    - Load class autoloader
     - Load translations
     - Support WP-CLI
     - Decide [what to load](https://github.com/szepeviktor/Toolkit4WP/blob/master/src/Is.php#L64-L73)
     - Start your plugin in a hook (`plugins_loaded`) - without direct execution
 - Avoid using core constants, use core functions or `MYPLUGIN_PATH`
 - Avoid bad parts of PHP
-    - functions: eval, extract, compact, list
+    - functions: `eval`, `extract`, `compact`, `list`
     - [type juggling](https://www.php.net/manual/en/language.types.type-juggling.php): `$a = '15'; if ($a) ...`
-- If you need robust code try avoiding all kinds of type casting (e.g. `if` needs a boolean),
+- If you need robust code try avoiding all kinds of type juggling (e.g. `if` needs a boolean),
   see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
-- If you are not bound by PHP 5.x consider following
+- If you are not bound by PHP 5 consider following
   [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
 - Do not enable `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` to keep your code testable
