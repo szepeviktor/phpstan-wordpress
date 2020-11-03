@@ -4,6 +4,10 @@ services:
         tags:
             - phpstan.typeSpecifier.functionTypeSpecifyingExtension
     -
+        class: PHPStan\WordPress\wpdbMagicPropertiesClassReflectionExtension
+        tags:
+            - phpstan.broker.propertiesClassReflectionExtension
+    -
         class: PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
