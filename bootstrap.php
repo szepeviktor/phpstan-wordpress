@@ -36,3 +36,21 @@ define('FS_CONNECT_TIMEOUT', 30);
 define('FS_TIMEOUT', 30);
 define('FS_CHMOD_DIR', 0755);
 define('FS_CHMOD_FILE', 0644);
+
+// Rewrite API Endpoint Masks.
+define('EP_NONE', 0);
+define('EP_PERMALINK', 1);
+define('EP_ATTACHMENT', 2);
+define('EP_DATE', 4);
+define('EP_YEAR', 8);
+define('EP_MONTH', 16);
+define('EP_DAY', 32);
+define('EP_ROOT', 64);
+define('EP_COMMENTS', 128);
+define('EP_SEARCH', 256);
+define('EP_CATEGORIES', 512);
+define('EP_TAGS', 1024);
+define('EP_AUTHORS', 2048);
+define('EP_PAGES', 4096);
+define('EP_ALL_ARCHIVES', EP_DATE | EP_YEAR | EP_MONTH | EP_DAY | EP_CATEGORIES | EP_TAGS | EP_AUTHORS);
+define('EP_ALL', EP_PERMALINK | EP_ATTACHMENT | EP_ROOT | EP_COMMENTS | EP_SEARCH | EP_PAGES | EP_ALL_ARCHIVES);
