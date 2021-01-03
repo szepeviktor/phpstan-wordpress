@@ -46,8 +46,23 @@ parameters:
         - wp_send_json_success
         - wp_send_json_error
         - wp_nonce_ays
+        - comment_footer_die
         - dead_db
+        - do_favicon
+        - install_theme_information
+        - media_send_to_editor
+        - redirect_post
+        - wp_ajax_heartbeat
+        - wp_ajax_nopriv_heartbeat
     earlyTerminatingMethodCalls:
+        \Custom_Background:
+            - Custom_Background::wp_set_background_image
+        \IXR_Server:
+            - IXR_Server::output
         \WP_CLI:
             - WP_CLI::error
             - WP_CLI::halt
+        \WP_Recovery_Mode:
+            - WP_Recovery_Mode::redirect_protected
+        \WP_Sitemaps_Stylesheet:
+            - WP_Sitemaps_Stylesheet::render_stylesheet
