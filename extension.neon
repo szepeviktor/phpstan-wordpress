@@ -59,6 +59,8 @@ parameters:
             - Custom_Background::wp_set_background_image
         \IXR_Server:
             - IXR_Server::output
+        \WP_Ajax_Response:
+            - WP_Ajax_Response::send
         \WP_CLI:
             - WP_CLI::error
             - WP_CLI::halt
