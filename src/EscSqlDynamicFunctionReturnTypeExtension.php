@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Set return type of esc_sql().
+ * Set return type of esc_sql(), wp_slash() and wp_unslash().
  */
 
 declare(strict_types=1);
@@ -20,7 +20,7 @@ class EscSqlDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicF
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return $functionReflection->getName() === 'esc_sql';
+        return in_array($functionReflection->getName(), ['esc_sql', 'wp_slash', 'wp_unslash'], true);
     }
 
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
