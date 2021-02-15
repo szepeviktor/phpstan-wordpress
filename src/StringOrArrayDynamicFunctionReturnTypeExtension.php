@@ -16,7 +16,7 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Type;
 
-class EscSqlDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
+class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
