@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Set return type of esc_sql().
+ * Set return type of esc_sql(), wp_slash() and wp_unslash().
  */
 
 declare(strict_types=1);
@@ -16,11 +16,11 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Type;
 
-class EscSqlDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
+class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return $functionReflection->getName() === 'esc_sql';
+        return in_array($functionReflection->getName(), ['esc_sql', 'wp_slash', 'wp_unslash'], true);
     }
 
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
