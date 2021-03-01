@@ -23,8 +23,7 @@ final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\
 
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
-        $argsCount = count($functionCall->args);
-        if ($argsCount === 0) {
+        if ($functionCall->args === []) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
                 $functionCall->args,
