@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Set return type of get_post().
+ * Set return type of get_comment().
  */
 
 declare(strict_types=1);
