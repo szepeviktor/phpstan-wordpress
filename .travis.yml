@@ -6,19 +6,9 @@ os:
 dist: "bionic"
 
 php:
+  - "8.0"
   - "7.4"
   - "7.1"
-
-jobs:
-  include:
-    - name: "PHP 8.0"
-      php: "nightly"
-      install:
-        - "composer update --no-interaction --no-suggest --ignore-platform-reqs"
-      script:
-        - "composer test:syntax -- --no-progress"
-        - "vendor/bin/phpcs -s --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength,PSR12.Classes.ClassInstantiation bootstrap.php src/"
-        - "composer test:phpstan -- --ansi --memory-limit=1G --no-progress"
 
 cache:
   directories:
