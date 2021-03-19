@@ -18,10 +18,10 @@
     },
     "require-dev": {
         "composer/composer": "^1.8.6",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^0.12",
-        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.4.3"
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6"
     },
     "extra": {
         "phpstan": {
