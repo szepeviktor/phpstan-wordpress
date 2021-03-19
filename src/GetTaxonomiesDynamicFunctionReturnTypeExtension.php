@@ -33,7 +33,7 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
     {
         // Called without second $output arguments
         if (count($functionCall->args) <= 1) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Taxonomy'));
+            return new ArrayType(new IntegerType(), new StringType());
         }
 
         $argumentType = $scope->getType($functionCall->args[1]->value);
@@ -49,11 +49,11 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
 
         // Called with a string $output
         switch ($argumentType->getValue()) {
-            case 'names':
-                return new ArrayType(new IntegerType(), new StringType());
             case 'objects':
-            default:
                 return new ArrayType(new IntegerType(), new ObjectType('WP_Taxonomy'));
+            case 'names':
+            default:
+                return new ArrayType(new IntegerType(), new StringType());
         }
     }
 }
