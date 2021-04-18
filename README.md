@@ -82,3 +82,12 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - If you are not bound by PHP 5 consider following
   [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
 - Do not enable `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` to keep your code testable
+
+### Dirty corner (FAQ)
+
+WordPress uses conditional function and class definition for override purposes.
+Use `sed` command to exclude function stubs when they are previously defined.
+
+```bash
+sed -i -e 's#function is_gd_image#function __is_gd_image#' vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+```
