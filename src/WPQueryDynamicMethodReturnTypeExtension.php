@@ -72,10 +72,9 @@ class WPQueryDynamicMethodReturnTypeExtension implements \PHPStan\Type\DynamicMe
         }
 
         switch ($fields) {
+            case 'id=>parent':
             case 'ids':
                 return new ArrayType(new IntegerType(), new IntegerType());
-            case 'id=>parent':
-                return new ArrayType(new IntegerType(), new ObjectType('stdClass'));
             case 'all':
             default:
                 return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
