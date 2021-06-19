@@ -20,6 +20,10 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
+        class: SzepeViktor\PHPStan\WordPress\GetTermsDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
         class: SzepeViktor\PHPStan\WordPress\GetPostDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
