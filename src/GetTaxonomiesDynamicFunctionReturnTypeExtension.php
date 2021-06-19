@@ -11,7 +11,6 @@ namespace PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
@@ -40,11 +39,7 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
 
         // When called with a non-string $output, return default return type
         if (! $argumentType instanceof ConstantStringType) {
-            return ParametersAcceptorSelector::selectFromArgs(
-                $scope,
-                $functionCall->args,
-                $functionReflection->getVariants()
-            )->getReturnType();
+            return new ArrayType(new IntegerType(), new ObjectType('WP_Taxonomy'));
         }
 
         // Called with a string $output
