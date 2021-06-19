@@ -11,7 +11,6 @@ namespace PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
@@ -60,11 +59,7 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         // Without constant argument return default return type
         if (! isset($fields)) {
-            return ParametersAcceptorSelector::selectFromArgs(
-                $scope,
-                $functionCall->args,
-                $functionReflection->getVariants()
-            )->getReturnType();
+            return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
         }
 
         switch ($fields) {
