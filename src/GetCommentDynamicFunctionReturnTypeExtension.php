@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace PHPStan\WordPress;
+namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
