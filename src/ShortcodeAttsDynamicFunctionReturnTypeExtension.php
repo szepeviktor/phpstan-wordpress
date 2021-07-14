@@ -12,7 +12,10 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
+use PHPStan\Type\Constant\ConstantArrayType;
+use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 
 final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -31,6 +34,21 @@ final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\
             )->getReturnType();
         }
 
-        return $scope->getType($functionCall->args[0]->value);
+        $type = $scope->getType($functionCall->args[0]->value);
+
+        if ($type instanceof ConstantArrayType) {
+            // shortcode_atts values are coming from the defined defaults or from the actual string shortcode attributes
+            return new ConstantArrayType(
+                $type->getKeyTypes(),
+                array_map(
+                    static function (Type $valueType): Type {
+                        return TypeCombinator::union($valueType, new StringType());
+                    },
+                    $type->getValueTypes()
+                )
+            );
+        }
+
+        return $type;
     }
 }
