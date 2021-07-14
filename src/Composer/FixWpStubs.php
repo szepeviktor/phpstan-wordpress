@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace PHPStan\WordPress\Composer;
+namespace SzepeViktor\PHPStan\WordPress\Composer;
 
 use Composer\Script\Event;
 

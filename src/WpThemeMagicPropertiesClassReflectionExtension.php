@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace PHPStan\WordPress;
+namespace SzepeViktor\PHPStan\WordPress;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\PropertyReflection;
@@ -31,6 +31,7 @@ class WpThemeMagicPropertiesClassReflectionExtension implements \PHPStan\Reflect
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {
+        // @phpstan-ignore-next-line This is not covered by BC.
         return new DummyPropertyReflection();
     }
 }
