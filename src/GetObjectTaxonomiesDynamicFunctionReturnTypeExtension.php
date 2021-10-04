@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+
 /**
  * Set return type of get_object_taxonomies().
  */
@@ -27,8 +29,6 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
 
     /**
      * @see https://developer.wordpress.org/reference/functions/get_object_taxonomies/
-     *
-     * phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
