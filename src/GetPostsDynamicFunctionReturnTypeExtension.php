@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace PHPStan\WordPress;
+namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
@@ -28,6 +28,7 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     /**
      * @see https://developer.wordpress.org/reference/classes/wp_query/#return-fields-parameter
      */
+    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         // Called without arguments

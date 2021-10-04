@@ -1,38 +1,38 @@
 services:
     -
-        class: PHPStan\WordPress\IsWpErrorFunctionTypeSpecifyingExtension
+        class: SzepeViktor\PHPStan\WordPress\IsWpErrorFunctionTypeSpecifyingExtension
         tags:
             - phpstan.typeSpecifier.functionTypeSpecifyingExtension
     -
-        class: PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
+        class: SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
     -
-        class: PHPStan\WordPress\RedirectCanonicalDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\RedirectCanonicalDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: PHPStan\WordPress\StringOrArrayDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\StringOrArrayDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: PHPStan\WordPress\GetPostDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\GetPostDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: PHPStan\WordPress\GetPostsDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\GetPostsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: PHPStan\WordPress\GetTaxonomiesDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\GetTaxonomiesDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: PHPStan\WordPress\GetCommentDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\GetCommentDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
