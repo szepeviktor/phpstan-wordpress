@@ -35,6 +35,10 @@ services:
         class: SzepeViktor\PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\MySQL2DateDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
