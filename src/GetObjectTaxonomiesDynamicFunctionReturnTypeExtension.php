@@ -39,7 +39,7 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
 
         // When called with a non-string $output, return default return type
         if (! $argumentType instanceof ConstantStringType) {
-			return new ArrayType(new IntegerType(), new StringType());
+            return new ArrayType(new IntegerType(), new StringType());
         }
 
         // Called with a string $output
