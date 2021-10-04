@@ -27,6 +27,8 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
 
     /**
      * @see https://developer.wordpress.org/reference/functions/get_object_taxonomies/
+     *
+     * phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
