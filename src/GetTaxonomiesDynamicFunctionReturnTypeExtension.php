@@ -1,5 +1,7 @@
 <?php
 
+//phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+
 /**
  * Set return type of get_taxonomies().
  */
