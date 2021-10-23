@@ -34,8 +34,8 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         $objectsReturnType = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
         $namesReturnType = new ArrayType(new StringType(), new StringType());
         $indeterminateReturnType = TypeCombinator::union(
-            new ArrayType(new StringType(), new MixedType()),
-            new NullType()
+            $objectsReturnType,
+            $namesReturnType,
         );
 
         // Called without second $output arguments
