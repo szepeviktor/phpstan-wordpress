@@ -31,25 +31,32 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $objectsReturnType = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+        $namesReturnType = new ArrayType(new StringType(), new StringType());
+        $indeterminateReturnType = TypeCombinator::union(
+            new ArrayType(new StringType(), new MixedType()),
+            new NullType()
+        );
+
         // Called without second $output arguments
         if (count($functionCall->args) <= 1) {
-            return new ArrayType(new StringType(), new StringType());
+            return $namesReturnType;
         }
 
         $argumentType = $scope->getType($functionCall->args[1]->value);
 
         // When called with a non-string $output, return default return type
         if (! $argumentType instanceof ConstantStringType) {
-            return new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+            return $indeterminateReturnType;
         }
 
         // Called with a string $output
         switch ($argumentType->getValue()) {
             case 'objects':
-                return new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+                return $objectsReturnType;
             case 'names':
             default:
-                return new ArrayType(new StringType(), new StringType());
+                return $namesReturnType;
         }
     }
 }
