@@ -33,7 +33,7 @@ class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     {
         $argumentType = $scope->getType($functionCall->args[0]->value);
 
-        // When called with a non-string $format, return default return type
+        // When called with a $format that isn't a constant string, return default return type
         if (! $argumentType instanceof ConstantStringType) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
@@ -42,7 +42,7 @@ class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
             )->getReturnType();
         }
 
-        // Called with a string $format
+        // Called with a constant string $format
         switch ($argumentType->getValue()) {
             case 'G':
             case 'U':

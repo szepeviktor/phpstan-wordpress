@@ -19,8 +19,10 @@
     "require-dev": {
         "composer/composer": "^1.10.23",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "nikic/php-parser": "< 4.13.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^0.12",
+        "phpunit/phpunit": "^7 || ^9",
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6"
     },
     "extra": {
@@ -38,9 +40,11 @@
     "scripts": {
         "test": [
             "@test:syntax",
+            "@test:phpunit",
             "@test:cs",
             "@test:phpstan"
         ],
+        "test:phpunit": "phpunit",
         "test:cs": "phpcs --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength bootstrap.php src/",
         "test:phpstan": "phpstan analyze",
         "test:syntax": "parallel-lint bootstrap.php src/"

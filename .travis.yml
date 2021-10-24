@@ -23,5 +23,6 @@ install:
 
 script:
   - "composer test:syntax -- --no-progress"
+  - "composer test:phpunit"
   - "composer test:cs -- -s"
   - "composer test:phpstan -- --ansi --memory-limit=1G --no-progress"

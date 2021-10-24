@@ -12,6 +12,7 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\StringType;
@@ -20,6 +21,7 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\Constant\ConstantStringType;
 
 class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -32,6 +34,20 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $output = 'OBJECT';
+
+        if (count($functionCall->args) >= 2) {
+            $argumentType = $scope->getType($functionCall->args[1]->value);
+
+            // When called with an $output that isn't a constant string, return default return type
+            if (! $argumentType instanceof ConstantStringType) {
+                return ParametersAcceptorSelector::selectFromArgs(
+                    $scope,
+                    $functionCall->args,
+                    $functionReflection->getVariants()
+                )->getReturnType();
+            }
+        }
+
         if (count($functionCall->args) >= 2 && $functionCall->args[1]->value instanceof ConstFetch) {
             $output = $functionCall->args[1]->value->name->getLast();
         }
