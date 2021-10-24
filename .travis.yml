@@ -1,5 +1,7 @@
 # TravisCI configuration for szepeviktor/phpstan-wordpress
 
+if: "branch = master"
+
 language: "php"
 os:
   - "linux"
@@ -23,6 +25,6 @@ install:
 
 script:
   - "composer test:syntax -- --no-progress"
-  - "composer test:phpunit"
+  - "composer test:phpunit -- --verbose"
   - "composer test:cs -- -s"
   - "composer test:phpstan -- --ansi --memory-limit=1G --no-progress"
