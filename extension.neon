@@ -45,6 +45,7 @@ services:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
     bootstrapFiles:
+        - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
         - bootstrap.php
     dynamicConstantNames:
         - WP_DEBUG
