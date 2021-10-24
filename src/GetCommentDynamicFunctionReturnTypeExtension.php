@@ -33,7 +33,7 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     {
         $output = 'OBJECT';
         if (count($functionCall->args) >= 2 && $functionCall->args[1]->value instanceof ConstFetch) {
-            \PHPStan\\dumpType($functionCall->args[1]);
+            \PHPStan\dumpType($functionCall->args[1]);
             $output = $functionCall->args[1]->value->name->getLast();
         }
         if ($output === 'ARRAY_A') {
