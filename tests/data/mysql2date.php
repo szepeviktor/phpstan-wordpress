@@ -6,23 +6,15 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use function PHPStan\Testing\assertType;
 
-class MySQL2DateAssertions
-{
+// Constant strings
+assertType('int|false', mysql2date('G'));
+assertType('int|false', mysql2date('U'));
+assertType('string|false', mysql2date('Hello'));
 
-    public function mysql2date(): void
-    {
-        // Constant strings
-        assertType('int|false', mysql2date('G'));
-        assertType('int|false', mysql2date('U'));
-        assertType('string|false', mysql2date('Hello'));
+// Unknown types
+assertType('mixed', $_GET['foo']);
+assertType('int|string|false', mysql2date($_GET['foo']));
 
-        // Unknown types
-        assertType('mixed', $_GET['foo']);
-        assertType('int|string|false', mysql2date($_GET['foo']));
-
-        // Unsupported types
-        assertType('int|string|false', mysql2date(new \stdClass));
-        assertType('int|string|false', mysql2date(false));
-    }
-
-}
+// Unsupported types
+assertType('int|string|false', mysql2date(new \stdClass));
+assertType('int|string|false', mysql2date(false));
