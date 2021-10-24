@@ -36,7 +36,7 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         $namesReturnType = new ArrayType(new StringType(), new StringType());
         $indeterminateReturnType = TypeCombinator::union(
             $objectsReturnType,
-            $namesReturnType,
+            $namesReturnType
         );
 
         // Called without second $output arguments
