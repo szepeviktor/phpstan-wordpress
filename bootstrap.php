@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 // phpcs:disable Squiz.PHP.DiscouragedFunctions,NeutronStandard.Constants.DisallowDefine
 
+$project_stubs = dirname( __DIR__, 2 ) . '/php-stubs/wordpress-stubs/wordpress-stubs.php';
+$vendor_stubs = __DIR__ . '/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php';
+
+if ( file_exists( $project_stubs ) ) {
+    require_once $project_stubs;
+} elseif ( file_exists( $vendor_stubs ) ) {
+    require_once $vendor_stubs;
+} else {
+    echo 'php-stubs/wordpress-stubs not found';
+    exit( 1 );
+}
+
 // There are no core functions to read these constants.
 define('ABSPATH', './');
 define('WP_DEBUG', true);
