@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use function current_time;
 use function PHPStan\Testing\assertType;
 
 // Integer types
