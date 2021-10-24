@@ -11,13 +11,18 @@ class MySQL2DateAssertions
 
     public function mysql2date(): void
     {
-
+        // Constant strings
         assertType('int|false', mysql2date('G'));
         assertType('int|false', mysql2date('U'));
         assertType('string|false', mysql2date('Hello'));
 
+        // Unknown types
         assertType('mixed', $_GET['foo']);
         assertType('int|string|false', mysql2date($_GET['foo']));
+
+        // Unsupported types
+        assertType('int|string|false', mysql2date(new \stdClass));
+        assertType('int|string|false', mysql2date(false));
     }
 
 }
