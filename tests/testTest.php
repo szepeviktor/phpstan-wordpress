@@ -18,6 +18,7 @@ class DynamicReturnTypeExtensionTests extends TypeInferenceTestCase
         yield from $this->gatherAssertTypes(__DIR__ . '/data/current_time.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/get_comment.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/get_object_taxonomies.php');
+        yield from $this->gatherAssertTypes(__DIR__ . '/data/get_post.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/mysql2date.php');
     }
 
