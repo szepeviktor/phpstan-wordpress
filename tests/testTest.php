@@ -6,7 +6,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use PHPStan\Testing\TypeInferenceTestCase;
 
-class MySQL2DateDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
+class DynamicReturnTypeExtensionTests extends TypeInferenceTestCase
 {
 
 	/**
