@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.1 || ^8.0",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
-        "phpstan/phpstan": "^1",
+        "phpstan/phpstan": "^1.0",
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
