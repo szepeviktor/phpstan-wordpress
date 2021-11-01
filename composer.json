@@ -13,7 +13,7 @@
     "require": {
         "php": "^7.1 || ^8.0",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
-        "phpstan/phpstan": "^0.12.26",
+        "phpstan/phpstan": "^1.0",
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
@@ -21,7 +21,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "nikic/php-parser": "< 4.13.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
-        "phpstan/phpstan-strict-rules": "^0.12",
+        "phpstan/phpstan-strict-rules": "^1.0",
         "phpunit/phpunit": "^7 || ^9",
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6"
     },
