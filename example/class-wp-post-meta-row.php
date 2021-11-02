@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Value object for postmeta database table rows.
  *
