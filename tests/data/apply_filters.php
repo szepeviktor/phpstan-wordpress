@@ -12,6 +12,16 @@ $value = apply_filters('filter','Hello, World');
 assertType('mixed', $value);
 
 /**
+ * Unknown parameter.
+ */
+$value = apply_filters('filter',$foo);
+assertType('mixed', $value);
+
+/** @var int $value */
+$value = apply_filters('filter',$foo);
+assertType('int', $value);
+
+/**
  * Single type.
  *
  * @param string $foo Hello, World.
