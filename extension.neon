@@ -51,6 +51,10 @@ services:
         class: SzepeViktor\PHPStan\WordPress\CurrentTimeDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
 parameters:
     bootstrapFiles:
         - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
