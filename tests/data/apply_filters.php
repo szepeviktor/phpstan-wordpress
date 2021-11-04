@@ -7,6 +7,17 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use function apply_filters;
 use function PHPStan\Testing\assertType;
 
+/**
+ * Returns the passed value.
+ *
+ * @template T
+ * @param T $value Value.
+ * @return T Value.
+ */
+function return_value( $value ) {
+    return $value;
+}
+
 $value = apply_filters('filter','Hello, World');
 assertType('mixed', $value);
 
@@ -66,3 +77,11 @@ assertType('string|null', $value);
  */
 $value = apply_filters('filter',$foo);
 assertType('array', $value);
+
+/**
+ * Value assignment wrapped inside another function.
+ *
+ * @param string $foo Hello, World.
+ */
+$value = return_value(apply_filters('filter',$foo));
+assertType('string', $value);
