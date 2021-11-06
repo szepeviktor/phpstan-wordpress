@@ -11,7 +11,7 @@
 /**
  * Nav menu arguments extending stdClass.
  */
-class WP_Nav_Menu_Args extend stdClass {
+class WP_Nav_Menu_Args extends stdClass {
 
 	/**
 	 * Desired menu. Accepts a menu ID, slug, name, or object. Default empty.
