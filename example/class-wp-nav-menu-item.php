@@ -11,7 +11,7 @@
 /**
  * Decorates a menu item (WP_Post) object with the shared navigation menu item properties.
  */
-class WP_Nav_Menu_Item {
+class WP_Nav_Menu_Item extends WP_Post {
 
 	/**
 	 * The term_id if the menu item represents a taxonomy term.
