@@ -11,6 +11,7 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\PhpDocStringResolver;
+use PHPStan\PhpDoc\TypeNodeResolver;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
@@ -21,6 +22,18 @@ use PHPStan\Type\MixedType;
 
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    protected PhpDocStringResolver $phpDocStringResolver;
+    protected TypeNodeResolver $typeNodeResolver;
+
+    public function __construct(
+        PhpDocStringResolver $phpDocStringResolver,
+        TypeNodeResolver $typeNodeResolver
+    )
+    {
+        $this->phpDocStringResolver = $phpDocStringResolver;
+        $this->typeNodeResolver = $typeNodeResolver;
+    }
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
         return in_array(
@@ -53,8 +66,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
 
         // Fetch the docblock contents and resolve it to a PhpDocNode.
         $code = $comment->getText();
-        $docResolver = new PhpDocStringResolver( new Lexer(), new PhpDocParser( new TypeParser(), new ConstExprParser() ) );
-        $doc = $docResolver->resolve($code);
+        $doc = $this->phpDocStringResolver->resolve($code);
 
         // Fetch the `@param` values from the docblock.
         $params = $doc->getParamTagValues();
