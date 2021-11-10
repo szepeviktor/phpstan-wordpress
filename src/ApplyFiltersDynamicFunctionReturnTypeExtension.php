@@ -12,10 +12,6 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\PhpDocStringResolver;
 use PHPStan\PhpDoc\TypeNodeResolver;
-use PHPStan\PhpDocParser\Lexer\Lexer;
-use PHPStan\PhpDocParser\Parser\ConstExprParser;
-use PHPStan\PhpDocParser\Parser\PhpDocParser;
-use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\Type;
@@ -31,8 +27,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         FileTypeMapper $fileTypeMapper,
         PhpDocStringResolver $phpDocStringResolver,
         TypeNodeResolver $typeNodeResolver
-    )
-    {
+    ) {
         $this->fileTypeMapper = $fileTypeMapper;
         $this->phpDocStringResolver = $phpDocStringResolver;
         $this->typeNodeResolver = $typeNodeResolver;
@@ -55,16 +50,16 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         $default = new MixedType();
 
         /** @var \PhpParser\Node\Expr\Assign|null */
-        $parent = $functionCall->getAttribute( 'parent' );
+        $parent = $functionCall->getAttribute('parent');
 
-        if (null === $parent) {
+        if ($parent === null) {
             return $default;
         }
 
         // Fetch the docblock from the parent.
         $comment = $parent->getDocComment();
 
-        if (null === $comment) {
+        if ($comment === null) {
             return $default;
         }
 
@@ -78,9 +73,6 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         if (! $params) {
             return $default;
         }
-
-        // Fetch the `@param` types as a TypeNode.
-        $type = $params[0]->type;
 
         $resolvedPhpDoc = $this->fileTypeMapper->getResolvedPhpDoc(
             $scope->getFile(),
@@ -96,6 +88,6 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             return $default;
         }
 
-        return $this->typeNodeResolver->resolve( $type, $nameScope );
+        return $this->typeNodeResolver->resolve($params[0]->type, $nameScope);
     }
 }
