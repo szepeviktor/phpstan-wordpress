@@ -40,6 +40,19 @@ $value = apply_filters('filter',$foo);
 assertType('string', $value);
 
 /**
+ * Multiple lines and multiple parameters.
+ *
+ * @param string $foo Hello.
+ * @param bool   $bar World.
+ */
+$value = apply_filters(
+    'filter',
+    $foo,
+    $bar
+);
+assertType('string', $value);
+
+/**
  * Single constant type.
  *
  * @param string $foo Hello, World.
@@ -87,7 +100,7 @@ $value = return_value(apply_filters('filter',$foo));
 assertType('string', $value);
 
 /**
- * Filters the maximum image size dimensions for the editor.
+ * Typed array passed through `list()`.
  *
  * @since 2.5.0
  *
