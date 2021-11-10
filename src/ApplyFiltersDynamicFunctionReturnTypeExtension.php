@@ -17,19 +17,23 @@ use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\Reflection\FunctionReflection;
+use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
 
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    protected FileTypeMapper $fileTypeMapper;
     protected PhpDocStringResolver $phpDocStringResolver;
     protected TypeNodeResolver $typeNodeResolver;
 
     public function __construct(
+        FileTypeMapper $fileTypeMapper,
         PhpDocStringResolver $phpDocStringResolver,
         TypeNodeResolver $typeNodeResolver
     )
     {
+        $this->fileTypeMapper = $fileTypeMapper;
         $this->phpDocStringResolver = $phpDocStringResolver;
         $this->typeNodeResolver = $typeNodeResolver;
     }
@@ -78,8 +82,20 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         // Fetch the `@param` types as a TypeNode.
         $type = $params[0]->type;
 
-        // @TODO Fetch and return the Type that corresponds to the TypeNode.
+        $resolvedPhpDoc = $this->fileTypeMapper->getResolvedPhpDoc(
+            $scope->getFile(),
+            $scope->isInClass() ? $scope->getClassReflection()->getName() : null,
+            $scope->isInTrait() ? $scope->getTraitReflection()->getName() : null,
+            null,
+            $code
+        );
 
-        return $default;
+        $nameScope = $resolvedPhpDoc->getNullableNameScope();
+
+        if (! $nameScope) {
+            return $default;
+        }
+
+        return $this->typeNodeResolver->resolve( $type, $nameScope );
     }
 }
