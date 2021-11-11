@@ -136,6 +136,14 @@ $value = (int) apply_filters('filter',$foo);
 assertType('int', $value);
 
 /**
+ * Constant string type.
+ *
+ * @param 'aaa'|'bbb' $foo Hello, World.
+ */
+$value = apply_filters('filter',$foo);
+assertType("'aaa'|'bbb'", $value);
+
+/**
  * Typed array passed through `list()`.
  *
  * @since 2.5.0
