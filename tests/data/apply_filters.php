@@ -7,17 +7,6 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use function apply_filters;
 use function PHPStan\Testing\assertType;
 
-/**
- * Returns the passed value.
- *
- * @template T
- * @param T $value Value.
- * @return T Value.
- */
-function return_value( $value ) {
-    return $value;
-}
-
 // This assertion is here because any value that passes through `return_value()`
 // has a type of `*ERROR*` and I don't know why. It works fine on the playground:
 // https://phpstan.org/r/d7b65195-af14-40cf-a216-9b70bdda21c0
