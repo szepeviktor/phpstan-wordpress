@@ -25,6 +25,7 @@ class DynamicReturnTypeExtensionTests extends TypeInferenceTestCase
 
     /**
      * @dataProvider dataFileAsserts
+     * @param array<string> ...$args
      */
     public function testFileAsserts(
         string $assertType,
