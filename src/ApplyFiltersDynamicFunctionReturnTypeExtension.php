@@ -63,15 +63,18 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         // Fetch the `@param` values from the docblock.
         $params = $doc->getParamTagValues();
 
-        if (! $params) {
+        if (count($params) === 0) {
             return $default;
         }
+
+        $classReflection = $scope->getClassReflection();
+        $traitReflection = $scope->getTraitReflection();
 
         // Need to resolve the docblock in scope in order to get a NameScope object.
         $resolvedPhpDoc = $this->fileTypeMapper->getResolvedPhpDoc(
             $scope->getFile(),
-            $scope->isInClass() ? $scope->getClassReflection()->getName() : null,
-            $scope->isInTrait() ? $scope->getTraitReflection()->getName() : null,
+            ($scope->isInTrait() && $traitReflection !== null) ? $traitReflection->getName() : null,
+            ($scope->isInClass() && $classReflection !== null) ? $classReflection->getName() : null,
             $scope->getFunctionName(),
             $code
         );
@@ -86,7 +89,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         return $this->typeNodeResolver->resolve($params[0]->type, $nameScope);
     }
 
-    private static function getNullableNodeComment(\PhpParser\Node $node): ?\PhpParser\Comment\Doc
+    private static function getNullableNodeComment(FuncCall $node): ?\PhpParser\Comment\Doc
     {
         $startLine = $node->getStartLine();
 
