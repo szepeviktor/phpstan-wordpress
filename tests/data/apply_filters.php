@@ -155,3 +155,7 @@ assertType('int', $value);
 list($max_width, $max_height) = apply_filters('editor_max_image_size', [$max_width, $max_height], $size, $context);
 assertType('int', $max_width);
 assertType('int', $max_height);
+
+/** This filter is documented in foo.php */
+$value = apply_filters('foo', 123);
+assertType('mixed', $value);
