@@ -96,7 +96,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
 
         $nameScope = $resolvedPhpDoc->getNullableNameScope();
 
-        if (null === $nameScope) {
+        if ($nameScope === null) {
             return $default;
         }
 
