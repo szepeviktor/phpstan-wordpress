@@ -50,31 +50,28 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $default = new MixedType();
+        $parent = $functionCall;
+        $comment = null;
+        $startLine = $functionCall->getStartLine();
 
-        /** @var \PhpParser\Node\Expr\Assign|null */
-        $parent = $functionCall->getAttribute('parent');
+        while ($parent->getStartLine() === $startLine) {
+            // Fetch the docblock from the parent.
+            $comment = $parent->getDocComment();
 
-        if ($parent === null) {
-            return $default;
+            if ($comment !== null) {
+                break;
+            }
+
+            /** @var \PhpParser\Node|null */
+            $parent = $parent->getAttribute('parent');
+
+            if ($parent === null) {
+                break;
+            }
         }
 
-        // Fetch the docblock from the parent.
-        $comment = $parent->getDocComment();
-
         if ($comment === null) {
-            /** @var \PhpParser\Node\Expr\Assign|null */
-            $grandparent = $parent->getAttribute('parent');
-
-            if ($grandparent === null) {
-                return $default;
-            }
-
-            // Fetch the docblock from the grandparent.
-            $comment = $grandparent->getDocComment();
-
-            if ($comment === null) {
-                return $default;
-            }
+            return $default;
         }
 
         // Fetch the docblock contents and resolve it to a PhpDocNode.
