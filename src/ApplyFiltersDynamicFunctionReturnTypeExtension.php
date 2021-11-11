@@ -50,25 +50,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $default = new MixedType();
-        $parent = $functionCall;
-        $comment = null;
-        $startLine = $functionCall->getStartLine();
-
-        while ($parent->getStartLine() === $startLine) {
-            // Fetch the docblock from the parent.
-            $comment = $parent->getDocComment();
-
-            if ($comment !== null) {
-                break;
-            }
-
-            /** @var \PhpParser\Node|null */
-            $parent = $parent->getAttribute('parent');
-
-            if ($parent === null) {
-                break;
-            }
-        }
+        $comment = self::getNullableNodeComment($functionCall);
 
         if ($comment === null) {
             return $default;
@@ -102,5 +84,24 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
 
         // Return the Type resolved from the TypeNode.
         return $this->typeNodeResolver->resolve($params[0]->type, $nameScope);
+    }
+
+    private static function getNullableNodeComment(\PhpParser\Node $node): ?\PhpParser\Comment\Doc
+    {
+        $startLine = $node->getStartLine();
+
+        while ($node !== null && $node->getStartLine() === $startLine) {
+            // Fetch the docblock from the node.
+            $comment = $node->getDocComment();
+
+            if ($comment !== null) {
+                return $comment;
+            }
+
+            /** @var \PhpParser\Node|null */
+            $node = $node->getAttribute('parent');
+        }
+
+        return null;
     }
 }
