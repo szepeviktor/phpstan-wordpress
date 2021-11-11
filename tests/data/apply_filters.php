@@ -18,6 +18,12 @@ function return_value( $value ) {
     return $value;
 }
 
+// This assertion is here because any value that passes through `return_value()`
+// has a type of `*ERROR*` and I don't know why. It works fine on the playground:
+// https://phpstan.org/r/d7b65195-af14-40cf-a216-9b70bdda21c0
+$value = return_value(123);
+assertType('int', $value);
+
 $value = apply_filters('filter','Hello, World');
 assertType('mixed', $value);
 
