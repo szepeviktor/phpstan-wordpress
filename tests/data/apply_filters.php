@@ -6,6 +6,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use function apply_filters;
 use function PHPStan\Testing\assertType;
+use WP_Post;
 
 $value = apply_filters('filter','Hello, World');
 assertType('mixed', $value);
@@ -120,6 +121,22 @@ assertType('mixed', $value);
  */
 $value = (int) apply_filters('filter',$foo);
 assertType('int', $value);
+
+/**
+ * Global class that's been imported.
+ *
+ * @param WP_Post|null $foo Hello, World.
+ */
+$value = apply_filters('filter',$foo);
+assertType('WP_Post|null', $value);
+
+/**
+ * Global class that's not been imported.
+ *
+ * @param \WP_Term|null $foo Hello, World.
+ */
+$value = apply_filters('filter',$foo);
+assertType('WP_Term|null', $value);
 
 /**
  * Constant string type.
