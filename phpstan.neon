@@ -9,3 +9,4 @@ parameters:
     paths:
         - bootstrap.php
         - src/
+        - tests/
