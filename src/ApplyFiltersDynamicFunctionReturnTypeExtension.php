@@ -60,7 +60,19 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         $comment = $parent->getDocComment();
 
         if ($comment === null) {
-            return $default;
+            /** @var \PhpParser\Node\Expr\Assign|null */
+            $grandparent = $parent->getAttribute('parent');
+
+            if ($grandparent === null) {
+                return $default;
+            }
+
+            // Fetch the docblock from the grandparent.
+            $comment = $grandparent->getDocComment();
+
+            if ($comment === null) {
+                return $default;
+            }
         }
 
         // Fetch the docblock contents and resolve it to a PhpDocNode.
