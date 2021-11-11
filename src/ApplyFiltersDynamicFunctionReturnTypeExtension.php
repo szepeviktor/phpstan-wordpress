@@ -39,6 +39,8 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             $functionReflection->getName(),
             [
                 'apply_filters',
+                'apply_filters_deprecated',
+                'apply_filters_ref_array',
             ],
             true
         );
