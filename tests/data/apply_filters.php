@@ -180,3 +180,41 @@ assertType('123|string', $slug);
 /** This filter is documented in foo.php */
 $value = apply_filters('foo', 123);
 assertType('mixed', $value);
+
+class ApplyFiltersTestClass {
+    public function MyMethod() {
+        /**
+         * Documented filter within a method.
+         *
+         * @param float $foo Hello, World.
+         */
+        $value = apply_filters('filter',$foo);
+        assertType('float', $value);
+    }
+
+    /**
+     * This is the method docblock, not the filter docblock. The
+     * filter does not have a docblock.
+     *
+     * @param int $foo Hello, World.
+     */
+    public function MyMethodWithParams(int $foo) {
+        $value = apply_filters('filter',$foo);
+        assertType('mixed', $value);
+    }
+
+    /**
+     * This is the method docblock, not the filter docblock.
+     *
+     * @param int $foo Hello, World.
+     */
+    public function AnotherMethodWithParams(int $foo) {
+        /**
+         * This is the filter docblock.
+         *
+         * @param string $bar Hello, World.
+         */
+        $value = apply_filters('filter',$bar);
+        assertType('string', $value);
+    }
+}
