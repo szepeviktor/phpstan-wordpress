@@ -86,6 +86,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             return $default;
         }
 
+        // Need to resolve the docblock again in order to get a NameScope object.
         $resolvedPhpDoc = $this->fileTypeMapper->getResolvedPhpDoc(
             $scope->getFile(),
             $scope->isInClass() ? $scope->getClassReflection()->getName() : null,
@@ -100,6 +101,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             return $default;
         }
 
+        // Return the Type resolved from the TypeNode.
         return $this->typeNodeResolver->resolve($params[0]->type, $nameScope);
     }
 }
