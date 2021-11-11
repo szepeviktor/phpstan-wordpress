@@ -169,7 +169,7 @@ assertType('int', $max_height);
  * @param WP_Term|WP_Post $tag  Term or post object.
  */
 $slug = isset($tag->slug) ? apply_filters('editable_slug', $tag->slug, $tag) : 123;
-assertType('string|int', $slug);
+assertType('123|string', $slug);
 
 /** This filter is documented in foo.php */
 $value = apply_filters('foo', 123);
