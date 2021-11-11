@@ -63,9 +63,6 @@ assertType('string', $value);
 /**
  * Single constant of a type that differs from the docblock.
  *
- * @TODO Need to decide whether this should result in a type of `string|int` or whether we can
- * get PHPStan to trigger a warning in this situation.
- *
  * @param string $foo Hello, World.
  */
 $value = apply_filters('filter',123);
