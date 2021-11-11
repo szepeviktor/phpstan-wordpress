@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Set return type of apply_filters().
+ * Set return type of apply_filters() based on its optional preceding docblock.
  */
 
 declare(strict_types=1);
@@ -84,7 +84,7 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
 
         $nameScope = $resolvedPhpDoc->getNullableNameScope();
 
-        if (! $nameScope) {
+        if (null === $nameScope) {
             return $default;
         }
 
