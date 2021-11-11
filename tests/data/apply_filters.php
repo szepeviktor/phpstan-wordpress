@@ -156,6 +156,16 @@ list($max_width, $max_height) = apply_filters('editor_max_image_size', [$max_wid
 assertType('int', $max_width);
 assertType('int', $max_height);
 
+/**
+ * Filter inside a ternary.
+ *
+ * @param string          $slug The editable slug. Will be either a term slug or post URI depending
+ *                              upon the context in which it is evaluated.
+ * @param WP_Term|WP_Post $tag  Term or post object.
+ */
+$slug = isset($tag->slug) ? apply_filters('editable_slug', $tag->slug, $tag) : 123;
+assertType('string|int', $slug);
+
 /** This filter is documented in foo.php */
 $value = apply_filters('foo', 123);
 assertType('mixed', $value);
