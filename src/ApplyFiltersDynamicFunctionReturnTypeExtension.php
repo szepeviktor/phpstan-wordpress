@@ -73,8 +73,8 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         // Need to resolve the docblock in scope in order to get a NameScope object.
         $resolvedPhpDoc = $this->fileTypeMapper->getResolvedPhpDoc(
             $scope->getFile(),
-            ($scope->isInTrait() && $traitReflection !== null) ? $traitReflection->getName() : null,
             ($scope->isInClass() && $classReflection !== null) ? $classReflection->getName() : null,
+            ($scope->isInTrait() && $traitReflection !== null) ? $traitReflection->getName() : null,
             $scope->getFunctionName(),
             $code
         );
