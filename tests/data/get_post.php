@@ -12,7 +12,7 @@ assertType('WP_Post|null', get_post(1,OBJECT));
 assertType('WP_Post|null', get_post(1,'Hello'));
 
 // Unknown output
-assertType('array|\WP_Post|null', get_post(1,_GET['foo']));
+assertType('array|\WP_Post|null', get_post(1,$_GET['foo']));
 
 // Associative array output
 assertType('array<string, mixed>|null', get_post(1,ARRAY_A));
