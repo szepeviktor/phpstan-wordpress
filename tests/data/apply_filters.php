@@ -86,20 +86,6 @@ assertType('array', $value);
 $value = return_value(apply_filters('filter',$foo));
 assertType('string', $value);
 
-$value = return_value(
-    return_value(
-        return_value(
-            /**
-             * Multiple nested function calls.
-             *
-             * @param string $foo Hello, World.
-             */
-            apply_filters('filter',$foo)
-        )
-    )
-);
-assertType('string', $value);
-
 /**
  * Incorrect docblock placement that should be ignored.
  *
