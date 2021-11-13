@@ -17,7 +17,10 @@ use PHPStan\Type\MixedType;
 
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
-    protected FileTypeMapper $fileTypeMapper;
+    /**
+     * @var FileTypeMapper
+     */
+    protected $fileTypeMapper;
 
     public function __construct(
         FileTypeMapper $fileTypeMapper
