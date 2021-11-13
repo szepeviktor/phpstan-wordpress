@@ -10,8 +10,6 @@ namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
-use PHPStan\PhpDoc\PhpDocStringResolver;
-use PHPStan\PhpDoc\TypeNodeResolver;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\Type;
@@ -20,17 +18,11 @@ use PHPStan\Type\MixedType;
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     protected FileTypeMapper $fileTypeMapper;
-    protected PhpDocStringResolver $phpDocStringResolver;
-    protected TypeNodeResolver $typeNodeResolver;
 
     public function __construct(
-        FileTypeMapper $fileTypeMapper,
-        PhpDocStringResolver $phpDocStringResolver,
-        TypeNodeResolver $typeNodeResolver
+        FileTypeMapper $fileTypeMapper
     ) {
         $this->fileTypeMapper = $fileTypeMapper;
-        $this->phpDocStringResolver = $phpDocStringResolver;
-        $this->typeNodeResolver = $typeNodeResolver;
     }
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
@@ -56,21 +48,12 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             return $default;
         }
 
-        // Fetch the docblock contents and resolve it to a PhpDocNode.
+        // Fetch the docblock contents.
         $code = $comment->getText();
-        $doc = $this->phpDocStringResolver->resolve($code);
 
-        // Fetch the `@param` values from the docblock.
-        $params = $doc->getParamTagValues();
-
-        if (count($params) === 0) {
-            return $default;
-        }
-
+        // Resolve the docblock in scope.
         $classReflection = $scope->getClassReflection();
         $traitReflection = $scope->getTraitReflection();
-
-        // Need to resolve the docblock in scope in order to get a NameScope object.
         $resolvedPhpDoc = $this->fileTypeMapper->getResolvedPhpDoc(
             $scope->getFile(),
             ($scope->isInClass() && $classReflection !== null) ? $classReflection->getName() : null,
@@ -79,14 +62,14 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             $code
         );
 
-        $nameScope = $resolvedPhpDoc->getNullableNameScope();
+        // Fetch the `@param` values from the docblock.
+        $params = $resolvedPhpDoc->getParamTags();
 
-        if ($nameScope === null) {
-            return $default;
+        foreach ($params as $param) {
+            return $param->getType();
         }
 
-        // Return the Type resolved from the TypeNode.
-        return $this->typeNodeResolver->resolve($params[0]->type, $nameScope);
+        return $default;
     }
 
     private static function getNullableNodeComment(FuncCall $node): ?\PhpParser\Comment\Doc
