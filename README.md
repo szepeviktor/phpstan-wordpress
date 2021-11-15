@@ -64,14 +64,34 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 
 - Makes it possible to run PHPStan on WordPress plugins and themes
 - Loads [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs) package
+- Provides dynamic return type extensions for many core functions
 - Defines some core constants
 - Handles special functions and classes e.g. `is_wp_error()`
+- Uses the optional docblock that precedes a call to `apply_filters()` to treat its return type as certain
+
+### Usage of an `apply_filters()` docblock
+
+WordPress core -- and the wider WordPress ecosystem -- uses PHPDoc docblocks in a non-standard manner to document the parameters passed to `apply_filters()`. Example:
+
+```php
+/**
+ * Filters the page title when creating an HTML drop-down list of pages.
+ *
+ * @param string  $title Page title.
+ * @param WP_Post $page  Page data object.
+ */
+$title = apply_filters( 'list_pages', $title, $page );
+```
+
+This extension understands these docblocks when they're present in your code and uses them to instruct PHPStan to treat the return type of the filter as certain, according to the first `@param` tag. In the example above this means PHPStan treats the type of `$title` as `string`.
+
+To make the best use of this feature, ensure that the type of the first `@param` tag in each of these such docblocks is accurate and correct.
 
 ### Make your code testable
 
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
 - Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
-- Add proper PHPDoc blocks to classes, properties, methods, functions
+- Add proper PHPDoc blocks to classes, properties, methods, functions, and calls to `apply_filters()`
 - Choose your [main plugin file parts](https://github.com/szepeviktor/small-project/blob/master/MAIN-FILE-PARTS.md).
 - Avoid using core constants, use core functions
 - Avoid bad parts of PHP
