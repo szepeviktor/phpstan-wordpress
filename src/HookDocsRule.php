@@ -61,11 +61,11 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         // Fetch the `@param` tags from the docblock.
         $paramTags = $resolvedPhpDoc->getParamTags();
 
-        $numberOfParams = count($node->args);
+        $numberOfParams = count($node->args) - 1;
         $numberOfParamTags = count($paramTags);
 
-        // Too few `@param` tags.
-        if ($numberOfParams > $numberOfParamTags) {
+        // Incorrect number of `@param` tags.
+        if ($numberOfParams !== $numberOfParamTags) {
             $message = sprintf(
                 'Expected %1$d @param tags, found %2$d',
                 $numberOfParams,

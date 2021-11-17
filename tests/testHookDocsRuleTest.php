@@ -27,12 +27,21 @@ class HookDocsRuleTest extends RuleTestCase
         // first argument: path to the example file that contains some errors that should be reported by HookDocsRule
         // second argument: an array of expected errors,
         // each error consists of the asserted error message, and the asserted error file line
-        $this->analyse([__DIR__ . '/data/hook-docs.php'], [
+        $this->analyse(
             [
-                'Expected 3 @param tags, found 1', // asserted error message
-                14, // asserted error line
+                __DIR__ . '/data/hook-docs.php'
             ],
-        ]);
+            [
+                [
+                    'Expected 2 @param tags, found 1', // asserted error message
+                    14, // asserted error line
+                ],
+                [
+                    'Expected 2 @param tags, found 3', // asserted error message
+                    23, // asserted error line
+                ],
+            ]
+        );
 
         // the test fails, if the expected error does not occur,
         // or if there are other errors reported beside the expected one
