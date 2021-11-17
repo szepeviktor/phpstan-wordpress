@@ -33,17 +33,14 @@ class HookDocsRuleTest extends RuleTestCase
             ],
             [
                 [
-                    'Expected 2 @param tags, found 1', // asserted error message
-                    14, // asserted error line
+                    'Expected 2 @param tags, found 1',
+                    14,
                 ],
                 [
-                    'Expected 2 @param tags, found 3', // asserted error message
-                    23, // asserted error line
+                    'Expected 2 @param tags, found 3',
+                    23,
                 ],
             ]
         );
-
-        // the test fails, if the expected error does not occur,
-        // or if there are other errors reported beside the expected one
     }
 }
