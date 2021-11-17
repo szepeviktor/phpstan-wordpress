@@ -11,4 +11,4 @@ parameters:
         - src/
         - tests/
     excludePaths:
-        - tests/data/*
+        - tests/data/
