@@ -2,23 +2,26 @@
 
 declare(strict_types=1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax
+// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
-use function apply_filters;
 use function PHPStan\Testing\assertType;
-use WP_Post;
+use function apply_filters;
+use function returnValue;
 
-$value = apply_filters('filter','Hello, World');
+$value = apply_filters('filter', 'Hello, World');
 assertType('mixed', $value);
 
 /**
  * Unknown parameter.
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType('mixed', $value);
 
-/** @var int $value */
-$value = apply_filters('filter',$foo);
+/** @var int $value */ // phpcs:ignore SlevomatCodingStandard.PHP.RequireExplicitAssertion
+$value = apply_filters('filter', $foo);
 assertType('int', $value);
 
 /**
@@ -26,7 +29,7 @@ assertType('int', $value);
  *
  * @param string $foo Hello, World.
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType('string', $value);
 
 /**
@@ -47,7 +50,7 @@ assertType('string', $value);
  *
  * @param string $foo Hello, World.
  */
-$value = apply_filters('filter','I am a string');
+$value = apply_filters('filter', 'I am a string');
 assertType('string', $value);
 
 /**
@@ -55,7 +58,7 @@ assertType('string', $value);
  *
  * @param string $foo Hello, World.
  */
-$value = apply_filters('filter',123);
+$value = apply_filters('filter', 123);
 assertType('string', $value);
 
 /**
@@ -63,7 +66,7 @@ assertType('string', $value);
  *
  * @param string|null $foo Hello, World.
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType('string|null', $value);
 
 /**
@@ -75,7 +78,7 @@ assertType('string|null', $value);
  *     @type string $bar Bar.
  * }
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType('array', $value);
 
 /**
@@ -83,7 +86,7 @@ assertType('array', $value);
  *
  * @param string $foo Hello, World.
  */
-$value = return_value(apply_filters('filter',$foo));
+$value = returnValue(apply_filters('filter', $foo));
 assertType('string', $value);
 
 /**
@@ -91,10 +94,10 @@ assertType('string', $value);
  *
  * @param string $foo Hello, World.
  */
-$value = return_value(
-    return_value(
-        return_value(
-            apply_filters('filter',$foo)
+$value = returnValue(
+    returnValue(
+        returnValue(
+            apply_filters('filter', $foo)
         )
     )
 );
@@ -105,15 +108,15 @@ assertType('mixed', $value);
  *
  * @param float|int|null $foo Hello, World.
  */
-$value = (int) apply_filters('filter',$foo);
+$value = (int)apply_filters('filter', $foo);
 assertType('int', $value);
 
 /**
  * Global class that's been imported.
  *
- * @param WP_Post|null $foo Hello, World.
+ * @param \WP_Post|null $foo Hello, World.
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType('WP_Post|null', $value);
 
 /**
@@ -121,7 +124,7 @@ assertType('WP_Post|null', $value);
  *
  * @param \WP_Term|null $foo Hello, World.
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType('WP_Term|null', $value);
 
 /**
@@ -129,7 +132,7 @@ assertType('WP_Term|null', $value);
  *
  * @param 'aaa'|'bbb' $foo Hello, World.
  */
-$value = apply_filters('filter',$foo);
+$value = apply_filters('filter', $foo);
 assertType("'aaa'|'bbb'", $value);
 
 /**
@@ -149,16 +152,16 @@ assertType("'aaa'|'bbb'", $value);
  *                               Possible values are 'display' (like in a theme)
  *                               or 'edit' (like inserting into an editor).
  */
-list($max_width, $max_height) = apply_filters('editor_max_image_size', [$max_width, $max_height], $size, $context);
-assertType('int', $max_width);
-assertType('int', $max_height);
+[$maxWidth, $maxHeight] = apply_filters('editor_max_image_size', [$maxWidth, $maxHeight], $size, $context);
+assertType('int', $maxWidth);
+assertType('int', $maxHeight);
 
 /**
  * Filter inside a ternary.
  *
  * @param string          $slug The editable slug. Will be either a term slug or post URI depending
  *                              upon the context in which it is evaluated.
- * @param WP_Term|WP_Post $tag  Term or post object.
+ * @param \WP_Term|\WP_Post $tag Term or post object.
  */
 $slug = isset($tag->slug) ? apply_filters('editable_slug', $tag->slug, $tag) : 123;
 assertType('123|string', $slug);
@@ -166,41 +169,3 @@ assertType('123|string', $slug);
 /** This filter is documented in foo.php */
 $value = apply_filters('foo', 123);
 assertType('mixed', $value);
-
-class ApplyFiltersTestClass {
-    public function MyMethod() {
-        /**
-         * Documented filter within a method.
-         *
-         * @param float $foo Hello, World.
-         */
-        $value = apply_filters('filter',$foo);
-        assertType('float', $value);
-    }
-
-    /**
-     * This is the method docblock, not the filter docblock. The
-     * filter does not have a docblock.
-     *
-     * @param int $foo Hello, World.
-     */
-    public function MyMethodWithParams(int $foo) {
-        $value = apply_filters('filter',$foo);
-        assertType('mixed', $value);
-    }
-
-    /**
-     * This is the method docblock, not the filter docblock.
-     *
-     * @param int $foo Hello, World.
-     */
-    public function AnotherMethodWithParams(int $foo) {
-        /**
-         * This is the filter docblock.
-         *
-         * @param string $bar Hello, World.
-         */
-        $value = apply_filters('filter',$bar);
-        assertType('string', $value);
-    }
-}
