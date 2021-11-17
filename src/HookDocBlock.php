@@ -12,7 +12,6 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\ResolvedPhpDocBlock;
 use PHPStan\Type\FileTypeMapper;
-use PHPStan\Type\Type;
 
 class HookDocBlock
 {

@@ -10,11 +10,9 @@ namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
-use PhpParser\NodeDumper;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\FileTypeMapper;
-use PHPStan\Type\VerbosityLevel;
 
 /**
  * @implements \PHPStan\Rules\Rule<Node\Expr\FuncCall>
