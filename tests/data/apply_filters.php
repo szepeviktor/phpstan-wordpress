@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+// phpcs:disable SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax
 // phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
@@ -139,13 +140,14 @@ assertType("'aaa'|'bbb'", $value);
  *
  * @since 2.5.0
  *
- * @param array<int> $max_image_size {
- * An array of width and height values.
- * @type int $0 The maximum width in pixels.
- * @type int $1 The maximum height in pixels.
+ * @param int[]        $max_image_size {
+ *     An array of width and height values.
+ *
+ *     @type int $0 The maximum width in pixels.
+ *     @type int $1 The maximum height in pixels.
  * }
- * @param string|array<int> $size Requested image size. Can be any registered image size name, or
- * an array of width and height values in pixels (in that order).
+ * @param string|int[] $size     Requested image size. Can be any registered image size name, or
+ *                               an array of width and height values in pixels (in that order).
  * @param string       $context  The context the image is being resized for.
  *                               Possible values are 'display' (like in a theme)
  *                               or 'edit' (like inserting into an editor).
