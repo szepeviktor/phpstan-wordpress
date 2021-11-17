@@ -8,7 +8,7 @@ use function PHPStan\Testing\assertType;
 
 class ApplyFiltersTestClass
 {
-    public function myMethod(): void
+    public function myMethod()
     {
         $foo = 0.0;
 
@@ -27,7 +27,7 @@ class ApplyFiltersTestClass
      *
      * @param int $foo Hello, World.
      */
-    public function myMethodWithParams(int $foo): void
+    public function myMethodWithParams(int $foo)
     {
         $value = apply_filters('filter', $foo);
         assertType('mixed', $value);
@@ -38,7 +38,7 @@ class ApplyFiltersTestClass
      *
      * @param int $foo Hello, World.
      */
-    public function anotherMethodWithParams(int $foo): void // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    public function anotherMethodWithParams(int $foo) // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     {
         $bar = '';
 

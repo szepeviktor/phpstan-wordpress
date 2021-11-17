@@ -24,5 +24,5 @@ assertType('int|string', current_time($_GET['foo']));
 assertType('int|string', current_time(get_option('date_format')));
 
 // Unsupported types
-assertType('int|string', current_time(new stdClass()));  // @phpstan-ignore-line invalid type on purpose
-assertType('int|string', current_time(false));  // @phpstan-ignore-line invalid type on purpose
+assertType('int|string', current_time(new stdClass()));
+assertType('int|string', current_time(false));

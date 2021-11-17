@@ -21,5 +21,5 @@ assertType('int|string|false', mysql2date($_GET['foo'], $time));
 assertType('int|string|false', mysql2date(get_option('date_format'), $time));
 
 // Unsupported types
-assertType('int|string|false', mysql2date(new stdClass(), $time)); // @phpstan-ignore-line invalid type on purpose
-assertType('int|string|false', mysql2date(false, $time)); // @phpstan-ignore-line invalid type on purpose
+assertType('int|string|false', mysql2date(new stdClass(), $time));
+assertType('int|string|false', mysql2date(false, $time));
