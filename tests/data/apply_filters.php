@@ -11,6 +11,9 @@ use function PHPStan\Testing\assertType;
 use function apply_filters;
 use function returnValue;
 
+$foo = null;
+$bar = null;
+
 $value = apply_filters('filter', 'Hello, World');
 assertType('mixed', $value);
 
@@ -38,7 +41,7 @@ assertType('string', $value);
  * @param string $foo Hello.
  * @param bool   $bar World.
  */
-$value = apply_filters(
+$value = apply_filters( // @phpstan-ignore-line apply_filters supports more than 2 args
     'filter',
     $foo,
     $bar
@@ -135,6 +138,10 @@ assertType('WP_Term|null', $value);
 $value = apply_filters('filter', $foo);
 assertType("'aaa'|'bbb'", $value);
 
+$maxWidth = 17;
+$maxHeight = 19;
+$size = 7;
+$context = '';
 /**
  * Typed array passed through `list()`.
  *
@@ -152,7 +159,7 @@ assertType("'aaa'|'bbb'", $value);
  *                               Possible values are 'display' (like in a theme)
  *                               or 'edit' (like inserting into an editor).
  */
-[$maxWidth, $maxHeight] = apply_filters('editor_max_image_size', [$maxWidth, $maxHeight], $size, $context);
+[$maxWidth, $maxHeight] = apply_filters('editor_max_image_size', [$maxWidth, $maxHeight], $size, $context); // @phpstan-ignore-line apply_filters supports more than 2 args
 assertType('int', $maxWidth);
 assertType('int', $maxHeight);
 
@@ -163,7 +170,7 @@ assertType('int', $maxHeight);
  *                              upon the context in which it is evaluated.
  * @param \WP_Term|\WP_Post $tag Term or post object.
  */
-$slug = isset($tag->slug) ? apply_filters('editable_slug', $tag->slug, $tag) : 123;
+$slug = isset($tag->slug) ? apply_filters('editable_slug', $tag->slug, $tag) : 123; // @phpstan-ignore-line apply_filters supports more than 2 args
 assertType('123|string', $slug);
 
 /** This filter is documented in foo.php */
