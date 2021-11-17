@@ -15,18 +15,18 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\FileTypeMapper;
 
 /**
- * @implements \PHPStan\Rules\Rule<Node\Expr\FuncCall>
+ * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\FuncCall>
  */
 class HookDocsRule implements \PHPStan\Rules\Rule
 {
-    const SUPPORTED_FUNCTIONS = [
+    private const SUPPORTED_FUNCTIONS = [
         'apply_filters',
         'apply_filters_deprecated',
         'do_action',
         'do_action_deprecated',
     ];
 
-    /** @var HookDocBlock */
+    /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
     protected $hookDocBlock;
 
     public function __construct(FileTypeMapper $fileTypeMapper)
@@ -40,8 +40,8 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     }
 
     /**
-     * @param FuncCall $node
-     * @param Scope    $scope
+     * @param \PhpParser\Node\Expr\FuncCall $node
+     * @param \PHPStan\Analyser\Scope       $scope
      * @return array<int, \PHPStan\Rules\RuleError>
      */
     public function processNode(Node $node, Scope $scope): array
@@ -72,11 +72,10 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $numberOfParamTags
             );
             return [
-                RuleErrorBuilder::message($message)->build()
+                RuleErrorBuilder::message($message)->build(),
             ];
         }
 
         return [];
     }
-
 }

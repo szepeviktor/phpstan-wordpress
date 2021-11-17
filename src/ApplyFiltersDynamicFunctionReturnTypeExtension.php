@@ -17,7 +17,7 @@ use PHPStan\Type\MixedType;
 
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
-    /** @var HookDocBlock */
+    /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
     protected $hookDocBlock;
 
     public function __construct(FileTypeMapper $fileTypeMapper)
