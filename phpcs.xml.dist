@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset>
+	<file>bootstrap.php</file>
+	<file>src/</file>
+	<file>tests/</file>
+
+	<rule ref="PSR12NeutronRuleset">
+		<exclude name="Generic.Files.LineLength"/>
+		<exclude name="PEAR.Commenting.ClassComment"/>
+		<exclude name="PEAR.Commenting.FileComment"/>
+	</rule>
+
+	<rule ref="NeutronStandard.Functions.TypeHint">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="NeutronStandard.Globals.DisallowGlobalFunctions">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.Security.NonceVerification">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+</ruleset>

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use stdClass;
+
 use function PHPStan\Testing\assertType;
 
 $time = '1970-01-01 00:00:00';
@@ -19,5 +21,5 @@ assertType('int|string|false', mysql2date($_GET['foo'], $time));
 assertType('int|string|false', mysql2date(get_option('date_format'), $time));
 
 // Unsupported types
-assertType('int|string|false', mysql2date(new \stdClass, $time));
+assertType('int|string|false', mysql2date(new stdClass(), $time));
 assertType('int|string|false', mysql2date(false, $time));

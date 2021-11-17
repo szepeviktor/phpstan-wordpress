@@ -45,7 +45,8 @@
             "@test:phpstan"
         ],
         "test:phpunit": "phpunit",
-        "test:cs": "phpcs --standard=PSR12NeutronRuleset --exclude=PEAR.Commenting.ClassComment,PEAR.Commenting.FileComment,Generic.Files.LineLength bootstrap.php src/",
+        "test:cs": "phpcs",
+        "test:cs:fix": "phpcbf",
         "test:phpstan": "phpstan analyze",
         "test:syntax": "parallel-lint bootstrap.php src/"
     }
