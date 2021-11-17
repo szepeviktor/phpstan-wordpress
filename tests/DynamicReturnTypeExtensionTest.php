@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
-class DynamicReturnTypeExtensionTests extends \PHPStan\Testing\TypeInferenceTestCase
+class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestCase
 {
 
     /**
