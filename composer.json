@@ -48,6 +48,6 @@
         "test:cs": "phpcs",
         "test:cs:fix": "phpcbf",
         "test:phpstan": "phpstan analyze",
-        "test:syntax": "parallel-lint bootstrap.php src/"
+        "test:syntax": "parallel-lint bootstrap.php src/ tests/"
     }
 }
