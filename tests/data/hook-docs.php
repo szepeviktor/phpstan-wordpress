@@ -21,3 +21,24 @@ $args = apply_filters( 'filter', $one, $two );
  * @param string $three Third parameter.
  */
 $args = apply_filters( 'filter', $one, $two );
+
+/**
+ * @param string|int $one
+ */
+function too_narrow_param( $one ) {
+    /**
+     * This param tag is too narrow.
+     *
+     * @param string $one First parameter.
+     */
+    $args = apply_filters( 'filter', $one );
+}
+
+function wide_param( string $one ) {
+    /**
+     * This param tag is wider than the variable, which is fine.
+     *
+     * @param string|int $one First parameter.
+     */
+    $args = apply_filters( 'filter', $one );
+}
