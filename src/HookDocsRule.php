@@ -106,7 +106,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
 
                 $message = sprintf(
-                    '@param %1$s does not accept actual type of parameter $%2$s: %3$s',
+                    '@param %1$s $%2$s does not accept actual type of parameter: %3$s',
                     $paramTagType->describe($paramTagVerbosityLevel),
                     $paramName,
                     $paramType->describe($paramVerbosityLevel)

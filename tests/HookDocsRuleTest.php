@@ -48,11 +48,11 @@ class HookDocsRuleTest extends RuleTestCase
                     23,
                 ],
                 [
-                    '@param string does not accept actual type of parameter $one: int|string',
+                    '@param string $one does not accept actual type of parameter: int|string',
                     34,
                 ],
                 [
-                    '@param string does not accept actual type of parameter $one: int',
+                    '@param string $one does not accept actual type of parameter: int',
                     43,
                 ],
             ]
