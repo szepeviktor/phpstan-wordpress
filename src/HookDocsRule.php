@@ -23,9 +23,9 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 {
     private const SUPPORTED_FUNCTIONS = [
         'apply_filters',
-        'apply_filters_deprecated',
+        'apply_filters_ref_array',
         'do_action',
-        'do_action_deprecated',
+        'do_action_ref_array',
     ];
 
     /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
