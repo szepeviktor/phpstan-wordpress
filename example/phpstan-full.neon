@@ -33,8 +33,8 @@ parameters:
         #- '#^Function wp_sprintf invoked with [23456] parameters, 1 required\.$#'
         #- '#^Function add_post_type_support invoked with [345] parameters, 2 required\.$#'
         #- '#^Function ((get|add)_theme_support|current_theme_supports) invoked with [2345] parameters, 1 required\.$#'
-        # https://core.trac.wordpress.org/ticket/43304
-        - '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
+        # Fixed in WordPress 5.2 - https://core.trac.wordpress.org/ticket/43304
+        #- '/^Parameter #2 \$deprecated of function load_plugin_textdomain expects string, false given\.$/'
         # WP-CLI accepts a class name as callable
         - '/^Parameter #2 \$callable of static method WP_CLI::add_command\(\) expects callable\(\): mixed, \S+ given\.$/'
         # Please consider commenting ignores: issue URL or reason for ignoring
