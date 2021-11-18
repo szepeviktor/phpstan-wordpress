@@ -52,9 +52,13 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
-        $name = $node->name->toString();
+        $name = $node->name;
 
-        if (!in_array($name, self::SUPPORTED_FUNCTIONS, true)) {
+        if (!($name instanceof \PhpParser\Node\Name)) {
+            return [];
+        }
+
+        if (!in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
             return [];
         }
 
