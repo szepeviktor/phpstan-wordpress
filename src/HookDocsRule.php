@@ -127,7 +127,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $errors[] = RuleErrorBuilder::message($message)->build();
             }
 
-            $i++;
+            $i += 1;
         }
 
         return $errors;

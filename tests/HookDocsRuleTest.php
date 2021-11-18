@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use PHPStan\Rules\RuleLevelHelper;
-use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\FileTypeMapper;
 use SzepeViktor\PHPStan\WordPress\HookDocsRule;
 
 /**
- * @extends RuleTestCase<HookDocsRule>
+ * @extends \PHPStan\Testing\RuleTestCase<\SzepeViktor\PHPStan\WordPress\HookDocsRule>
  */
-class HookDocsRuleTest extends RuleTestCase
+class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
 {
     protected function getRule(): \PHPStan\Rules\Rule
     {
-        /** @var FileTypeMapper */
+        /** @var \PHPStan\Type\FileTypeMapper */
         $fileTypeMapper = self::getContainer()->getByType(FileTypeMapper::class);
 
-        /** @var RuleLevelHelper */
+        /** @var \PHPStan\Rules\RuleLevelHelper */
         $ruleLevelHelper = self::getContainer()->getByType(RuleLevelHelper::class);
 
         // getRule() method needs to return an instance of the tested rule
@@ -36,7 +35,7 @@ class HookDocsRuleTest extends RuleTestCase
         // each error consists of the asserted error message, and the asserted error file line
         $this->analyse(
             [
-                __DIR__ . '/data/hook-docs.php'
+                __DIR__ . '/data/hook-docs.php',
             ],
             [
                 [
