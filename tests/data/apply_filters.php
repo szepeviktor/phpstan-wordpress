@@ -169,3 +169,21 @@ assertType('123|string', $slug);
 /** This filter is documented in foo.php */
 $value = apply_filters('foo', 123);
 assertType('mixed', $value);
+
+/**
+ * Return type for `apply_filters_ref_array()`.
+ *
+ * @param string $foo Hello.
+ * @param int    $bar World.
+ */
+$value = apply_filters_ref_array('foo', ['Hello',123]);
+assertType('string', $value);
+
+/**
+ * Return type for `apply_filters_deprecated()`.
+ *
+ * @param string $foo Hello.
+ * @param bool   $bar World.
+ */
+$value = apply_filters_deprecated('foo', 'Hello', true);
+assertType('string', $value);
