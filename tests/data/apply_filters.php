@@ -176,7 +176,7 @@ assertType('mixed', $value);
  * @param string $foo Hello.
  * @param int    $bar World.
  */
-$value = apply_filters_ref_array('foo', ['Hello',123]);
+$value = apply_filters_ref_array('foo', ['Hello', 123]);
 assertType('string', $value);
 
 /**
