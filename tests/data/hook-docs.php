@@ -25,7 +25,7 @@ $args = apply_filters( 'filter', $one, $two );
 /**
  * @param string|int $one
  */
-function too_narrow_param( $one ) {
+function too_narrow_param_type( $one ) {
     /**
      * This param tag is too narrow.
      *
@@ -34,7 +34,16 @@ function too_narrow_param( $one ) {
     $args = apply_filters( 'filter', $one );
 }
 
-function wide_param( string $one ) {
+function different_param_type( int $one ) {
+    /**
+     * This param tag does not support int.
+     *
+     * @param string $one First parameter.
+     */
+    $args = apply_filters( 'filter', $one );
+}
+
+function wide_param_type( string $one ) {
     /**
      * This param tag is wider than the variable, which is fine.
      *
