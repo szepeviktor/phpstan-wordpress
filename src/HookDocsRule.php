@@ -72,6 +72,10 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $numberOfParams = count($node->args) - 1;
         $numberOfParamTags = count($paramTags);
 
+        if ($numberOfParamTags === 0) {
+            return [];
+        }
+
         // Incorrect number of `@param` tags.
         if ($numberOfParams !== $numberOfParamTags) {
             $message = sprintf(
