@@ -43,6 +43,15 @@ function different_param_type( int $one ) {
     $args = apply_filters( 'filter', $one );
 }
 
+function constant_param_type() {
+    /**
+     * This param tag accept a constant string, which is fine.
+     *
+     * @param string $one First parameter.
+     */
+    $args = apply_filters( 'filter', 'Hello, World' );
+}
+
 function wide_param_type( string $one ) {
     /**
      * This param tag is wider than the variable, which is fine.
