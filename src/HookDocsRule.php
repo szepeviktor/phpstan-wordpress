@@ -80,6 +80,18 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $numberOfParamTags
             );
 
+            if ($numberOfParams - 1 === $numberOfParamTags) {
+                foreach ($node->args as $param) {
+                    if ($param->value->name === 'this') {
+                        // PHPStan does not detect param tags named `$this`, it skips the tag.
+                        // We can indirectly detect this by checking the actual parameter name,
+                        // and if one of them is `$this` assume that's the problem.
+                        $message = '@param tag must not be named $this. Choose a descriptive alias.';
+                        break;
+                    }
+                }
+            }
+
             // If the number of param tags doesn't match the number of
             // parameters, bail out early with an error. There's no point
             // trying to reconcile param tags in this situation.

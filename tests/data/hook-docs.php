@@ -60,3 +60,11 @@ function wide_param_type( string $one ) {
      */
     $args = apply_filters( 'filter', $one );
 }
+
+/**
+ * This param tag is named `$this`, which is not valid and not supported by PHPStan or PHPDoc.
+ *
+ * @param stdClass $this Instance.
+ * @param array    $args Args
+ */
+do_action( 'action', $this, $args );
