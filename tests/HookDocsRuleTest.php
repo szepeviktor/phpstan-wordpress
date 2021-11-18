@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\FileTypeMapper;
 use SzepeViktor\PHPStan\WordPress\HookDocsRule;
@@ -18,8 +19,14 @@ class HookDocsRuleTest extends RuleTestCase
         /** @var FileTypeMapper */
         $fileTypeMapper = self::getContainer()->getByType(FileTypeMapper::class);
 
+        /** @var RuleLevelHelper */
+        $ruleLevelHelper = self::getContainer()->getByType(RuleLevelHelper::class);
+
         // getRule() method needs to return an instance of the tested rule
-        return new HookDocsRule($fileTypeMapper);
+        return new HookDocsRule(
+            $fileTypeMapper,
+            $ruleLevelHelper
+        );
     }
 
     public function testRule(): void
@@ -39,6 +46,10 @@ class HookDocsRuleTest extends RuleTestCase
                 [
                     'Expected 2 @param tags, found 3',
                     23,
+                ],
+                [
+                    '@param string does not accept actual type of parameter $one: int|string',
+                    34,
                 ],
             ]
         );

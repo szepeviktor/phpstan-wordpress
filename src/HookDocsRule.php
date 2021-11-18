@@ -12,7 +12,9 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\FileTypeMapper;
+use PHPStan\Type\VerbosityLevel;
 
 /**
  * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\FuncCall>
@@ -29,9 +31,15 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
     protected $hookDocBlock;
 
-    public function __construct(FileTypeMapper $fileTypeMapper)
-    {
+    /** @var \PHPStan\Rules\RuleLevelHelper */
+    protected $ruleLevelHelper;
+
+    public function __construct(
+        FileTypeMapper $fileTypeMapper,
+        RuleLevelHelper $ruleLevelHelper
+    ) {
         $this->hookDocBlock = new HookDocBlock($fileTypeMapper);
+        $this->ruleLevelHelper = $ruleLevelHelper;
     }
 
     public function getNodeType(): string
@@ -71,11 +79,45 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $numberOfParams,
                 $numberOfParamTags
             );
+
+            // If the number of param tags doesn't match the number of
+            // parameters, bail out early with an error. There's no point
+            // trying to reconcile param tags in this situation.
             return [
                 RuleErrorBuilder::message($message)->build(),
             ];
         }
 
-        return [];
+        $errors = [];
+        $i = 1;
+
+        foreach ($paramTags as $paramName => $paramTag) {
+            $param = $node->args[$i];
+            $paramTagType = $paramTag->getType();
+            $paramType = $scope->getType($param->value);
+            $accepted = $this->ruleLevelHelper->accepts(
+                $paramTagType,
+                $paramType,
+                $scope->isDeclareStrictTypes()
+            );
+
+            if (! $accepted) {
+                $paramTagVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramTagType);
+                $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
+
+                $message = sprintf(
+                    '@param %1$s does not accept actual type of parameter $%2$s: %3$s',
+                    $paramTagType->describe($paramTagVerbosityLevel),
+                    $paramName,
+                    $paramType->describe($paramVerbosityLevel)
+                );
+
+                $errors[] = RuleErrorBuilder::message($message)->build();
+            }
+
+            $i++;
+        }
+
+        return $errors;
     }
 }
