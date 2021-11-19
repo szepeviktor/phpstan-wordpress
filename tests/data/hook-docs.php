@@ -103,3 +103,8 @@ function incorrect_inherited_param_type( \ParentTestClass $one ) {
      */
     $args = apply_filters( 'filter', $one );
 }
+
+/**
+ * Variable functions can cause parse errors.
+ */
+$my_function();
