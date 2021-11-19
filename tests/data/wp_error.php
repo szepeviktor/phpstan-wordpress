@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use function PHPStan\Testing\assertType;
+use function wp_clear_scheduled_hook;
 use function wp_insert_category;
 use function wp_insert_link;
 use function wp_reschedule_event;
@@ -146,3 +147,20 @@ assertType('WP_Error|true', $value);
 $value = wp_unschedule_event(1, 'hook', [], $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
 
+/**
+ * wp_clear_scheduled_hook()
+ */
+$value = wp_clear_scheduled_hook('hook');
+assertType('int|false', $value);
+
+$value = wp_clear_scheduled_hook('hook', []);
+assertType('int|false', $value);
+
+$value = wp_clear_scheduled_hook('hook', [], false);
+assertType('int|false', $value);
+
+$value = wp_clear_scheduled_hook('hook', [], true);
+assertType('int|WP_Error', $value);
+
+$value = wp_clear_scheduled_hook('hook', [], $_GET['wp_error']);
+assertType('int|WP_Error|false', $value);
