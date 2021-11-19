@@ -25,16 +25,17 @@ class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
 
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
-        $argsCount = count($functionCall->args);
+        $args = $functionCall->getArgs();
+        $argsCount = count($args);
         if ($argsCount === 0) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
-                $functionCall->args,
+                $args,
                 $functionReflection->getVariants()
             )->getReturnType();
         }
 
-        $dataArg = $functionCall->args[0]->value;
+        $dataArg = $args[0]->value;
         $dataArgType = $scope->getType($dataArg);
         if ($dataArgType instanceof ArrayType) {
             $keyType = $dataArgType->getIterableKeyType();

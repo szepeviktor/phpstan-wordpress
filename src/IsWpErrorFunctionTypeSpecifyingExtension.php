@@ -35,7 +35,9 @@ class IsWpErrorFunctionTypeSpecifyingExtension implements \PHPStan\Type\Function
             throw new \PHPStan\ShouldNotHappenException();
         }
 
-        return $this->typeSpecifier->create($node->args[0]->value, new ObjectType('WP_Error'), $context);
+        $args = $node->getArgs();
+
+        return $this->typeSpecifier->create($args[0]->value, new ObjectType('WP_Error'), $context);
     }
 
     public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void

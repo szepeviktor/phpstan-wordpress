@@ -31,12 +31,14 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $args = $functionCall->getArgs();
+
         // Called without arguments
-        if (count($functionCall->args) === 0) {
+        if (count($args) === 0) {
             return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
         }
 
-        $argumentType = $scope->getType($functionCall->args[0]->value);
+        $argumentType = $scope->getType($args[0]->value);
 
         // Called with an array argument
         if ($argumentType instanceof ConstantArrayType) {
