@@ -33,18 +33,20 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $args = $functionCall->getArgs();
+
         // Called without second $output argument
-        if (count($functionCall->args) <= 1) {
+        if (count($args) <= 1) {
             return new ArrayType(new IntegerType(), new StringType());
         }
 
-        $argumentType = $scope->getType($functionCall->args[1]->value);
+        $argumentType = $scope->getType($args[1]->value);
 
         // When called with an $output that isn't a constant string, return default return type
         if (! $argumentType instanceof ConstantStringType) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
-                $functionCall->args,
+                $args,
                 $functionReflection->getVariants()
             )->getReturnType();
         }
