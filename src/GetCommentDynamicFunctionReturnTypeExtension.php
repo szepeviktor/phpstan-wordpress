@@ -34,22 +34,23 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $output = 'OBJECT';
+        $args = $functionCall->getArgs();
 
-        if (count($functionCall->args) >= 2) {
-            $argumentType = $scope->getType($functionCall->args[1]->value);
+        if (count($args) >= 2) {
+            $argumentType = $scope->getType($args[1]->value);
 
             // When called with an $output that isn't a constant string, return default return type
             if (! $argumentType instanceof ConstantStringType) {
                 return ParametersAcceptorSelector::selectFromArgs(
                     $scope,
-                    $functionCall->args,
+                    $args,
                     $functionReflection->getVariants()
                 )->getReturnType();
             }
         }
 
-        if (count($functionCall->args) >= 2 && $functionCall->args[1]->value instanceof ConstFetch) {
-            $output = $functionCall->args[1]->value->name->getLast();
+        if (count($args) >= 2 && $args[1]->value instanceof ConstFetch) {
+            $output = $args[1]->value->name->getLast();
         }
         if ($output === 'ARRAY_A') {
             return TypeCombinator::union(new ArrayType(new StringType(), new MixedType()), new NullType());

@@ -39,12 +39,14 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
             $namesReturnType
         );
 
+        $args = $functionCall->getArgs();
         // Called without second $output arguments
-        if (count($functionCall->args) <= 1) {
+
+        if (count($args) <= 1) {
             return $namesReturnType;
         }
 
-        $argumentType = $scope->getType($functionCall->args[1]->value);
+        $argumentType = $scope->getType($args[1]->value);
 
         // When called with a non-string $output, return default return type
         if (! $argumentType instanceof ConstantStringType) {
