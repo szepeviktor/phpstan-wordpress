@@ -44,26 +44,26 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $name = $functionReflection->getName();
-        $func = self::SUPPORTED_FUNCTIONS[$name] ?? null;
+        $functionTypes = self::SUPPORTED_FUNCTIONS[$name] ?? null;
 
-        if ($func === null) {
+        if ($functionTypes === null) {
             throw new \PHPStan\ShouldNotHappenException(
                 sprintf(
-                    'Could not detect return types for function %s',
+                    'Could not detect return types for function %s()',
                     $name
                 )
             );
         }
 
-        $argumentType = new ConstantBooleanType(false);
-        $arg = $functionCall->args[$func[0]] ?? null;
+        $wpErrorArgumentType = new ConstantBooleanType(false);
+        $wpErrorArgument = $functionCall->args[$functionTypes[0]] ?? null;
 
-        if ($arg !== null) {
-            $argumentType = $scope->getType($arg->value);
+        if ($wpErrorArgument !== null) {
+            $wpErrorArgumentType = $scope->getType($wpErrorArgument->value);
         }
 
         // When called with a $wp_error parameter that isn't a constant boolean, return default type
-        if (!( $argumentType instanceof ConstantBooleanType)) {
+        if (!( $wpErrorArgumentType instanceof ConstantBooleanType)) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
                 $functionCall->args,
@@ -71,10 +71,10 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             )->getReturnType();
         }
 
-        $type = $func[1];
+        $type = $functionTypes[1];
 
-        if ($argumentType->getValue()) {
-            $type = $func[2];
+        if (true === $wpErrorArgumentType->getValue()) {
+            $type = $functionTypes[2];
         }
 
         return $this->typeStringResolver->resolve($type);
