@@ -24,26 +24,26 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     private const SUPPORTED_FUNCTIONS = [
         'wp_insert_link' => [
             'arg' => 1,
-            'true' => 'int',
-            'false' => 'int|WP_Error',
+            'false' => 'int',
+            'true' => 'int|WP_Error',
             'maybe' => 'int|WP_Error',
         ],
         'wp_insert_category' => [
             'arg' => 1,
-            'true' => 'int',
-            'false' => 'int|WP_Error',
+            'false' => 'int',
+            'true' => 'int|WP_Error',
             'maybe' => 'int|WP_Error',
         ],
         'wp_set_comment_status' => [
             'arg' => 2,
-            'true' => 'bool',
-            'false' => 'true|WP_Error',
+            'false' => 'bool',
+            'true' => 'true|WP_Error',
             'maybe' => 'bool|WP_Error',
         ],
         'wp_update_comment' => [
             'arg' => 1,
-            'true' => '0|1|false',
-            'false' => '0|1|WP_Error',
+            'false' => '0|1|false',
+            'true' => '0|1|WP_Error',
             'maybe' => '0|1|false|WP_Error',
         ],
     ];
@@ -82,11 +82,11 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             $wpErrorArgumentType = $scope->getType($wpErrorArgument->value);
         }
 
-        $type = $functionTypes['true'];
+        $type = $functionTypes['false'];
 
         if ($wpErrorArgumentType instanceof ConstantBooleanType) {
             if (true === $wpErrorArgumentType->getValue()) {
-                $type = $functionTypes['false'];
+                $type = $functionTypes['true'];
             }
         } else {
             // When called with a $wp_error parameter that isn't a constant boolean, return default type
