@@ -8,6 +8,7 @@ use function PHPStan\Testing\assertType;
 use function wp_insert_category;
 use function wp_insert_link;
 use function wp_set_comment_status;
+use function wp_update_comment;
 
 /**
  * wp_insert_link()
@@ -53,3 +54,18 @@ assertType('WP_Error|true', $value);
 
 $value = wp_set_comment_status(1,'spam',$_GET['wp_error']);
 assertType('bool|WP_Error', $value);
+
+/**
+ * wp_update_comment()
+ */
+$value = wp_update_comment([]);
+assertType('0|1|false', $value);
+
+$value = wp_update_comment([],false);
+assertType('0|1|false', $value);
+
+$value = wp_update_comment([],true);
+assertType('0|1|WP_Error', $value);
+
+$value = wp_update_comment([],$_GET['wp_error']);
+assertType('0|1|WP_Error|false', $value);
