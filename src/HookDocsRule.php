@@ -94,7 +94,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                         // PHPStan does not detect param tags named `$this`, it skips the tag.
                         // We can indirectly detect this by checking the actual parameter name,
                         // and if one of them is `$this` assume that's the problem.
-                        $message = '@param tag must not be named $this. Choose a descriptive alias. For example $instance.';
+                        $message = '@param tag must not be named $this. Choose a descriptive alias, for example $instance.';
                         break;
                     }
                 }

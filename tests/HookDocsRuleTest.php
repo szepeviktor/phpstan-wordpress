@@ -55,7 +55,7 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
                     43,
                 ],
                 [
-                    '@param tag must not be named $this. Choose a descriptive alias.',
+                    '@param tag must not be named $this. Choose a descriptive alias, for example $instance',
                     70,
                 ],
                 [
