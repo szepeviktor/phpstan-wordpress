@@ -7,6 +7,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use function PHPStan\Testing\assertType;
 use function wp_insert_category;
 use function wp_insert_link;
+use function wp_reschedule_event;
 use function wp_schedule_event;
 use function wp_schedule_single_event;
 use function wp_set_comment_status;
@@ -106,4 +107,22 @@ $value = wp_schedule_event(1, 'daily', 'hook', [], true);
 assertType('WP_Error|true', $value);
 
 $value = wp_schedule_event(1, 'daily', 'hook', [], $_GET['wp_error']);
+assertType('bool|WP_Error', $value);
+
+/**
+ * wp_reschedule_event()
+ */
+$value = wp_reschedule_event(1, 'daily', 'hook');
+assertType('bool', $value);
+
+$value = wp_reschedule_event(1, 'daily', 'hook', []);
+assertType('bool', $value);
+
+$value = wp_reschedule_event(1, 'daily', 'hook', [], false);
+assertType('bool', $value);
+
+$value = wp_reschedule_event(1, 'daily', 'hook', [], true);
+assertType('WP_Error|true', $value);
+
+$value = wp_reschedule_event(1, 'daily', 'hook', [], $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
