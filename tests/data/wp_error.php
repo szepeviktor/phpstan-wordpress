@@ -23,31 +23,31 @@ use function wp_update_post;
  * wp_insert_link()
  */
 $value = wp_insert_link([]);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_link([], false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_link([], true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_link([], $_GET['wp_error']);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 /**
  * wp_insert_category()
  */
 $value = wp_insert_category([]);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_category([], false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_category([], true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_category([], $_GET['wp_error']);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 /**
  * wp_set_comment_status()
@@ -155,34 +155,34 @@ assertType('bool|WP_Error', $value);
  * wp_clear_scheduled_hook()
  */
 $value = wp_clear_scheduled_hook('hook');
-assertType('int|false', $value);
+assertType('int<0, max>|false', $value);
 
 $value = wp_clear_scheduled_hook('hook', []);
-assertType('int|false', $value);
+assertType('int<0, max>|false', $value);
 
 $value = wp_clear_scheduled_hook('hook', [], false);
-assertType('int|false', $value);
+assertType('int<0, max>|false', $value);
 
 $value = wp_clear_scheduled_hook('hook', [], true);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_clear_scheduled_hook('hook', [], $_GET['wp_error']);
-assertType('int|WP_Error|false', $value);
+assertType('int<0, max>|WP_Error|false', $value);
 
 /**
  * wp_unschedule_hook()
  */
 $value = wp_unschedule_hook('hook');
-assertType('int|false', $value);
+assertType('int<0, max>|false', $value);
 
 $value = wp_unschedule_hook('hook', false);
-assertType('int|false', $value);
+assertType('int<0, max>|false', $value);
 
 $value = wp_unschedule_hook('hook', true);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_unschedule_hook('hook', $_GET['wp_error']);
-assertType('int|WP_Error|false', $value);
+assertType('int<0, max>|WP_Error|false', $value);
 
 /**
  * _set_cron_array()
@@ -203,106 +203,106 @@ assertType('bool|WP_Error', $value);
  * wp_insert_post()
  */
 $value = wp_insert_post([]);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_post([], false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_post([], false, true);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_post([], false, false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_post([], true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_post([], true, true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_post([], true, false);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_post([], $_GET['wp_error']);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_insert_post([], $_GET['wp_error'], true);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_insert_post([], $_GET['wp_error'], false);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 /**
  * wp_update_post()
  */
 $value = wp_update_post([]);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_update_post([], false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_update_post([], false, true);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_update_post([], false, false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_update_post([], true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_update_post([], true, true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_update_post([], true, false);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_update_post([], $_GET['wp_error']);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_update_post([], $_GET['wp_error'], true);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_update_post([], $_GET['wp_error'], false);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 /**
  * wp_insert_attachment()
  */
 $value = wp_insert_attachment([]);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], true);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], true, 1);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], true, 1, false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], true, 1, false, false);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], true, 1, false, true);
-assertType('int', $value);
+assertType('int<0, max>', $value);
 
 $value = wp_insert_attachment([], false, 0, true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_attachment([], false, 0, true, true);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_attachment([], false, 0, true, false);
-assertType('int|WP_Error', $value);
+assertType('int<1, max>|WP_Error', $value);
 
 $value = wp_insert_attachment([], true, 1, $_GET['wp_error']);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_insert_attachment([], true, 1, $_GET['wp_error'], true);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);
 
 $value = wp_insert_attachment([], true, 1, $_GET['wp_error'], false);
-assertType('int|WP_Error', $value);
+assertType('int<0, max>|WP_Error', $value);

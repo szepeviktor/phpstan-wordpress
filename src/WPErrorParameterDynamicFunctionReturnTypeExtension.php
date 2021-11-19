@@ -20,15 +20,15 @@ class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
     private const SUPPORTED_FUNCTIONS = [
         'wp_insert_link' => [
             'arg' => 1,
-            'false' => 'int',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|WP_Error',
+            'false' => '0|positive-int',
+            'true' => 'positive-int|WP_Error',
+            'maybe' => '0|positive-int|WP_Error',
         ],
         'wp_insert_category' => [
             'arg' => 1,
-            'false' => 'int',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|WP_Error',
+            'false' => '0|positive-int',
+            'true' => 'positive-int|WP_Error',
+            'maybe' => '0|positive-int|WP_Error',
         ],
         'wp_set_comment_status' => [
             'arg' => 2,
@@ -68,15 +68,15 @@ class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
         ],
         'wp_clear_scheduled_hook' => [
             'arg' => 2,
-            'false' => 'int|false',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|false|WP_Error',
+            'false' => '0|positive-int|false',
+            'true' => '0|positive-int|WP_Error',
+            'maybe' => '0|positive-int|false|WP_Error',
         ],
         'wp_unschedule_hook' => [
             'arg' => 1,
-            'false' => 'int|false',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|false|WP_Error',
+            'false' => '0|positive-int|false',
+            'true' => '0|positive-int|WP_Error',
+            'maybe' => '0|positive-int|false|WP_Error',
         ],
         '_set_cron_array' => [
             'arg' => 1,
@@ -86,21 +86,21 @@ class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
         ],
         'wp_insert_post' => [
             'arg' => 1,
-            'false' => 'int',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|WP_Error',
+            'false' => '0|positive-int',
+            'true' => 'positive-int|WP_Error',
+            'maybe' => '0|positive-int|WP_Error',
         ],
         'wp_update_post' => [
             'arg' => 1,
-            'false' => 'int',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|WP_Error',
+            'false' => '0|positive-int',
+            'true' => 'positive-int|WP_Error',
+            'maybe' => '0|positive-int|WP_Error',
         ],
         'wp_insert_attachment' => [
             'arg' => 3,
-            'false' => 'int',
-            'true' => 'int|WP_Error',
-            'maybe' => 'int|WP_Error',
+            'false' => '0|positive-int',
+            'true' => 'positive-int|WP_Error',
+            'maybe' => '0|positive-int|WP_Error',
         ],
     ];
 
