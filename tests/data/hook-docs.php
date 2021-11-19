@@ -71,3 +71,8 @@ do_action( 'action', $this, $args );
 
 /** This filter is documented in wp-includes/pluggable.php */
 $cookie_life = apply_filters( 'auth_cookie_expiration', 172800, get_current_user_id(), false );
+
+/**
+ * Docblock with no param tags, which is fine.
+ */
+$args = apply_filters( 'filter', $one, $two );
