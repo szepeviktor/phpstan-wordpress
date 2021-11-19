@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Test data for WPErrorParameterDynamicFunctionReturnTypeExtension.
+ */
+
 declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
