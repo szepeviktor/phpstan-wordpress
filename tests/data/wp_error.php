@@ -13,6 +13,7 @@ use function wp_schedule_event;
 use function wp_schedule_single_event;
 use function wp_set_comment_status;
 use function wp_unschedule_event;
+use function wp_unschedule_hook;
 use function wp_update_comment;
 
 /**
@@ -163,4 +164,19 @@ $value = wp_clear_scheduled_hook('hook', [], true);
 assertType('int|WP_Error', $value);
 
 $value = wp_clear_scheduled_hook('hook', [], $_GET['wp_error']);
+assertType('int|WP_Error|false', $value);
+
+/**
+ * wp_unschedule_hook()
+ */
+$value = wp_unschedule_hook('hook');
+assertType('int|false', $value);
+
+$value = wp_unschedule_hook('hook', false);
+assertType('int|false', $value);
+
+$value = wp_unschedule_hook('hook', true);
+assertType('int|WP_Error', $value);
+
+$value = wp_unschedule_hook('hook', $_GET['wp_error']);
 assertType('int|WP_Error|false', $value);
