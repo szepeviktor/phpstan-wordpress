@@ -4,8 +4,6 @@
 	<file>src/</file>
 	<file>tests/</file>
 
-	<exclude-pattern>*/tests/data/*</exclude-pattern>
-
 	<rule ref="PSR12NeutronRuleset">
 		<exclude name="Generic.Files.LineLength"/>
 		<exclude name="PEAR.Commenting.ClassComment"/>
