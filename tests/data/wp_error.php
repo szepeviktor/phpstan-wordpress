@@ -8,6 +8,7 @@ use function PHPStan\Testing\assertType;
 use function wp_clear_scheduled_hook;
 use function wp_insert_category;
 use function wp_insert_link;
+use function wp_insert_post;
 use function wp_reschedule_event;
 use function wp_schedule_event;
 use function wp_schedule_single_event;
@@ -195,3 +196,36 @@ assertType('WP_Error|true', $value);
 
 $value = _set_cron_array([], $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
+
+/**
+ * wp_insert_post()
+ */
+$value = wp_insert_post([]);
+assertType('int', $value);
+
+$value = wp_insert_post([], false);
+assertType('int', $value);
+
+$value = wp_insert_post([], false, true);
+assertType('int', $value);
+
+$value = wp_insert_post([], false, false);
+assertType('int', $value);
+
+$value = wp_insert_post([], true);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_post([], true, true);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_post([], true, false);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_post([], $_GET['wp_error']);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_post([], $_GET['wp_error'], true);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_post([], $_GET['wp_error'], false);
+assertType('int|WP_Error', $value);
