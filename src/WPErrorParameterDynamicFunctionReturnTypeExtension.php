@@ -96,6 +96,12 @@ class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
             'true' => 'int|WP_Error',
             'maybe' => 'int|WP_Error',
         ],
+        'wp_insert_attachment' => [
+            'arg' => 3,
+            'false' => 'int',
+            'true' => 'int|WP_Error',
+            'maybe' => 'int|WP_Error',
+        ],
     ];
 
     /** @var \PHPStan\PhpDoc\TypeStringResolver */

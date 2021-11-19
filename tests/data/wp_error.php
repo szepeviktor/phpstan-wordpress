@@ -6,6 +6,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use function PHPStan\Testing\assertType;
 use function wp_clear_scheduled_hook;
+use function wp_insert_attachment;
 use function wp_insert_category;
 use function wp_insert_link;
 use function wp_insert_post;
@@ -262,4 +263,46 @@ $value = wp_update_post([], $_GET['wp_error'], true);
 assertType('int|WP_Error', $value);
 
 $value = wp_update_post([], $_GET['wp_error'], false);
+assertType('int|WP_Error', $value);
+
+/**
+ * wp_insert_attachment()
+ */
+$value = wp_insert_attachment([]);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], true);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], false);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], true, 1);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], true, 1, false);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], true, 1, false, false);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], true, 1, false, true);
+assertType('int', $value);
+
+$value = wp_insert_attachment([], false, 0, true);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_attachment([], false, 0, true, true);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_attachment([], false, 0, true, false);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_attachment([], true, 1, $_GET['wp_error']);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_attachment([], true, 1, $_GET['wp_error'], true);
+assertType('int|WP_Error', $value);
+
+$value = wp_insert_attachment([], true, 1, $_GET['wp_error'], false);
 assertType('int|WP_Error', $value);
