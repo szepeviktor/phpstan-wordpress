@@ -83,7 +83,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         // Incorrect number of `@param` tags.
         if ($numberOfParams !== $numberOfParamTags) {
             $message = sprintf(
-                'Expected %1$d @param tags, found %2$d',
+                'Expected %1$d @param tags, found %2$d.',
                 $numberOfParams,
                 $numberOfParamTags
             );
@@ -125,7 +125,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
 
                 $message = sprintf(
-                    '@param %1$s $%2$s does not accept actual type of parameter: %3$s',
+                    '@param %1$s $%2$s does not accept actual type of parameter: %3$s.',
                     $paramTagType->describe($paramTagVerbosityLevel),
                     $paramName,
                     $paramType->describe($paramVerbosityLevel)

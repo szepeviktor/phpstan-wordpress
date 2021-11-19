@@ -39,27 +39,27 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
             ],
             [
                 [
-                    'Expected 2 @param tags, found 1',
+                    'Expected 2 @param tags, found 1.',
                     14,
                 ],
                 [
-                    'Expected 2 @param tags, found 3',
+                    'Expected 2 @param tags, found 3.',
                     23,
                 ],
                 [
-                    '@param string $one does not accept actual type of parameter: int|string',
+                    '@param string $one does not accept actual type of parameter: int|string.',
                     34,
                 ],
                 [
-                    '@param string $one does not accept actual type of parameter: int',
+                    '@param string $one does not accept actual type of parameter: int.',
                     43,
                 ],
                 [
-                    '@param tag must not be named $this. Choose a descriptive alias, for example $instance',
+                    '@param tag must not be named $this. Choose a descriptive alias, for example $instance.',
                     70,
                 ],
                 [
-                    '@param ChildTestClass $one does not accept actual type of parameter: ParentTestClass',
+                    '@param ChildTestClass $one does not accept actual type of parameter: ParentTestClass.',
                     104,
                 ],
             ]
