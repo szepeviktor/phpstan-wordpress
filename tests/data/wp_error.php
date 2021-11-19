@@ -18,13 +18,13 @@ use function wp_update_comment;
 $value = wp_insert_link([]);
 assertType('int', $value);
 
-$value = wp_insert_link([],false);
+$value = wp_insert_link([], false);
 assertType('int', $value);
 
-$value = wp_insert_link([],true);
+$value = wp_insert_link([], true);
 assertType('int|WP_Error', $value);
 
-$value = wp_insert_link([],$_GET['wp_error']);
+$value = wp_insert_link([], $_GET['wp_error']);
 assertType('int|WP_Error', $value);
 
 /**
@@ -33,28 +33,28 @@ assertType('int|WP_Error', $value);
 $value = wp_insert_category([]);
 assertType('int', $value);
 
-$value = wp_insert_category([],false);
+$value = wp_insert_category([], false);
 assertType('int', $value);
 
-$value = wp_insert_category([],true);
+$value = wp_insert_category([], true);
 assertType('int|WP_Error', $value);
 
-$value = wp_insert_category([],$_GET['wp_error']);
+$value = wp_insert_category([], $_GET['wp_error']);
 assertType('int|WP_Error', $value);
 
 /**
  * wp_set_comment_status()
  */
-$value = wp_set_comment_status(1,'spam');
+$value = wp_set_comment_status(1, 'spam');
 assertType('bool', $value);
 
-$value = wp_set_comment_status(1,'spam',false);
+$value = wp_set_comment_status(1, 'spam', false);
 assertType('bool', $value);
 
-$value = wp_set_comment_status(1,'spam',true);
+$value = wp_set_comment_status(1, 'spam', true);
 assertType('WP_Error|true', $value);
 
-$value = wp_set_comment_status(1,'spam',$_GET['wp_error']);
+$value = wp_set_comment_status(1, 'spam', $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
 
 /**
@@ -63,47 +63,47 @@ assertType('bool|WP_Error', $value);
 $value = wp_update_comment([]);
 assertType('0|1|false', $value);
 
-$value = wp_update_comment([],false);
+$value = wp_update_comment([], false);
 assertType('0|1|false', $value);
 
-$value = wp_update_comment([],true);
+$value = wp_update_comment([], true);
 assertType('0|1|WP_Error', $value);
 
-$value = wp_update_comment([],$_GET['wp_error']);
+$value = wp_update_comment([], $_GET['wp_error']);
 assertType('0|1|WP_Error|false', $value);
 
 /**
  * wp_schedule_single_event()
  */
-$value = wp_schedule_single_event(1,'hook');
+$value = wp_schedule_single_event(1, 'hook');
 assertType('bool', $value);
 
-$value = wp_schedule_single_event(1,'hook',[]);
+$value = wp_schedule_single_event(1, 'hook', []);
 assertType('bool', $value);
 
-$value = wp_schedule_single_event(1,'hook',[],false);
+$value = wp_schedule_single_event(1, 'hook', [], false);
 assertType('bool', $value);
 
-$value = wp_schedule_single_event(1,'hook',[],true);
+$value = wp_schedule_single_event(1, 'hook', [], true);
 assertType('WP_Error|true', $value);
 
-$value = wp_schedule_single_event(1,'hook',[],$_GET['wp_error']);
+$value = wp_schedule_single_event(1, 'hook', [], $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
 
 /**
  * wp_schedule_event()
  */
-$value = wp_schedule_event(1,'daily','hook');
+$value = wp_schedule_event(1, 'daily', 'hook');
 assertType('bool', $value);
 
-$value = wp_schedule_event(1,'daily','hook',[]);
+$value = wp_schedule_event(1, 'daily', 'hook', []);
 assertType('bool', $value);
 
-$value = wp_schedule_event(1,'daily','hook',[],false);
+$value = wp_schedule_event(1, 'daily', 'hook', [], false);
 assertType('bool', $value);
 
-$value = wp_schedule_event(1,'daily','hook',[],true);
+$value = wp_schedule_event(1, 'daily', 'hook', [], true);
 assertType('WP_Error|true', $value);
 
-$value = wp_schedule_event(1,'daily','hook',[],$_GET['wp_error']);
+$value = wp_schedule_event(1, 'daily', 'hook', [], $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
