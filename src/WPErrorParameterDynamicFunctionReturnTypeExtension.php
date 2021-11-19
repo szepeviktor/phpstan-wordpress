@@ -15,7 +15,7 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Type;
 
-class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
+class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     private const SUPPORTED_FUNCTIONS = [
         'wp_insert_link' => [
