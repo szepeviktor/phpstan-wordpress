@@ -121,6 +121,7 @@ class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
     {
         $name = $functionReflection->getName();
         $functionTypes = self::SUPPORTED_FUNCTIONS[$name] ?? null;
+        $args = $functionCall->getArgs();
 
         if ($functionTypes === null) {
             throw new \PHPStan\ShouldNotHappenException(
@@ -132,7 +133,7 @@ class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
         }
 
         $wpErrorArgumentType = new ConstantBooleanType(false);
-        $wpErrorArgument = $functionCall->args[$functionTypes['arg']] ?? null;
+        $wpErrorArgument = $args[$functionTypes['arg']] ?? null;
 
         if ($wpErrorArgument !== null) {
             $wpErrorArgumentType = $scope->getType($wpErrorArgument->value);
