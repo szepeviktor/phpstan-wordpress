@@ -71,8 +71,8 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         // Fetch the `@param` tags from the docblock.
         $paramTags = $resolvedPhpDoc->getParamTags();
-
-        $numberOfParams = count($node->args) - 1;
+        $nodeArgs = $node->getArgs();
+        $numberOfParams = count($nodeArgs) - 1;
         $numberOfParamTags = count($paramTags);
 
         // A docblock with no param tags is allowed and gets skipped.
@@ -89,7 +89,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             );
 
             if ($numberOfParams - 1 === $numberOfParamTags) {
-                foreach ($node->args as $param) {
+                foreach ($nodeArgs as $param) {
                     if ($param->value->name === 'this') {
                         // PHPStan does not detect param tags named `$this`, it skips the tag.
                         // We can indirectly detect this by checking the actual parameter name,
@@ -113,7 +113,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         foreach ($paramTags as $paramName => $paramTag) {
             $paramTagType = $paramTag->getType();
-            $paramType = $scope->getType($node->args[$i]->value);
+            $paramType = $scope->getType($nodeArgs[$i]->value);
             $accepted = $this->ruleLevelHelper->accepts(
                 $paramTagType,
                 $paramType,
