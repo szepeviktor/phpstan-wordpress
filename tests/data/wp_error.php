@@ -17,7 +17,7 @@ $value = wp_insert_link([],false);
 assertType('int', $value);
 
 $value = wp_insert_link([],true);
-assertType('int|\WP_Error', $value);
+assertType('int|WP_Error', $value);
 
 $value = wp_insert_link([],$_GET['wp_error']);
 assertType('int|\WP_Error', $value);
