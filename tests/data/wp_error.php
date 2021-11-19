@@ -180,3 +180,18 @@ assertType('int|WP_Error', $value);
 
 $value = wp_unschedule_hook('hook', $_GET['wp_error']);
 assertType('int|WP_Error|false', $value);
+
+/**
+ * _set_cron_array()
+ */
+$value = _set_cron_array('hook');
+assertType('bool', $value);
+
+$value = _set_cron_array('hook', false);
+assertType('bool', $value);
+
+$value = _set_cron_array('hook', true);
+assertType('WP_Error|true', $value);
+
+$value = _set_cron_array('hook', $_GET['wp_error']);
+assertType('bool|WP_Error', $value);

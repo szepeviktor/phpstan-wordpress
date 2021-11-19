@@ -78,6 +78,12 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             'true' => 'int|WP_Error',
             'maybe' => 'int|false|WP_Error',
         ],
+        '_set_cron_array' => [
+            'arg' => 1,
+            'false' => 'bool',
+            'true' => 'true|WP_Error',
+            'maybe' => 'bool|WP_Error',
+        ],
     ];
 
     /** @var \PHPStan\PhpDoc\TypeStringResolver */
