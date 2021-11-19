@@ -16,6 +16,7 @@ use function wp_set_comment_status;
 use function wp_unschedule_event;
 use function wp_unschedule_hook;
 use function wp_update_comment;
+use function wp_update_post;
 
 /**
  * wp_insert_link()
@@ -228,4 +229,37 @@ $value = wp_insert_post([], $_GET['wp_error'], true);
 assertType('int|WP_Error', $value);
 
 $value = wp_insert_post([], $_GET['wp_error'], false);
+assertType('int|WP_Error', $value);
+
+/**
+ * wp_update_post()
+ */
+$value = wp_update_post([]);
+assertType('int', $value);
+
+$value = wp_update_post([], false);
+assertType('int', $value);
+
+$value = wp_update_post([], false, true);
+assertType('int', $value);
+
+$value = wp_update_post([], false, false);
+assertType('int', $value);
+
+$value = wp_update_post([], true);
+assertType('int|WP_Error', $value);
+
+$value = wp_update_post([], true, true);
+assertType('int|WP_Error', $value);
+
+$value = wp_update_post([], true, false);
+assertType('int|WP_Error', $value);
+
+$value = wp_update_post([], $_GET['wp_error']);
+assertType('int|WP_Error', $value);
+
+$value = wp_update_post([], $_GET['wp_error'], true);
+assertType('int|WP_Error', $value);
+
+$value = wp_update_post([], $_GET['wp_error'], false);
 assertType('int|WP_Error', $value);
