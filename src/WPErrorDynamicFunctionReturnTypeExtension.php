@@ -19,13 +19,13 @@ use PHPStan\Type\Type;
 class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     /**
-     * @var array<string, array{0:int,1:string,2:string}>
+     * @var array<string, array{0:int,1:string,2:string,3:string}>
      */
     private const SUPPORTED_FUNCTIONS = [
-        'wp_insert_link' => [1, 'int', 'int|\WP_Error'],
-        'wp_insert_category' => [1, 'int', 'int|\WP_Error'],
-        'wp_set_comment_status' => [2, 'bool', 'true|\WP_Error'],
-        'wp_update_comment' => [1, '0|1|false', '0|1|\WP_Error'],
+        'wp_insert_link' => [1, 'int', 'int|WP_Error', 'int|WP_Error'],
+        'wp_insert_category' => [1, 'int', 'int|WP_Error', 'int|WP_Error'],
+        'wp_set_comment_status' => [2, 'bool', 'true|WP_Error', 'bool|WP_Error'],
+        'wp_update_comment' => [1, '0|1|false', '0|1|WP_Error', '0|1|false|WP_Error'],
     ];
 
     /** @var \PHPStan\PhpDoc\TypeStringResolver */
@@ -62,19 +62,15 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             $wpErrorArgumentType = $scope->getType($wpErrorArgument->value);
         }
 
-        // When called with a $wp_error parameter that isn't a constant boolean, return default type
-        if (!( $wpErrorArgumentType instanceof ConstantBooleanType)) {
-            return ParametersAcceptorSelector::selectFromArgs(
-                $scope,
-                $functionCall->args,
-                $functionReflection->getVariants()
-            )->getReturnType();
-        }
-
         $type = $functionTypes[1];
 
-        if (true === $wpErrorArgumentType->getValue()) {
-            $type = $functionTypes[2];
+        if ($wpErrorArgumentType instanceof ConstantBooleanType) {
+            if (true === $wpErrorArgumentType->getValue()) {
+                $type = $functionTypes[2];
+            }
+        } else {
+            // When called with a $wp_error parameter that isn't a constant boolean, return default type
+            $type = $functionTypes[3];
         }
 
         return $this->typeStringResolver->resolve($type);
