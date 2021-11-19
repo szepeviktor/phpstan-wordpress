@@ -26,15 +26,16 @@ final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\
 
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
-        if ($functionCall->args === []) {
+        $args = $functionCall->getArgs();
+        if ($args === []) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
-                $functionCall->args,
+                $args,
                 $functionReflection->getVariants()
             )->getReturnType();
         }
 
-        $type = $scope->getType($functionCall->args[0]->value);
+        $type = $scope->getType($args[0]->value);
 
         if ($type instanceof ConstantArrayType) {
             // shortcode_atts values are coming from the defined defaults or from the actual string shortcode attributes

@@ -28,18 +28,20 @@ class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $args = $functionCall->getArgs();
+
         // Called without $class argument
-        if (count($functionCall->args) < 1) {
+        if (count($args) < 1) {
             return new ConstantBooleanType(false);
         }
 
-        $argumentType = $scope->getType($functionCall->args[0]->value);
+        $argumentType = $scope->getType($args[0]->value);
 
         // When called with a $class that isn't a constant string, return default return type
         if (! $argumentType instanceof ConstantStringType) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
-                $functionCall->args,
+                $args,
                 $functionReflection->getVariants()
             )->getReturnType();
         }

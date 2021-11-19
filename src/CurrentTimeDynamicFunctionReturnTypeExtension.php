@@ -29,13 +29,14 @@ class CurrentTimeDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyn
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
-        $argumentType = $scope->getType($functionCall->args[0]->value);
+        $args = $functionCall->getArgs();
+        $argumentType = $scope->getType($args[0]->value);
 
         // When called with a $type that isn't a constant string, return default return type
         if (! $argumentType instanceof ConstantStringType) {
             return ParametersAcceptorSelector::selectFromArgs(
                 $scope,
-                $functionCall->args,
+                $args,
                 $functionReflection->getVariants()
             )->getReturnType();
         }
