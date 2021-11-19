@@ -110,9 +110,8 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $i = 1;
 
         foreach ($paramTags as $paramName => $paramTag) {
-            $param = $node->args[$i];
             $paramTagType = $paramTag->getType();
-            $paramType = $scope->getType($param->value);
+            $paramType = $scope->getType($node->args[$i]->value);
             $accepted = $this->ruleLevelHelper->accepts(
                 $paramTagType,
                 $paramType,
