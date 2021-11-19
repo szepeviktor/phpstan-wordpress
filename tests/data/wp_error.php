@@ -7,6 +7,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use function PHPStan\Testing\assertType;
 use function wp_insert_category;
 use function wp_insert_link;
+use function wp_schedule_single_event;
 use function wp_set_comment_status;
 use function wp_update_comment;
 
@@ -69,3 +70,21 @@ assertType('0|1|WP_Error', $value);
 
 $value = wp_update_comment([],$_GET['wp_error']);
 assertType('0|1|WP_Error|false', $value);
+
+/**
+ * wp_schedule_single_event()
+ */
+$value = wp_schedule_single_event(1,'hook');
+assertType('bool', $value);
+
+$value = wp_schedule_single_event(1,'hook',[]);
+assertType('bool', $value);
+
+$value = wp_schedule_single_event(1,'hook',[],false);
+assertType('bool', $value);
+
+$value = wp_schedule_single_event(1,'hook',[],true);
+assertType('WP_Error|true', $value);
+
+$value = wp_schedule_single_event(1,'hook',[],$_GET['wp_error']);
+assertType('bool|WP_Error', $value);

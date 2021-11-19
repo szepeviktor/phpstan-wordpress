@@ -46,6 +46,12 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             'true' => '0|1|WP_Error',
             'maybe' => '0|1|false|WP_Error',
         ],
+        'wp_schedule_single_event' => [
+            'arg' => 3,
+            'false' => 'bool',
+            'true' => 'true|WP_Error',
+            'maybe' => 'bool|WP_Error',
+        ],
     ];
 
     /** @var \PHPStan\PhpDoc\TypeStringResolver */
