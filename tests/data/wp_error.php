@@ -184,14 +184,14 @@ assertType('int|WP_Error|false', $value);
 /**
  * _set_cron_array()
  */
-$value = _set_cron_array('hook');
+$value = _set_cron_array([]);
 assertType('bool', $value);
 
-$value = _set_cron_array('hook', false);
+$value = _set_cron_array([], false);
 assertType('bool', $value);
 
-$value = _set_cron_array('hook', true);
+$value = _set_cron_array([], true);
 assertType('WP_Error|true', $value);
 
-$value = _set_cron_array('hook', $_GET['wp_error']);
+$value = _set_cron_array([], $_GET['wp_error']);
 assertType('bool|WP_Error', $value);
