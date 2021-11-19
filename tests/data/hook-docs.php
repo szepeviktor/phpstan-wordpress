@@ -76,3 +76,30 @@ $cookie_life = apply_filters( 'auth_cookie_expiration', 172800, get_current_user
  * Docblock with no param tags, which is fine.
  */
 $args = apply_filters( 'filter', $one, $two );
+
+function correct_inherited_param_type( \ChildTestClass $one ) {
+    /**
+     * This param tag is for a super class of the variable, which is fine.
+     *
+     * @param \ParentTestClass $one First parameter.
+     */
+    $args = apply_filters( 'filter', $one );
+}
+
+function correct_interface_param_type( \ChildTestClass $one ) {
+    /**
+     * This param tag is for the interface of the variable, which is fine.
+     *
+     * @param \TestInterface $one First parameter.
+     */
+    $args = apply_filters( 'filter', $one );
+}
+
+function incorrect_inherited_param_type( \ParentTestClass $one ) {
+    /**
+     * This param tag is for a child class of the variable. Oh no.
+     *
+     * @param \ChildTestClass $one First parameter.
+     */
+    $args = apply_filters( 'filter', $one );
+}

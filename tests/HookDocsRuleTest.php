@@ -58,6 +58,10 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
                     '@param tag must not be named $this. Choose a descriptive alias.',
                     70,
                 ],
+                [
+                    '@param ChildTestClass $one does not accept actual type of parameter: ParentTestClass',
+                    104,
+                ],
             ]
         );
     }
