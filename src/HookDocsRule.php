@@ -64,6 +64,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         $resolvedPhpDoc = $this->hookDocBlock->getNullableHookDocBlock($node, $scope);
 
+        // A docblock is optional.
         if ($resolvedPhpDoc === null) {
             return [];
         }
@@ -74,6 +75,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $numberOfParams = count($node->args) - 1;
         $numberOfParamTags = count($paramTags);
 
+        // A docblock with no param tags is allowed and gets skipped.
         if ($numberOfParamTags === 0) {
             return [];
         }
