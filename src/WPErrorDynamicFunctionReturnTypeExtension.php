@@ -19,13 +19,33 @@ use PHPStan\Type\Type;
 class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     /**
-     * @var array<string, array{0:int,1:string,2:string,3:string}>
+     * @var array<string, array{arg:int,true:string,false:string,maybe:string}>
      */
     private const SUPPORTED_FUNCTIONS = [
-        'wp_insert_link' => [1, 'int', 'int|WP_Error', 'int|WP_Error'],
-        'wp_insert_category' => [1, 'int', 'int|WP_Error', 'int|WP_Error'],
-        'wp_set_comment_status' => [2, 'bool', 'true|WP_Error', 'bool|WP_Error'],
-        'wp_update_comment' => [1, '0|1|false', '0|1|WP_Error', '0|1|false|WP_Error'],
+        'wp_insert_link' => [
+            'arg' => 1,
+            'true' => 'int',
+            'false' => 'int|WP_Error',
+            'maybe' => 'int|WP_Error',
+        ],
+        'wp_insert_category' => [
+            'arg' => 1,
+            'true' => 'int',
+            'false' => 'int|WP_Error',
+            'maybe' => 'int|WP_Error',
+        ],
+        'wp_set_comment_status' => [
+            'arg' => 2,
+            'true' => 'bool',
+            'false' => 'true|WP_Error',
+            'maybe' => 'bool|WP_Error',
+        ],
+        'wp_update_comment' => [
+            'arg' => 1,
+            'true' => '0|1|false',
+            'false' => '0|1|WP_Error',
+            'maybe' => '0|1|false|WP_Error',
+        ],
     ];
 
     /** @var \PHPStan\PhpDoc\TypeStringResolver */
@@ -56,21 +76,21 @@ class WPErrorDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         }
 
         $wpErrorArgumentType = new ConstantBooleanType(false);
-        $wpErrorArgument = $functionCall->args[$functionTypes[0]] ?? null;
+        $wpErrorArgument = $functionCall->args[$functionTypes['arg']] ?? null;
 
         if ($wpErrorArgument !== null) {
             $wpErrorArgumentType = $scope->getType($wpErrorArgument->value);
         }
 
-        $type = $functionTypes[1];
+        $type = $functionTypes['true'];
 
         if ($wpErrorArgumentType instanceof ConstantBooleanType) {
             if (true === $wpErrorArgumentType->getValue()) {
-                $type = $functionTypes[2];
+                $type = $functionTypes['false'];
             }
         } else {
             // When called with a $wp_error parameter that isn't a constant boolean, return default type
-            $type = $functionTypes[3];
+            $type = $functionTypes['maybe'];
         }
 
         return $this->typeStringResolver->resolve($type);
