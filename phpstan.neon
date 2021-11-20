@@ -2,7 +2,7 @@ includes:
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon
     - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
-    level: 8
+    level: 9
     # WpThemeMagicPropertiesClassReflectionExtension needs WP_Theme
     scanFiles:
         - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
