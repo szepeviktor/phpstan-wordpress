@@ -25,7 +25,7 @@ class FixWpStubs
         $io->write('Removing duplicate is_countable() ...');
 
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
-        if (!is_string($vendorDir)) {
+        if (!is_string($vendorDir) || strlen($vendorDir) <= 0) {
             $io->writeError('Could not determine Composer vendor dir.');
             return 12;
         }
