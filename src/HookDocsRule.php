@@ -103,7 +103,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         try {
             $this->validateParamCount($numberOfParamTagStrings);
-        } catch (\Throwable $e) {
+        } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
 
@@ -112,7 +112,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         try {
             $this->validateParamDocumentation(count($paramTags), $resolvedPhpDoc);
-        } catch (\Throwable $e) {
+        } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
 
@@ -123,7 +123,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         foreach ($paramTags as $paramName => $paramTag) {
             try {
                 $this->validateSingleParamTag($paramName, $paramTag, $nodeArgs[$i]);
-            } catch (\Throwable $e) {
+            } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $e) {
                 $errors[] = RuleErrorBuilder::message($e->getMessage())->build();
             }
 
@@ -138,7 +138,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      *
      * @param int $numberOfParamTagStrings
      *
-     * @throws \Exception When the number of documented tags is incorrect.
+     * @throws \SzepeViktor\PHPStan\WordPress\HookDocsParamException When the number of documented tags is incorrect.
      */
     public function validateParamCount(int $numberOfParamTagStrings): void
     {
@@ -155,7 +155,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             // If the number of param tags doesn't match the number of
             // parameters, bail out early with an error. There's no point
             // trying to reconcile param tags in this situation.
-            throw new \Exception($message);
+            throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException($message);
         }
     }
 
@@ -165,7 +165,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      * @param int $numberOfParamTags
      * @param \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
      *
-     * @throws \Exception When the number of parsed and valid tags is incorrect.
+     * @throws \SzepeViktor\PHPStan\WordPress\HookDocsParamException When the number of parsed and valid tags is incorrect.
      */
     public function validateParamDocumentation(
         int $numberOfParamTags,
@@ -186,12 +186,12 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                     // PHPStan does not detect param tags named `$this`, it skips the tag.
                     // We can indirectly detect this by checking the actual parameter name,
                     // and if one of them is `$this` assume that's the problem.
-                    throw new \Exception('@param tag must not be named $this. Choose a descriptive alias, for example $instance.');
+                    throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException('@param tag must not be named $this. Choose a descriptive alias, for example $instance.');
                 }
             }
         }
 
-        throw new \Exception('One or more @param tags has an invalid name or invalid syntax.');
+        throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException('One or more @param tags has an invalid name or invalid syntax.');
     }
 
     /**
@@ -201,7 +201,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      * @param \PHPStan\PhpDoc\Tag\ParamTag $paramTag  The param tag instance.
      * @param \PhpParser\Node\Arg          $arg       The actual parameter instance.
      *
-     * @throws \Exception When the tag is not valid.
+     * @throws \SzepeViktor\PHPStan\WordPress\HookDocsParamException When the tag is not valid.
      */
     protected function validateSingleParamTag(string $paramName, ParamTag $paramTag, Arg $arg): void
     {
@@ -224,7 +224,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $paramType->describe($paramVerbosityLevel)
             );
 
-            throw new \Exception($message);
+            throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException($message);
         }
     }
 }
