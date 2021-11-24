@@ -59,8 +59,24 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
                     70,
                 ],
                 [
+                    'Expected 2 @param tags, found 1.',
+                    85,
+                ],
+                [
                     '@param ChildTestClass $one does not accept actual type of parameter: ParentTestClass.',
-                    104,
+                    119,
+                ],
+                [
+                    '@param string $one does not accept actual type of parameter: string|null.',
+                    138,
+                ],
+                [
+                    'One or more @param tags has an invalid name or invalid syntax.',
+                    153,
+                ],
+                [
+                    'One or more @param tags has an invalid name or invalid syntax.',
+                    179,
                 ],
             ]
         );

@@ -9,8 +9,11 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\Tag\ParamTag;
+use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\FileTypeMapper;
@@ -31,6 +34,9 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
     /** @var \PHPStan\Rules\RuleLevelHelper */
     protected $ruleLevelHelper;
+
+    /** @var \PHPStan\Analyser\Scope */
+    protected $currentScope;
 
     public function __construct(
         FileTypeMapper $fileTypeMapper,
@@ -53,6 +59,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     public function processNode(Node $node, Scope $scope): array
     {
         $name = $node->name;
+        $this->currentScope = $scope;
 
         if (!($name instanceof \PhpParser\Node\Name)) {
             return [];
@@ -74,31 +81,20 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $nodeArgs = $node->getArgs();
         $numberOfParams = count($nodeArgs) - 1;
         $numberOfParamTags = count($paramTags);
+        $numberOfParamTagStrings = substr_count($resolvedPhpDoc->getPhpDocString(), '* @param ');
 
         // A docblock with no param tags is allowed and gets skipped.
-        if ($numberOfParamTags === 0) {
+        if ($numberOfParamTagStrings === 0) {
             return [];
         }
 
         // Incorrect number of `@param` tags.
-        if ($numberOfParams !== $numberOfParamTags) {
+        if ($numberOfParams !== $numberOfParamTagStrings) {
             $message = sprintf(
                 'Expected %1$d @param tags, found %2$d.',
                 $numberOfParams,
-                $numberOfParamTags
+                $numberOfParamTagStrings
             );
-
-            if ($numberOfParams - 1 === $numberOfParamTags) {
-                foreach ($nodeArgs as $param) {
-                    if ($param->value->name === 'this') {
-                        // PHPStan does not detect param tags named `$this`, it skips the tag.
-                        // We can indirectly detect this by checking the actual parameter name,
-                        // and if one of them is `$this` assume that's the problem.
-                        $message = '@param tag must not be named $this. Choose a descriptive alias, for example $instance.';
-                        break;
-                    }
-                }
-            }
 
             // If the number of param tags doesn't match the number of
             // parameters, bail out early with an error. There's no point
@@ -108,35 +104,76 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             ];
         }
 
+        // At least one invalid `@param` tag.
+        if ($numberOfParams !== $numberOfParamTags) {
+            // We might have a `@param` tag named `$this`.
+            if (false !== strpos($resolvedPhpDoc->getPhpDocString(), ' $this')) {
+                foreach ($nodeArgs as $param) {
+                    if ($param->value->name === 'this') {
+                        // PHPStan does not detect param tags named `$this`, it skips the tag.
+                        // We can indirectly detect this by checking the actual parameter name,
+                        // and if one of them is `$this` assume that's the problem.
+                        $message = '@param tag must not be named $this. Choose a descriptive alias, for example $instance.';
+                        return [
+                            RuleErrorBuilder::message($message)->build(),
+                        ];
+                    }
+                }
+            }
+
+            $message = 'One or more @param tags has an invalid name or invalid syntax.';
+            return [
+                RuleErrorBuilder::message($message)->build(),
+            ];
+        }
+
         $errors = [];
         $i = 1;
 
         foreach ($paramTags as $paramName => $paramTag) {
-            $paramTagType = $paramTag->getType();
-            $paramType = $scope->getType($nodeArgs[$i]->value);
-            $accepted = $this->ruleLevelHelper->accepts(
-                $paramTagType,
-                $paramType,
-                $scope->isDeclareStrictTypes()
-            );
+            $result = $this->validateParamTag($paramName, $paramTag, $nodeArgs[$i]);
 
-            if (! $accepted) {
-                $paramTagVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramTagType);
-                $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
-
-                $message = sprintf(
-                    '@param %1$s $%2$s does not accept actual type of parameter: %3$s.',
-                    $paramTagType->describe($paramTagVerbosityLevel),
-                    $paramName,
-                    $paramType->describe($paramVerbosityLevel)
-                );
-
-                $errors[] = RuleErrorBuilder::message($message)->build();
+            if ($result instanceof RuleError) {
+                $errors[] = $result;
             }
 
             $i += 1;
         }
 
         return $errors;
+    }
+
+    /**
+     * Validates a `@param` tag against its actual parameter.
+     *
+     * @param string                       $paramName The param tag name.
+     * @param \PHPStan\PhpDoc\Tag\ParamTag $paramTag  The param tag instance.
+     * @param \PhpParser\Node\Arg          $arg       The actual parameter instance.
+     */
+    protected function validateParamTag(string $paramName, ParamTag $paramTag, Arg $arg): ?RuleError
+    {
+        $paramTagType = $paramTag->getType();
+        $paramType = $this->currentScope->getType($arg->value);
+        $accepted = $this->ruleLevelHelper->accepts(
+            $paramTagType,
+            $paramType,
+            $this->currentScope->isDeclareStrictTypes()
+        );
+
+        if (! $accepted) {
+            $paramTagVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramTagType);
+            $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
+
+            $message = sprintf(
+                '@param %1$s $%2$s does not accept actual type of parameter: %3$s.',
+                $paramTagType->describe($paramTagVerbosityLevel),
+                $paramName,
+                $paramType->describe($paramVerbosityLevel)
+            );
+
+            return RuleErrorBuilder::message($message)->build();
+        }
+
+        return null;
     }
 }
