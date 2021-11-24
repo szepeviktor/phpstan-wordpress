@@ -13,7 +13,6 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\Tag\ParamTag;
-use PHPStan\Rules\RuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\FileTypeMapper;
@@ -35,8 +34,14 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     /** @var \PHPStan\Rules\RuleLevelHelper */
     protected $ruleLevelHelper;
 
+    /** @var \PhpParser\Node\Expr\FuncCall */
+    protected $currentNode;
+
     /** @var \PHPStan\Analyser\Scope */
     protected $currentScope;
+
+    /** @var \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc */
+    protected $resolvedPhpDoc;
 
     public function __construct(
         FileTypeMapper $fileTypeMapper,
@@ -59,6 +64,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     public function processNode(Node $node, Scope $scope): array
     {
         $name = $node->name;
+        $this->currentNode = $node;
         $this->currentScope = $scope;
 
         if (!($name instanceof \PhpParser\Node\Name)) {
@@ -76,17 +82,67 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        // Fetch the `@param` tags from the docblock.
-        $paramTags = $resolvedPhpDoc->getParamTags();
-        $nodeArgs = $node->getArgs();
-        $numberOfParams = count($nodeArgs) - 1;
-        $numberOfParamTags = count($paramTags);
+        return $this->validateDocBlock($resolvedPhpDoc);
+    }
+
+    /**
+     * Validates the `@param` tags documented in the given docblock.
+     *
+     * @param \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
+     * @return array<int,\PHPStan\Rules\RuleError>
+     */
+    public function validateDocBlock(\PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc): array
+    {
+        // Count all documented `@param` tag strings in the docblock.
         $numberOfParamTagStrings = substr_count($resolvedPhpDoc->getPhpDocString(), '* @param ');
 
         // A docblock with no param tags is allowed and gets skipped.
         if ($numberOfParamTagStrings === 0) {
             return [];
         }
+
+        try {
+            $this->validateParamCount($numberOfParamTagStrings);
+        } catch (\Throwable $e) {
+            return [RuleErrorBuilder::message($e->getMessage())->build()];
+        }
+
+        // Fetch the parsed `@param` tags from the docblock.
+        $paramTags = $resolvedPhpDoc->getParamTags();
+
+        try {
+            $this->validateParamDocumentation(count($paramTags), $resolvedPhpDoc);
+        } catch (\Throwable $e) {
+            return [RuleErrorBuilder::message($e->getMessage())->build()];
+        }
+
+        $nodeArgs = $this->currentNode->getArgs();
+        $errors = [];
+        $i = 1;
+
+        foreach ($paramTags as $paramName => $paramTag) {
+            try {
+                $this->validateSingleParamTag($paramName, $paramTag, $nodeArgs[$i]);
+            } catch (\Throwable $e) {
+                $errors[] = RuleErrorBuilder::message($e->getMessage())->build();
+            }
+
+            $i += 1;
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Validates the number of documented `@param` tags in the docblock.
+     *
+     * @param int $numberOfParamTagStrings
+     *
+     * @throws \Exception When the number of documented tags is incorrect.
+     */
+    public function validateParamCount(int $numberOfParamTagStrings): void
+    {
+        $numberOfParams = count($this->currentNode->getArgs()) - 1;
 
         // Incorrect number of `@param` tags.
         if ($numberOfParams !== $numberOfParamTagStrings) {
@@ -99,10 +155,24 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             // If the number of param tags doesn't match the number of
             // parameters, bail out early with an error. There's no point
             // trying to reconcile param tags in this situation.
-            return [
-                RuleErrorBuilder::message($message)->build(),
-            ];
+            throw new \Exception($message);
         }
+    }
+
+    /**
+     * Validates the number of parsed and valid `@param` tags in the docblock.
+     *
+     * @param int $numberOfParamTags
+     * @param \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
+     *
+     * @throws \Exception When the number of parsed and valid tags is incorrect.
+     */
+    public function validateParamDocumentation(
+        int $numberOfParamTags,
+        \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
+    ): void {
+        $nodeArgs = $this->currentNode->getArgs();
+        $numberOfParams = count($nodeArgs) - 1;
 
         // At least one invalid `@param` tag.
         if ($numberOfParams !== $numberOfParamTags) {
@@ -113,34 +183,13 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                         // PHPStan does not detect param tags named `$this`, it skips the tag.
                         // We can indirectly detect this by checking the actual parameter name,
                         // and if one of them is `$this` assume that's the problem.
-                        $message = '@param tag must not be named $this. Choose a descriptive alias, for example $instance.';
-                        return [
-                            RuleErrorBuilder::message($message)->build(),
-                        ];
+                        throw new \Exception('@param tag must not be named $this. Choose a descriptive alias, for example $instance.');
                     }
                 }
             }
 
-            $message = 'One or more @param tags has an invalid name or invalid syntax.';
-            return [
-                RuleErrorBuilder::message($message)->build(),
-            ];
+            throw new \Exception('One or more @param tags has an invalid name or invalid syntax.');
         }
-
-        $errors = [];
-        $i = 1;
-
-        foreach ($paramTags as $paramName => $paramTag) {
-            $result = $this->validateParamTag($paramName, $paramTag, $nodeArgs[$i]);
-
-            if ($result instanceof RuleError) {
-                $errors[] = $result;
-            }
-
-            $i += 1;
-        }
-
-        return $errors;
     }
 
     /**
@@ -149,8 +198,10 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      * @param string                       $paramName The param tag name.
      * @param \PHPStan\PhpDoc\Tag\ParamTag $paramTag  The param tag instance.
      * @param \PhpParser\Node\Arg          $arg       The actual parameter instance.
+     *
+     * @throws \Exception When the tag is not valid.
      */
-    protected function validateParamTag(string $paramName, ParamTag $paramTag, Arg $arg): ?RuleError
+    protected function validateSingleParamTag(string $paramName, ParamTag $paramTag, Arg $arg): void
     {
         $paramTagType = $paramTag->getType();
         $paramType = $this->currentScope->getType($arg->value);
@@ -171,9 +222,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
                 $paramType->describe($paramVerbosityLevel)
             );
 
-            return RuleErrorBuilder::message($message)->build();
+            throw new \Exception($message);
         }
-
-        return null;
     }
 }
