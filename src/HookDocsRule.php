@@ -174,22 +174,24 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $nodeArgs = $this->currentNode->getArgs();
         $numberOfParams = count($nodeArgs) - 1;
 
-        // At least one invalid `@param` tag.
-        if ($numberOfParams !== $numberOfParamTags) {
-            // We might have a `@param` tag named `$this`.
-            if (strpos($resolvedPhpDoc->getPhpDocString(), ' $this') !== false) {
-                foreach ($nodeArgs as $param) {
-                    if (($param->value instanceof \PhpParser\Node\Expr\Variable ) && $param->value->name === 'this') {
-                        // PHPStan does not detect param tags named `$this`, it skips the tag.
-                        // We can indirectly detect this by checking the actual parameter name,
-                        // and if one of them is `$this` assume that's the problem.
-                        throw new \Exception('@param tag must not be named $this. Choose a descriptive alias, for example $instance.');
-                    }
+        // No invalid `@param` tags.
+        if ($numberOfParams === $numberOfParamTags) {
+            return;
+        }
+
+        // We might have an invalid `@param` tag because it's named `$this`.
+        if (strpos($resolvedPhpDoc->getPhpDocString(), ' $this') !== false) {
+            foreach ($nodeArgs as $param) {
+                if (($param->value instanceof \PhpParser\Node\Expr\Variable ) && $param->value->name === 'this') {
+                    // PHPStan does not detect param tags named `$this`, it skips the tag.
+                    // We can indirectly detect this by checking the actual parameter name,
+                    // and if one of them is `$this` assume that's the problem.
+                    throw new \Exception('@param tag must not be named $this. Choose a descriptive alias, for example $instance.');
                 }
             }
-
-            throw new \Exception('One or more @param tags has an invalid name or invalid syntax.');
         }
+
+        throw new \Exception('One or more @param tags has an invalid name or invalid syntax.');
     }
 
     /**
