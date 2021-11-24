@@ -17,7 +17,7 @@
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
-        "composer/composer": "^1.10.23",
+        "composer/composer": "^2.1.12",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^1.0",

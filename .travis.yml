@@ -21,7 +21,7 @@ before_install:
   - "composer validate --strict"
 
 install:
-  - "composer update --no-interaction --no-suggest"
+  - "composer update --no-interaction"
 
 script:
   - "composer test:syntax -- --no-progress"
