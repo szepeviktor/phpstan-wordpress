@@ -109,7 +109,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             // We might have a `@param` tag named `$this`.
             if (false !== strpos($resolvedPhpDoc->getPhpDocString(), ' $this')) {
                 foreach ($nodeArgs as $param) {
-                    if ($param->value->name === 'this') {
+                    if (($param->value instanceof \PhpParser\Node\Expr\Variable ) && $param->value->name === 'this') {
                         // PHPStan does not detect param tags named `$this`, it skips the tag.
                         // We can indirectly detect this by checking the actual parameter name,
                         // and if one of them is `$this` assume that's the problem.
