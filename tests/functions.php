@@ -9,13 +9,19 @@ declare(strict_types=1);
  * @param T $value Value.
  * @return T Value.
  */
-function returnValue( $value )
+function returnValue($value)
 {
     return $value;
 }
 
-interface TestInterface {}
+interface TestInterface
+{
+}
 
-class ParentTestClass implements TestInterface {}
+class ParentTestClass implements \TestInterface
+{
+}
 
-class ChildTestClass extends ParentTestClass {}
+class ChildTestClass extends \ParentTestClass
+{
+}

@@ -22,10 +22,7 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
         $ruleLevelHelper = self::getContainer()->getByType(RuleLevelHelper::class);
 
         // getRule() method needs to return an instance of the tested rule
-        return new HookDocsRule(
-            $fileTypeMapper,
-            $ruleLevelHelper
-        );
+        return new HookDocsRule($fileTypeMapper, $ruleLevelHelper);
     }
 
     // phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
@@ -41,43 +38,43 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
             [
                 [
                     'Expected 2 @param tags, found 1.',
-                    14,
+                    22,
                 ],
                 [
                     'Expected 2 @param tags, found 3.',
-                    23,
+                    31,
                 ],
                 [
                     '@param string $one does not accept actual type of parameter: int|string.',
-                    34,
-                ],
-                [
-                    '@param string $one does not accept actual type of parameter: int.',
                     43,
                 ],
                 [
+                    '@param string $one does not accept actual type of parameter: int.',
+                    53,
+                ],
+                [
                     '@param tag must not be named $this. Choose a descriptive alias, for example $instance.',
-                    70,
+                    82,
                 ],
                 [
                     'Expected 2 @param tags, found 1.',
-                    85,
+                    97,
                 ],
                 [
                     '@param ChildTestClass $one does not accept actual type of parameter: ParentTestClass.',
-                    119,
+                    134,
                 ],
                 [
                     '@param string $one does not accept actual type of parameter: string|null.',
-                    138,
+                    155,
                 ],
                 [
                     'One or more @param tags has an invalid name or invalid syntax.',
-                    153,
+                    170,
                 ],
                 [
                     'One or more @param tags has an invalid name or invalid syntax.',
-                    179,
+                    206,
                 ],
             ]
         );

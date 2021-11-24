@@ -6,13 +6,12 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestCase
 {
-
     /**
      * @return iterable<mixed>
      */
     public function dataFileAsserts(): iterable
     {
-        // path to a file with actual asserts of expected types:
+        // Path to a file with actual asserts of expected types:
         yield from $this->gatherAssertTypes(__DIR__ . '/data/_get_list_table.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/apply_filters.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/current_time.php');
@@ -35,7 +34,7 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
 
     public static function getAdditionalConfigFiles(): array
     {
-        // path to your project's phpstan.neon, or extension.neon in case of custom extension packages
-        return [__DIR__ . '/../extension.neon'];
+        // Path to your project's phpstan.neon, or extension.neon in case of custom extension packages.
+        return [dirname(__DIR__) . '/extension.neon'];
     }
 }
