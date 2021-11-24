@@ -67,7 +67,7 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - Provides dynamic return type extensions for many core functions
 - Defines some core constants
 - Handles special functions and classes e.g. `is_wp_error()`
-- Uses the optional docblock that precedes a call to `apply_filters()` to treat its return type as certain
+- Validates the optional docblock that precedes a call to `apply_filters()` and treats the type of its first `@param` as certain
 
 ### Usage of an `apply_filters()` docblock
 

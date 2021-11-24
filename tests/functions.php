@@ -13,3 +13,9 @@ function returnValue( $value )
 {
     return $value;
 }
+
+interface TestInterface {}
+
+class ParentTestClass implements TestInterface {}
+
+class ChildTestClass extends ParentTestClass {}

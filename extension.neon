@@ -59,6 +59,8 @@ services:
         class: SzepeViktor\PHPStan\WordPress\WPErrorParameterDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
+rules:
+    - SzepeViktor\PHPStan\WordPress\HookDocsRule
 parameters:
     bootstrapFiles:
         - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
