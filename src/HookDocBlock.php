@@ -15,7 +15,6 @@ use PHPStan\Type\FileTypeMapper;
 
 class HookDocBlock
 {
-
     /** @var \PHPStan\Type\FileTypeMapper */
     protected $fileTypeMapper;
 
