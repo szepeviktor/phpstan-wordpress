@@ -67,7 +67,7 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
             [
                 new StringType(),
                 new StringType(),
-            ],
+            ]
         );
         $withoutTaxonomy = new StringType();
 
