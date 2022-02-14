@@ -71,14 +71,14 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         );
         $withoutTaxonomy = new StringType();
 
-        if ((($taxonomyType instanceof ConstantStringType) && $taxonomyType->getValue() !== '')) {
+        if (($taxonomyType instanceof ConstantStringType) && $taxonomyType->getValue() !== '') {
             return TypeCombinator::union(
                 $withTaxonomy,
                 new NullType(),
             );
         }
 
-        if ((($taxonomyType instanceof ConstantStringType) && $taxonomyType->getValue() === '')) {
+        if (($taxonomyType instanceof ConstantStringType) && $taxonomyType->getValue() === '') {
             return TypeCombinator::union(
                 $withoutTaxonomy,
                 new NullType(),
