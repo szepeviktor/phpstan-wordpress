@@ -1,5 +1,7 @@
 <?php
 
+//phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+
 /**
  * Set return type of get_terms() and related functions.
  */
@@ -15,6 +17,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantStringType;
 
@@ -30,13 +33,18 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     }
 
     /**
+     * @see https://developer.wordpress.org/reference/functions/get_terms/
      * @see https://developer.wordpress.org/reference/classes/wp_term_query/__construct/
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $arrayOfSlugs = new ArrayType(new IntegerType(), new StringType());
+        $arrayOfIds = new ArrayType(new IntegerType(), new IntegerType());
+        $arrayOfTerms = new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
+
         // Called without arguments
         if (count($functionCall->args) === 0) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
+            return $arrayOfTerms;
         }
 
         $argumentType = $scope->getType($functionCall->args[0]->value);
@@ -55,6 +63,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 break;
             }
         }
+
         // Called with a string argument
         if ($argumentType instanceof ConstantStringType) {
             parse_str($argumentType->getValue(), $variables);
@@ -63,7 +72,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         // Without constant argument return default return type
         if (! isset($fields)) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
+            return $arrayOfTerms;
         }
 
         switch ($fields) {
@@ -73,15 +82,15 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             case 'slugs':
             case 'id=>name':
             case 'id=>slug':
-                return new ArrayType(new IntegerType(), new StringType());
+                return $arrayOfSlugs;
             case 'ids':
             case 'tt_ids':
             case 'id=>parent':
-                return new ArrayType(new IntegerType(), new IntegerType());
+                return $arrayOfIds;
             case 'all':
             case 'all_with_object_id':
             default:
-                return new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
+                return $arrayOfTerms;
         }
     }
 }
