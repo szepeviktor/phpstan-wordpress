@@ -20,6 +20,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\TypeCombinator;
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -38,19 +39,25 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $fields = 'all';
         $arrayOfSlugs = new ArrayType(new IntegerType(), new StringType());
         $arrayOfIds = new ArrayType(new IntegerType(), new IntegerType());
         $arrayOfTerms = new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
+        $count = new StringType();
+        $error = new ObjectType('WP_Error');
 
         // Called without arguments
         if (count($functionCall->args) === 0) {
-            return $arrayOfTerms;
+            return TypeCombinator::union(
+                $arrayOfTerms,
+                $error
+            );
         }
 
         $argumentType = $scope->getType($functionCall->args[0]->value);
 
-        // Called with an array argument
         if ($argumentType instanceof ConstantArrayType) {
+            // Called with an array argument
             foreach ($argumentType->getKeyTypes() as $index => $key) {
                 if (! $key instanceof ConstantStringType || $key->getValue() !== 'fields') {
                     continue;
@@ -62,35 +69,49 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 }
                 break;
             }
-        }
-
-        // Called with a string argument
-        if ($argumentType instanceof ConstantStringType) {
+        } elseif ($argumentType instanceof ConstantStringType) {
+            // Called with a string argument
             parse_str($argumentType->getValue(), $variables);
             $fields = $variables['fields'] ?? 'all';
-        }
-
-        // Without constant argument return default return type
-        if (! isset($fields)) {
-            return $arrayOfTerms;
+        } else {
+            // Without constant argument return default return type
+            return TypeCombinator::union(
+                $arrayOfTerms,
+                $arrayOfIds,
+                $arrayOfSlugs,
+                $count,
+                $error
+            );
         }
 
         switch ($fields) {
             case 'count':
-                return new IntegerType();
+                return TypeCombinator::union(
+                    $count,
+                    $error
+                );
             case 'names':
             case 'slugs':
             case 'id=>name':
             case 'id=>slug':
-                return $arrayOfSlugs;
+                return TypeCombinator::union(
+                    $arrayOfSlugs,
+                    $error
+                );
             case 'ids':
             case 'tt_ids':
             case 'id=>parent':
-                return $arrayOfIds;
+                return TypeCombinator::union(
+                    $arrayOfIds,
+                    $error
+                );
             case 'all':
             case 'all_with_object_id':
             default:
-                return $arrayOfTerms;
+                return TypeCombinator::union(
+                    $arrayOfTerms,
+                    $error
+                );
         }
     }
 }
