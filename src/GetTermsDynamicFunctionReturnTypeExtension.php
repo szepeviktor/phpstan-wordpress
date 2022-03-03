@@ -78,10 +78,6 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 }
                 break;
             }
-        } elseif ($argumentType instanceof ConstantStringType) {
-            // Called with a string argument
-            parse_str($argumentType->getValue(), $variables);
-            $fieldsValue = $variables['fields'] ?? 'all';
         } else {
             // Without constant argument return default return type
             return TypeCombinator::union(
