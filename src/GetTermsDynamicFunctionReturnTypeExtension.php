@@ -67,6 +67,14 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 $fieldsType = $argumentType->getValueTypes()[$index];
                 if ($fieldsType instanceof ConstantStringType) {
                     $fields = $fieldsType->getValue();
+                } else {
+                    return TypeCombinator::union(
+                        $arrayOfTerms,
+                        $arrayOfIds,
+                        $arrayOfSlugs,
+                        $count,
+                        $error
+                    );
                 }
                 break;
             }
