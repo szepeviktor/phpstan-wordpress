@@ -42,6 +42,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         $fields = 'all';
         $arrayOfSlugs = new ArrayType(new IntegerType(), new StringType());
         $arrayOfIds = new ArrayType(new IntegerType(), new IntegerType());
+        $arrayOfParents = new ArrayType(new IntegerType(), new StringType());
         $arrayOfTerms = new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
         $count = new StringType();
         $error = new ObjectType('WP_Error');
@@ -100,9 +101,13 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 );
             case 'ids':
             case 'tt_ids':
-            case 'id=>parent':
                 return TypeCombinator::union(
                     $arrayOfIds,
+                    $error
+                );
+            case 'id=>parent':
+                return TypeCombinator::union(
+                    $arrayOfParents,
                     $error
                 );
             case 'all':
