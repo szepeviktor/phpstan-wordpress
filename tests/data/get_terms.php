@@ -12,3 +12,8 @@ $fields = $_GET['fields'] ?? 'all';
 assertType('array<int, WP_Term>|WP_Error', get_terms());
 assertType('array<int, WP_Term>|WP_Error', get_terms([]));
 assertType('array<int, WP_Term>|WP_Error', get_terms(''));
+
+// Requesting a count
+assertType('string|WP_Error', get_terms(['fields'=>'count']));
+assertType('string|WP_Error', get_terms(['foo'=>'bar','fields'=>'count']));
+assertType('string|WP_Error', get_terms('fields=count'));
