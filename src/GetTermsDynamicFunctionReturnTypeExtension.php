@@ -181,7 +181,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             self::termsType(),
             self::idsType(),
             self::slugsType(),
-            self::countType(),
+            self::countType()
         );
     }
 }
