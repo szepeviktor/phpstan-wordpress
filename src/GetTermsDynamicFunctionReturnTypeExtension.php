@@ -25,13 +25,18 @@ use PHPStan\Type\TypeCombinator;
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    private const SUPPORTED_FUNCTIONS = [
+        'get_tags' => 0,
+        'get_terms' => 0,
+        'wp_get_object_terms' => 2,
+        'wp_get_post_categories' => 1,
+        'wp_get_post_tags' => 1,
+        'wp_get_post_terms' => 2,
+    ];
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), [
-            'get_tags',
-            'get_terms',
-            'wp_get_object_terms',
-        ], true);
+        return array_key_exists($functionReflection->getName(), self::SUPPORTED_FUNCTIONS);
     }
 
     /**
@@ -40,6 +45,18 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
+        $name = $functionReflection->getName();
+        $argsParameterPosition = self::SUPPORTED_FUNCTIONS[$name] ?? null;
+
+        if ($argsParameterPosition === null) {
+            throw new \PHPStan\ShouldNotHappenException(
+                sprintf(
+                    'Could not detect parameter position for function %s()',
+                    $name
+                )
+            );
+        }
+
         $slugsType = new ArrayType(new IntegerType(), new StringType());
         $idsType = new ArrayType(new IntegerType(), new IntegerType());
         $parentsType = new ArrayType(new IntegerType(), new StringType());
@@ -48,14 +65,14 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         $errorType = new ObjectType('WP_Error');
 
         // Called without arguments
-        if (count($functionCall->args) === 0) {
+        if (! isset($functionCall->args[$argsParameterPosition])) {
             return TypeCombinator::union(
                 $termsType,
                 $errorType
             );
         }
 
-        $argumentType = $scope->getType($functionCall->args[0]->value);
+        $argumentType = $scope->getType($functionCall->args[$argsParameterPosition]->value);
         $args = [
             'fields' => 'all',
             'count' => false,

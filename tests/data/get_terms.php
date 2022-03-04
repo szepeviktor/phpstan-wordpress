@@ -50,3 +50,13 @@ assertType('array<int, string>|WP_Error', get_terms(['fields'=>'id=>parent']));
 assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'all']));
 assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'all_with_object_id']));
 assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'foo']));
+
+// Wrapper functions
+assertType('string|WP_Error', wp_get_object_terms(123, 'category', ['fields'=>'count']));
+assertType('string|WP_Error', wp_get_post_categories(123, ['fields'=>'count']));
+assertType('string|WP_Error', wp_get_post_tags(123, ['fields'=>'count']));
+assertType('string|WP_Error', wp_get_post_terms(123, 'category', ['fields'=>'count']));
+assertType('array<int, WP_Term>|WP_Error', wp_get_object_terms(123, 'category'));
+assertType('array<int, WP_Term>|WP_Error', wp_get_post_categories(123));
+assertType('array<int, WP_Term>|WP_Error', wp_get_post_tags(123));
+assertType('array<int, WP_Term>|WP_Error', wp_get_post_terms(123, 'category'));
