@@ -68,25 +68,26 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             'count' => false,
         ];
 
-        if ($argumentType instanceof ConstantArrayType) {
-            // Called with an array argument
-            foreach ($argumentType->getKeyTypes() as $index => $key) {
-                if (! $key instanceof ConstantStringType) {
-                    return self::defaultType();
-                }
-
-                unset($args[$key->getValue()]);
-                $fieldsType = $argumentType->getValueTypes()[$index];
-                if ($fieldsType instanceof ConstantScalarType) {
-                    $args[$key->getValue()] = $fieldsType->getValue();
-                }
-            }
-        } else {
+        if (!($argumentType instanceof ConstantArrayType)) {
             // Without constant array argument return default return type
             return self::defaultType();
         }
 
-        if (isset($args['count']) && true === $args['count']) {
+        foreach ($argumentType->getKeyTypes() as $index => $key) {
+            if (! $key instanceof ConstantStringType) {
+                return self::defaultType();
+            }
+
+            unset($args[$key->getValue()]);
+            $fieldsType = $argumentType->getValueTypes()[$index];
+            if (!($fieldsType instanceof ConstantScalarType)) {
+                continue;
+            }
+
+            $args[$key->getValue()] = $fieldsType->getValue();
+        }
+
+        if (isset($args['count']) && $args['count'] === true) {
             return self::countType();
         }
 
@@ -114,42 +115,48 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         }
     }
 
-    protected static function countType(): Type {
+    protected static function countType(): Type
+    {
         return TypeCombinator::union(
             new StringType(),
             new ObjectType('WP_Error')
         );
     }
 
-    protected static function slugsType(): Type {
+    protected static function slugsType(): Type
+    {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new StringType()),
             new ObjectType('WP_Error')
         );
     }
 
-    protected static function idsType(): Type {
+    protected static function idsType(): Type
+    {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new IntegerType()),
             new ObjectType('WP_Error')
         );
     }
 
-    protected static function parentsType(): Type {
+    protected static function parentsType(): Type
+    {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new StringType()),
             new ObjectType('WP_Error')
         );
     }
 
-    protected static function termsType(): Type {
+    protected static function termsType(): Type
+    {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new ObjectType('WP_Term')),
             new ObjectType('WP_Error')
         );
     }
 
-    protected static function defaultType(): Type {
+    protected static function defaultType(): Type
+    {
         return TypeCombinator::union(
             self::termsType(),
             self::idsType(),
