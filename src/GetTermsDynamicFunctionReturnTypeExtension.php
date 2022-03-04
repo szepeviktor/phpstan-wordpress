@@ -20,6 +20,8 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\ConstantScalarType;
+use PHPStan\Type\ConstantType;
 use PHPStan\Type\TypeCombinator;
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -39,7 +41,6 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
-        $fieldsValue = 'all';
         $slugsType = new ArrayType(new IntegerType(), new StringType());
         $idsType = new ArrayType(new IntegerType(), new IntegerType());
         $parentsType = new ArrayType(new IntegerType(), new StringType());
@@ -56,18 +57,15 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         }
 
         $argumentType = $scope->getType($functionCall->args[0]->value);
+        $args = [
+            'fields' => 'all',
+            'count' => false,
+        ];
 
         if ($argumentType instanceof ConstantArrayType) {
             // Called with an array argument
             foreach ($argumentType->getKeyTypes() as $index => $key) {
-                if (! $key instanceof ConstantStringType || $key->getValue() !== 'fields') {
-                    continue;
-                }
-
-                $fieldsType = $argumentType->getValueTypes()[$index];
-                if ($fieldsType instanceof ConstantStringType) {
-                    $fieldsValue = $fieldsType->getValue();
-                } else {
+                if (! $key instanceof ConstantStringType) {
                     return TypeCombinator::union(
                         $termsType,
                         $idsType,
@@ -76,10 +74,15 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                         $errorType
                     );
                 }
-                break;
+
+                unset($args[$key->getValue()]);
+                $fieldsType = $argumentType->getValueTypes()[$index];
+                if ($fieldsType instanceof ConstantScalarType) {
+                    $args[$key->getValue()] = $fieldsType->getValue();
+                }
             }
         } else {
-            // Without constant argument return default return type
+            // Without constant array argument return default return type
             return TypeCombinator::union(
                 $termsType,
                 $idsType,
@@ -89,7 +92,24 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             );
         }
 
-        switch ($fieldsValue) {
+        if (isset($args['count']) && true === $args['count']) {
+            return TypeCombinator::union(
+                $countType,
+                $errorType
+            );
+        }
+
+        if (! isset($args['fields'])) {
+            return TypeCombinator::union(
+                $termsType,
+                $idsType,
+                $slugsType,
+                $countType,
+                $errorType
+            );
+        }
+
+        switch ($args['fields']) {
             case 'count':
                 return TypeCombinator::union(
                     $countType,
