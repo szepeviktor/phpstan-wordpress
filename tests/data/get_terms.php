@@ -39,8 +39,7 @@ assertType('array<int, int>|WP_Error', get_terms(['fields'=>'ids']));
 assertType('array<int, int>|WP_Error', get_terms(['fields'=>'tt_ids']));
 
 // Requesting parent IDs (numeric strings)
-assertType('array<int, string>|WP_Error', get_terms(['fields'=>'names']));
-assertType('array<int, string>|WP_Error', get_terms(['fields'=>'slugs']));
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'id=>parent']));
 
 // Requesting objects
 assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'all']));
