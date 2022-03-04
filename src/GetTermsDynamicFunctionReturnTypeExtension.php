@@ -58,44 +58,37 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         }
 
         // Called without arguments
-        if (! isset($functionCall->args[$argsParameterPosition])) {
+        if (! isset($functionCall->getArgs()[$argsParameterPosition])) {
             return self::termsType();
         }
 
-        $argumentType = $scope->getType($functionCall->args[$argsParameterPosition]->value);
-        $args = [
-            'fields' => 'all',
-            'count' => false,
-        ];
+        $argument = $scope->getType($functionCall->getArgs()[$argsParameterPosition]->value);
 
-        if (!($argumentType instanceof ConstantArrayType)) {
+        if (!($argument instanceof ConstantArrayType)) {
             // Without constant array argument return default return type
             return self::defaultType();
         }
 
-        foreach ($argumentType->getKeyTypes() as $index => $key) {
-            if (! $key instanceof ConstantStringType) {
-                return self::defaultType();
-            }
+        $args = self::getArgs($argument);
 
-            unset($args[$key->getValue()]);
-            $fieldsType = $argumentType->getValueTypes()[$index];
-            if (!($fieldsType instanceof ConstantScalarType)) {
-                continue;
-            }
-
-            $args[$key->getValue()] = $fieldsType->getValue();
+        if ($args === null) {
+            return self::defaultType();
         }
 
         if (isset($args['count']) && $args['count'] === true) {
             return self::countType();
         }
 
-        if (! isset($args['fields'], $args['count'])) {
+        if (! isset($args['fields'], $args['count']) || ! is_string($args['fields'])) {
             return self::defaultType();
         }
 
-        switch ($args['fields']) {
+        return self::deduceTypeFromFields($args['fields']);
+    }
+
+    protected static function deduceTypeFromFields(string $fields): Type
+    {
+        switch ($fields) {
             case 'count':
                 return self::countType();
             case 'names':
@@ -113,6 +106,33 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             default:
                 return self::termsType();
         }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected static function getArgs(ConstantArrayType $argument): ?array
+    {
+        $args = [
+            'fields' => 'all',
+            'count' => false,
+        ];
+
+        foreach ($argument->getKeyTypes() as $index => $key) {
+            if (! $key instanceof ConstantStringType) {
+                return null;
+            }
+
+            unset($args[$key->getValue()]);
+            $fieldsType = $argument->getValueTypes()[$index];
+            if (!($fieldsType instanceof ConstantScalarType)) {
+                continue;
+            }
+
+            $args[$key->getValue()] = $fieldsType->getValue();
+        }
+
+        return $args;
     }
 
     protected static function countType(): Type
