@@ -26,3 +26,23 @@ assertType('string|WP_Error', get_terms(['fields'=>'count']));
 assertType('string|WP_Error', get_terms(['foo'=>'bar','fields'=>'count']));
 assertType('string|WP_Error', get_terms(['count'=>true]));
 assertType('string|WP_Error', get_terms(['foo'=>'bar','count'=>true]));
+assertType('string|WP_Error', get_terms(['fields'=>'ids','count'=>true]));
+
+// Requesting names or slugs
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'names']));
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'slugs']));
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'id=>name']));
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'id=>slug']));
+
+// Requesting IDs
+assertType('array<int, int>|WP_Error', get_terms(['fields'=>'ids']));
+assertType('array<int, int>|WP_Error', get_terms(['fields'=>'tt_ids']));
+
+// Requesting parent IDs (numeric strings)
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'names']));
+assertType('array<int, string>|WP_Error', get_terms(['fields'=>'slugs']));
+
+// Requesting objects
+assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'all']));
+assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'all_with_object_id']));
+assertType('array<int, WP_Term>|WP_Error', get_terms(['fields'=>'foo']));
