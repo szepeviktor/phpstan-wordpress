@@ -21,7 +21,6 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ConstantScalarType;
-use PHPStan\Type\ConstantType;
 use PHPStan\Type\TypeCombinator;
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -99,7 +98,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             );
         }
 
-        if (! isset($args['fields'])) {
+        if (! isset($args['fields'], $args['count'])) {
             return TypeCombinator::union(
                 $termsType,
                 $idsType,

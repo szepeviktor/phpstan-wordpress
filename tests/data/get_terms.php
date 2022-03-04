@@ -8,6 +8,7 @@ use function PHPStan\Testing\assertType;
 
 $fields = $_GET['fields'] ?? 'all';
 $key = $_GET['key'] ?? 'fields';
+$count = ! empty( $_GET['count'] );
 
 // Default argument values
 assertType('array<int, WP_Term>|WP_Error', get_terms());
@@ -16,6 +17,9 @@ assertType('array<int, WP_Term>|WP_Error', get_terms([]));
 // Unknown values
 assertType('array<int, int|string|WP_Term>|string|WP_Error', get_terms(['fields'=>$fields]));
 assertType('array<int, int|string|WP_Term>|string|WP_Error', get_terms(['foo'=>'bar','fields'=>$fields]));
+assertType('array<int, int|string|WP_Term>|string|WP_Error', get_terms(['count'=>$count]));
+assertType('array<int, int|string|WP_Term>|string|WP_Error', get_terms(['count'=>$count,'fields'=>'ids']));
+assertType('array<int, int|string|WP_Term>|string|WP_Error', get_terms(['fields'=>$fields,'count'=>false]));
 
 // Unknown keys
 assertType('array<int, int|string|WP_Term>|string|WP_Error', get_terms([$key=>'all']));
@@ -27,6 +31,7 @@ assertType('string|WP_Error', get_terms(['foo'=>'bar','fields'=>'count']));
 assertType('string|WP_Error', get_terms(['count'=>true]));
 assertType('string|WP_Error', get_terms(['foo'=>'bar','count'=>true]));
 assertType('string|WP_Error', get_terms(['fields'=>'ids','count'=>true]));
+assertType('string|WP_Error', get_terms(['fields'=>$fields,'count'=>true]));
 
 // Requesting names or slugs
 assertType('array<int, string>|WP_Error', get_terms(['fields'=>'names']));
