@@ -57,19 +57,9 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             );
         }
 
-        $slugsType = new ArrayType(new IntegerType(), new StringType());
-        $idsType = new ArrayType(new IntegerType(), new IntegerType());
-        $parentsType = new ArrayType(new IntegerType(), new StringType());
-        $termsType = new ArrayType(new IntegerType(), new ObjectType('WP_Term'));
-        $countType = new StringType();
-        $errorType = new ObjectType('WP_Error');
-
         // Called without arguments
         if (! isset($functionCall->args[$argsParameterPosition])) {
-            return TypeCombinator::union(
-                $termsType,
-                $errorType
-            );
+            return self::termsType();
         }
 
         $argumentType = $scope->getType($functionCall->args[$argsParameterPosition]->value);
@@ -82,13 +72,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             // Called with an array argument
             foreach ($argumentType->getKeyTypes() as $index => $key) {
                 if (! $key instanceof ConstantStringType) {
-                    return TypeCombinator::union(
-                        $termsType,
-                        $idsType,
-                        $slugsType,
-                        $countType,
-                        $errorType
-                    );
+                    return self::defaultType();
                 }
 
                 unset($args[$key->getValue()]);
@@ -99,64 +83,78 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             }
         } else {
             // Without constant array argument return default return type
-            return TypeCombinator::union(
-                $termsType,
-                $idsType,
-                $slugsType,
-                $countType,
-                $errorType
-            );
+            return self::defaultType();
         }
 
         if (isset($args['count']) && true === $args['count']) {
-            return TypeCombinator::union(
-                $countType,
-                $errorType
-            );
+            return self::countType();
         }
 
         if (! isset($args['fields'], $args['count'])) {
-            return TypeCombinator::union(
-                $termsType,
-                $idsType,
-                $slugsType,
-                $countType,
-                $errorType
-            );
+            return self::defaultType();
         }
 
         switch ($args['fields']) {
             case 'count':
-                return TypeCombinator::union(
-                    $countType,
-                    $errorType
-                );
+                return self::countType();
             case 'names':
             case 'slugs':
             case 'id=>name':
             case 'id=>slug':
-                return TypeCombinator::union(
-                    $slugsType,
-                    $errorType
-                );
+                return self::slugsType();
             case 'ids':
             case 'tt_ids':
-                return TypeCombinator::union(
-                    $idsType,
-                    $errorType
-                );
+                return self::idsType();
             case 'id=>parent':
-                return TypeCombinator::union(
-                    $parentsType,
-                    $errorType
-                );
+                return self::parentsType();
             case 'all':
             case 'all_with_object_id':
             default:
-                return TypeCombinator::union(
-                    $termsType,
-                    $errorType
-                );
+                return self::termsType();
         }
+    }
+
+    protected static function countType(): Type {
+        return TypeCombinator::union(
+            new StringType(),
+            new ObjectType('WP_Error')
+        );
+    }
+
+    protected static function slugsType(): Type {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new StringType()),
+            new ObjectType('WP_Error')
+        );
+    }
+
+    protected static function idsType(): Type {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new IntegerType()),
+            new ObjectType('WP_Error')
+        );
+    }
+
+    protected static function parentsType(): Type {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new StringType()),
+            new ObjectType('WP_Error')
+        );
+    }
+
+    protected static function termsType(): Type {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new ObjectType('WP_Term')),
+            new ObjectType('WP_Error')
+        );
+    }
+
+    protected static function defaultType(): Type {
+        return TypeCombinator::union(
+            self::termsType(),
+            self::idsType(),
+            self::slugsType(),
+            self::countType(),
+        );
     }
 }
