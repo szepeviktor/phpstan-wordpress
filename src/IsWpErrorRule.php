@@ -15,6 +15,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\VerbosityLevel;
+
 use function sprintf;
 
 /**
@@ -68,10 +69,12 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
 
         if (!$accepted) {
             return [
-                RuleErrorBuilder::message(sprintf(
-                    'is_wp_error(%s) will always evaluate to false.',
-                    $argumentType->describe(VerbosityLevel::typeOnly())
-                ))->build(),
+                RuleErrorBuilder::message(
+                    sprintf(
+                        'is_wp_error(%s) will always evaluate to false.',
+                        $argumentType->describe(VerbosityLevel::typeOnly())
+                    )
+                )->build(),
             ];
         }
 
