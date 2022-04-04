@@ -75,6 +75,14 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
             ];
         }
 
+        if (($argumentType instanceof ObjectType) && ($argumentType->getClassName() === 'WP_Error')) {
+            return [
+                RuleErrorBuilder::message(
+                    'is_wp_error(WP_Error) will always evaluate to true.',
+                )->build(),
+            ];
+        }
+
         return [];
     }
 }
