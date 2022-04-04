@@ -34,11 +34,11 @@ class IsWpErrorRuleTest extends \PHPStan\Testing\RuleTestCase
             [
                 [
                     'is_wp_error(int) will always evaluate to false.',
-                    8,
+                    17,
                 ],
                 [
-                    'is_wp_error(int) will always evaluate to false.',
-                    9,
+                    'is_wp_error(int|false) will always evaluate to false.',
+                    18,
                 ],
             ]
         );
