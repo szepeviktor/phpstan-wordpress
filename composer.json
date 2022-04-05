@@ -1,7 +1,8 @@
 {
     "name": "szepeviktor/phpstan-wordpress",
-    "type": "phpstan-extension",
     "description": "WordPress extensions for PHPStan",
+    "license": "MIT",
+    "type": "phpstan-extension",
     "keywords": [
         "static analysis",
         "code analysis",
@@ -9,7 +10,6 @@
         "wordpress",
         "phpstan"
     ],
-    "license": "MIT",
     "require": {
         "php": "^7.1 || ^8.0",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
@@ -24,16 +24,21 @@
         "phpunit/phpunit": "^7 || ^9",
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6"
     },
+    "autoload": {
+        "psr-4": {
+            "SzepeViktor\\PHPStan\\WordPress\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
     "extra": {
         "phpstan": {
             "includes": [
                 "extension.neon"
             ]
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "SzepeViktor\\PHPStan\\WordPress\\": "src/"
         }
     },
     "scripts": {
@@ -43,10 +48,10 @@
             "@test:cs",
             "@test:phpstan"
         ],
-        "test:phpunit": "phpunit",
         "test:cs": "phpcs",
         "test:cs:fix": "phpcbf",
         "test:phpstan": "phpstan analyze",
+        "test:phpunit": "phpunit",
         "test:syntax": "parallel-lint bootstrap.php src/ tests/"
     }
 }
