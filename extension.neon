@@ -77,6 +77,7 @@ services:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
 rules:
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
+    - SzepeViktor\PHPStan\WordPress\IsWpErrorRule
 parameters:
     bootstrapFiles:
         - %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
