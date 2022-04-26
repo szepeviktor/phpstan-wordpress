@@ -13,12 +13,18 @@ use PhpParser\Node;
 final class HookDocsVisitor extends \PhpParser\NodeVisitorAbstract
 {
     /**
+     * @var int|null
+     */
+    protected $latestStartLine = null;
+
+    /**
      * @var \PhpParser\Comment\Doc|null
      */
     protected $latestDocComment = null;
 
     public function beforeTraverse(array $nodes): ?array
     {
+        $this->latestStartLine = null;
         $this->latestDocComment = null;
 
         return null;
@@ -26,6 +32,12 @@ final class HookDocsVisitor extends \PhpParser\NodeVisitorAbstract
 
     public function enterNode(Node $node): ?Node
     {
+        if ($node->getStartLine() !== $this->latestStartLine) {
+            $this->latestDocComment = null;
+        }
+
+        $this->latestStartLine = $node->getStartLine();
+
         $doc = $node->getDocComment();
 
         if ($doc !== null) {
