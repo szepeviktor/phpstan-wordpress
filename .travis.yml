@@ -22,6 +22,7 @@ before_install:
 
 install:
   - "composer update --no-interaction"
+  - "composer show"
 
 script:
   - "composer test:syntax -- --no-progress"
