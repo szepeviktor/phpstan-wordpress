@@ -79,7 +79,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         // A docblock is optional.
         if ($resolvedPhpDoc === null) {
-            return [RuleErrorBuilder::message('NO DOC BLOCK')->build()];
+            return [];
         }
 
         return $this->validateDocBlock($resolvedPhpDoc);
