@@ -12,10 +12,10 @@ use PhpParser\Node;
 
 final class HookDocsVisitor extends \PhpParser\NodeVisitorAbstract
 {
-    // @var int|null
+    /** @var int|null */
     protected $latestStartLine = null;
 
-    // @var \PhpParser\Comment\Doc|null
+    /** @var \PhpParser\Comment\Doc|null */
     protected $latestDocComment = null;
 
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
