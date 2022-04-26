@@ -49,20 +49,7 @@ class HookDocBlock
 
     private static function getNullableNodeComment(FuncCall $node): ?\PhpParser\Comment\Doc
     {
-        $startLine = $node->getStartLine();
-
-        while ($node !== null && $node->getStartLine() === $startLine) {
-            // Fetch the docblock from the node.
-            $comment = $node->getDocComment();
-
-            if ($comment !== null) {
-                return $comment;
-            }
-
-            /** @var \PhpParser\Node|null */
-            $node = $node->getAttribute('parent');
-        }
-
-        return null;
+        /** @var \PhpParser\Comment\Doc|null */
+        return $node->getAttribute('latestDocComment');
     }
 }
