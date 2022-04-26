@@ -87,7 +87,7 @@ do_action('action', $this, $args);
  * @param \stdClass $instance Instance.
  * @param array    $args     Args
  */
-do_action('action', $this, $args);
+do_action('action', $this, []);
 
 /**
  * This param tag renames the `$this` variable, which is fine, but still has a missing param tag.
@@ -203,8 +203,26 @@ do_action('filter', [$instance, $this]);
  * @param bool has_site_pending_automated_transfer( $this->blog_id )
  * @param int  $blog_id Blog identifier.
  */
-return apply_filters(
+$value = apply_filters(
     'filter',
     false,
     $this->blog_id
 );
+
+/**
+ * This filter is wrapped inside another function call, which is weird but ok. Its param count is incorrect.
+ *
+ * @param int $number
+ */
+$value = intval(apply_filters('filter', 123, $foo));
+
+/**
+ * This is a docblock for an unrelated function.
+ *
+ * It exists to ensure the undocumented filter below does not have its docblock inherited from this function.
+ *
+ * @param bool $yes
+ */
+function foo( bool $yes ) {}
+
+$value = apply_filters('filter', 123, $foo);

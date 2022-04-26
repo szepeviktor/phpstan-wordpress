@@ -76,6 +76,10 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
                     'One or more @param tags has an invalid name or invalid syntax.',
                     206,
                 ],
+                [
+                    'Expected 2 @param tags, found 1.',
+                    217,
+                ],
             ]
         );
     }
