@@ -17,6 +17,13 @@ final class HookDocsVisitor extends \PhpParser\NodeVisitorAbstract
      */
     protected $latestDocComment = null;
 
+    public function beforeTraverse(array $nodes): ?array
+    {
+        $this->latestDocComment = null;
+
+        return null;
+    }
+
     public function enterNode(Node $node): ?Node
     {
         $doc = $node->getDocComment();
