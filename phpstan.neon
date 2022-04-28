@@ -4,8 +4,8 @@ includes:
 parameters:
     level: 9
     # WpThemeMagicPropertiesClassReflectionExtension needs WP_Theme
-    scanFiles:
-        - vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
+    scanDirectories:
+        - vendor/johnpbloch/wordpress-core
     paths:
         - bootstrap.php
         - src/
