@@ -26,6 +26,6 @@ Get_legacy_files | xargs -- rm -v -r
 
 # Generate stubs
 if [ ! -x vendor/bin/generate-stubs ]; then
-    composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
+    composer require --no-interaction --update-no-dev --prefer-dist php-stubs/generator
 fi
 vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=woocommerce-subscriptions-stubs-${PLUGIN_VERSION}.php ./includes/

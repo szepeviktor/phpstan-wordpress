@@ -25,7 +25,7 @@ elif hash generate-stubs.phar 2>/dev/null; then
 elif [ ! -x vendor/bin/generate-stubs ]; then
     rm composer.json composer.lock
     composer require --no-interaction --update-no-dev --prefer-dist --ignore-platform-reqs \
-        giacocorsiglia/stubs-generator
+        php-stubs/generator
 fi
 
 "$GENERATE_STUBS_COMMAND" --functions --classes --interfaces --traits --out=wp-posts-to-posts-${PLUGIN_VERSION}.php \

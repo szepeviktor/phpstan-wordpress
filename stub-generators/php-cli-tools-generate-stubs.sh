@@ -21,7 +21,7 @@ elif hash generate-stubs.phar 2>/dev/null; then
     GENERATE_STUBS_COMMAND="generate-stubs.phar"
 elif [ ! -x vendor/bin/generate-stubs ]; then
     composer require --no-interaction --update-no-dev --prefer-dist --ignore-platform-reqs \
-        giacocorsiglia/stubs-generator
+        php-stubs/generator
 fi
 "$GENERATE_STUBS_COMMAND" --functions --classes --out=php-cli-tools-stubs-${PLUGIN_VERSION}.php \
     ./lib/

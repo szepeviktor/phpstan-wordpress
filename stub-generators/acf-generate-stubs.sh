@@ -30,7 +30,7 @@ fi
 
 # Generate stubs
 if [ ! -x vendor/bin/generate-stubs ]; then
-    composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
+    composer require --no-interaction --update-no-dev --prefer-dist php-stubs/generator
 fi
 
 # Functions only

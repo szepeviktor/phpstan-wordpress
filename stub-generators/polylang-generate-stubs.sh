@@ -16,7 +16,7 @@ rm -v include/functions.php
 
 # Generate stubs
 if [ ! -x vendor/bin/generate-stubs ]; then
-    composer require --no-interaction --update-no-dev --prefer-dist giacocorsiglia/stubs-generator
+    composer require --no-interaction --update-no-dev --prefer-dist php-stubs/generator
 fi
 vendor/bin/generate-stubs --functions --classes --interfaces --traits --out=polylang-stubs-${PLUGIN_VERSION}.php \
     ./admin/ ./include/ ./lingotek/ ./settings/
