@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
-use ChildTestClass;
-use ParentTestClass;
-
 // phpcs:disable Squiz.NamingConventions.ValidFunctionName.NotCamelCaps,Squiz.NamingConventions.ValidVariableName.NotCamelCaps,Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
 
 $one = 1;
@@ -109,7 +106,7 @@ function correct_inherited_param_type(ChildTestClass $one)
     /**
      * This param tag is for a super class of the variable, which is fine.
      *
-     * @param \ParentTestClass $one First parameter.
+     * @param ParentTestClass $one First parameter.
      */
     $args = apply_filters('filter', $one);
 }
@@ -119,7 +116,7 @@ function correct_interface_param_type(ChildTestClass $one)
     /**
      * This param tag is for the interface of the variable, which is fine.
      *
-     * @param \TestInterface $one First parameter.
+     * @param TestInterface $one First parameter.
      */
     $args = apply_filters('filter', $one);
 }
@@ -129,7 +126,7 @@ function incorrect_inherited_param_type(ParentTestClass $one)
     /**
      * This param tag is for a child class of the variable. Oh no.
      *
-     * @param \ChildTestClass $one First parameter.
+     * @param ChildTestClass $one First parameter.
      */
     $args = apply_filters('filter', $one);
 }

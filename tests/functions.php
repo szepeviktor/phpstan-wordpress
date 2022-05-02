@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace SzepeViktor\PHPStan\WordPress\Tests;
+
 /**
  * Returns the passed value.
  *
@@ -18,10 +20,10 @@ interface TestInterface
 {
 }
 
-class ParentTestClass implements \TestInterface
+class ParentTestClass implements TestInterface
 {
 }
 
-class ChildTestClass extends \ParentTestClass
+class ChildTestClass extends ParentTestClass
 {
 }
