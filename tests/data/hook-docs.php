@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
-use ChildTestClass;
-use ParentTestClass;
-
 // phpcs:disable Squiz.NamingConventions.ValidFunctionName.NotCamelCaps,Squiz.NamingConventions.ValidVariableName.NotCamelCaps,Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
 
 $one = 1;
@@ -87,7 +84,7 @@ do_action('action', $this, $args);
  * @param \stdClass $instance Instance.
  * @param array    $args     Args
  */
-do_action('action', $this, $args);
+do_action('action', $this, []);
 
 /**
  * This param tag renames the `$this` variable, which is fine, but still has a missing param tag.
@@ -109,7 +106,7 @@ function correct_inherited_param_type(ChildTestClass $one)
     /**
      * This param tag is for a super class of the variable, which is fine.
      *
-     * @param \ParentTestClass $one First parameter.
+     * @param ParentTestClass $one First parameter.
      */
     $args = apply_filters('filter', $one);
 }
@@ -119,7 +116,7 @@ function correct_interface_param_type(ChildTestClass $one)
     /**
      * This param tag is for the interface of the variable, which is fine.
      *
-     * @param \TestInterface $one First parameter.
+     * @param TestInterface $one First parameter.
      */
     $args = apply_filters('filter', $one);
 }
@@ -129,7 +126,7 @@ function incorrect_inherited_param_type(ParentTestClass $one)
     /**
      * This param tag is for a child class of the variable. Oh no.
      *
-     * @param \ChildTestClass $one First parameter.
+     * @param ChildTestClass $one First parameter.
      */
     $args = apply_filters('filter', $one);
 }
@@ -203,8 +200,26 @@ do_action('filter', [$instance, $this]);
  * @param bool has_site_pending_automated_transfer( $this->blog_id )
  * @param int  $blog_id Blog identifier.
  */
-return apply_filters(
+$value = apply_filters(
     'filter',
     false,
     $this->blog_id
 );
+
+/**
+ * This filter is wrapped inside another function call, which is weird but ok. Its param count is incorrect.
+ *
+ * @param int $number
+ */
+$value = intval(apply_filters('filter', 123, $foo));
+
+/**
+ * This is a docblock for an unrelated function.
+ *
+ * It exists to ensure the undocumented filter below does not have its docblock inherited from this function.
+ *
+ * @param bool $yes
+ */
+function foo( bool $yes ) {}
+
+$value = apply_filters('filter', 123, $foo);

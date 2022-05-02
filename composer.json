@@ -11,17 +11,17 @@
         "phpstan"
     ],
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^7.2 || ^8.0",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0",
-        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan": "^1.6",
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
-        "composer/composer": "^2.1.12",
+        "composer/composer": "^2.1.14",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "php-parallel-lint/php-parallel-lint": "^1.1",
-        "phpstan/phpstan-strict-rules": "^1.0",
-        "phpunit/phpunit": "^7 || ^9",
+        "phpstan/phpstan-strict-rules": "^1.2",
+        "phpunit/phpunit": "^8 || ^9",
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6"
     },
     "autoload": {

@@ -9,7 +9,6 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use function PHPStan\Testing\assertType;
 use function apply_filters;
-use function returnValue;
 
 $value = apply_filters('filter', 'Hello, World');
 assertType('mixed', $value);

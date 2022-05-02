@@ -10,7 +10,16 @@ dist: "bionic"
 php:
   - "8.0"
   - "7.4"
-  - "7.1"
+  - "7.2"
+
+jobs:
+  include:
+    - php: "8.1"
+      script:
+        - "composer test:syntax -- --no-progress"
+        - "composer test:phpunit -- --verbose"
+        # - "composer test:cs -- -s"
+        - "composer test:phpstan -- --ansi --memory-limit=1G --no-progress"
 
 cache:
   directories:

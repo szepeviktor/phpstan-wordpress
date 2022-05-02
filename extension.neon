@@ -75,6 +75,10 @@ services:
         class: SzepeViktor\PHPStan\WordPress\TermExistsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\HookDocsVisitor
+        tags:
+            - phpstan.parser.richParserNodeVisitor
 rules:
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
     - SzepeViktor\PHPStan\WordPress\IsWpErrorRule

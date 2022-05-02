@@ -38,45 +38,55 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
             [
                 [
                     'Expected 2 @param tags, found 1.',
-                    22,
+                    19,
                 ],
                 [
                     'Expected 2 @param tags, found 3.',
-                    31,
+                    28,
                 ],
                 [
                     '@param string $one does not accept actual type of parameter: int|string.',
-                    43,
+                    40,
                 ],
                 [
                     '@param string $one does not accept actual type of parameter: int.',
-                    53,
+                    50,
                 ],
                 [
                     '@param tag must not be named $this. Choose a descriptive alias, for example $instance.',
-                    82,
+                    79,
                 ],
                 [
                     'Expected 2 @param tags, found 1.',
-                    97,
+                    94,
                 ],
                 [
-                    '@param ChildTestClass $one does not accept actual type of parameter: ParentTestClass.',
-                    134,
+                    '@param SzepeViktor\PHPStan\WordPress\Tests\ChildTestClass $one does not accept actual type of parameter: SzepeViktor\PHPStan\WordPress\Tests\ParentTestClass.',
+                    131,
                 ],
                 [
                     '@param string $one does not accept actual type of parameter: string|null.',
-                    155,
+                    152,
                 ],
                 [
                     'One or more @param tags has an invalid name or invalid syntax.',
-                    170,
+                    167,
                 ],
                 [
                     'One or more @param tags has an invalid name or invalid syntax.',
-                    206,
+                    203,
+                ],
+                [
+                    'Expected 2 @param tags, found 1.',
+                    214,
                 ],
             ]
         );
+    }
+
+    public static function getAdditionalConfigFiles(): array
+    {
+        // Path to your project's phpstan.neon, or extension.neon in case of custom extension packages.
+        return [dirname(__DIR__) . '/extension.neon'];
     }
 }
