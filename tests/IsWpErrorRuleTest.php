@@ -54,7 +54,6 @@ class IsWpErrorRuleTest extends \PHPStan\Testing\RuleTestCase
 
     public static function getAdditionalConfigFiles(): array
     {
-        // Path to your project's phpstan.neon, or extension.neon in case of custom extension packages.
-        return [dirname(__DIR__) . '/extension.neon'];
+        return [dirname(__DIR__) . '/vendor/vendorName/packageName/extension.neon'];
     }
 }
