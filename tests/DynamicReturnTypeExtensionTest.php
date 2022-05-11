@@ -39,6 +39,6 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
 
     public static function getAdditionalConfigFiles(): array
     {
-        return [dirname(__DIR__) . '/vendor/vendorName/packageName/extension.neon'];
+        return [dirname(__DIR__) . '/vendor/szepeviktor/phpstan-wordpress/extension.neon'];
     }
 }
