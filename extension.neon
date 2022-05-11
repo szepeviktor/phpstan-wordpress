@@ -84,8 +84,8 @@ rules:
     - SzepeViktor\PHPStan\WordPress\IsWpErrorRule
 parameters:
     bootstrapFiles:
-        - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
         - bootstrap.php
+        - wordpress-stubs.php
     dynamicConstantNames:
         - WP_DEBUG
         - WP_DEBUG_LOG

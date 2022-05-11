@@ -3,6 +3,7 @@
     <file>bootstrap.php</file>
     <file>src/</file>
     <file>tests/</file>
+    <file>wordpress-stubs.php</file>
 
     <exclude-pattern>tests/data/*</exclude-pattern>
     <exclude-pattern>tests/functions.php</exclude-pattern>
