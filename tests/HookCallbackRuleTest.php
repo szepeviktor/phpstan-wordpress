@@ -32,6 +32,30 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                 __DIR__ . '/data/hook-callback.php',
             ],
             [
+                [
+                    'Filter callback has no return value.',
+                    14,
+                ],
+                [
+                    'Filter callback has no return value.',
+                    17,
+                ],
+                [
+                    'Filter callback has no return value.',
+                    18,
+                ],
+                [
+                    'Callback expects 1 argument, $accepted_args is set to 0.',
+                    21,
+                ],
+                [
+                    'Callback expects 1 argument, $accepted_args is set to 2.',
+                    24,
+                ],
+                [
+                    'Callback expects 2 arguments, $accepted_args is set to 1.',
+                    24,
+                ],
             ]
         );
     }
