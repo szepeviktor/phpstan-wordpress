@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use function add_filter;
+use function add_action;
+
 // phpcs:disable Squiz.NamingConventions.ValidFunctionName.NotCamelCaps,Squiz.NamingConventions.ValidVariableName.NotCamelCaps,Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
 
 /**
@@ -31,6 +34,27 @@ add_filter('not_a_core_filter', function($value1, $value2) {
 // Core filter, callback is missing a return value
 add_filter('post_class', function() {});
 add_filter('post_class', function(array $classes) {});
+
+/**
+ * Incorrect usage that's handled by PHPStan:
+ *
+ * These are here to ensure the rule doesn't trigger unwanted errors.
+ */
+
+// Too few parameters:
+add_filter('post_class');
+add_filter();
+
+// Invalid callback:
+add_filter('post_class','i_do_not_exist');
+
+// Invalid parameters:
+add_filter('post_class', function() {
+    return 123;
+}, false);
+add_filter('post_class', function() {
+    return 123;
+}, 10, false);
 
 /**
  * Correct usage:

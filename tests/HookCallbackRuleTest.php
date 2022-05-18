@@ -54,7 +54,7 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                 ],
                 [
                     'Callback expects 2 arguments, $accepted_args is set to 1.',
-                    24,
+                    27,
                 ],
             ]
         );
