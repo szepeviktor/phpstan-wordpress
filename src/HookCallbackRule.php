@@ -60,7 +60,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        // @TODO everything.
+        $args = $node->getArgs();
+
+        // If we don't have enough arguments, bail out and let PHPStan handle the error:
+        if (count($args) < 2) {
+            return [];
+        }
+
         return [];
     }
 }
