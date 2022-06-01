@@ -54,6 +54,8 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     public function processNode(Node $node, Scope $scope): array
     {
         $name = $node->name;
+        $this->currentNode = $node;
+        $this->currentScope = $scope;
 
         if (!($name instanceof \PhpParser\Node\Name)) {
             return [];
@@ -89,41 +91,54 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
+        try {
+            $this->validateParamCount($args);
+        } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
+            return [RuleErrorBuilder::message($e->getMessage())->build()];
+        }
+
+        return [];
+    }
+
+    protected function validateParamCount(array $args): void
+    {
+        $callbackType = $this->currentScope->getType($args[1]->value);
         $acceptedArgs = 1;
 
         if (isset($args[3])) {
             $acceptedArgs = null;
-            $argumentType = $scope->getType($args[3]->value);
+            $argumentType = $this->currentScope->getType($args[3]->value);
 
             if ($argumentType instanceof ConstantIntegerType) {
                 $acceptedArgs = $argumentType->getValue();
             }
         }
 
-        if ($acceptedArgs !== null) {
-            $callbackAcceptor = $callbackType->getCallableParametersAcceptors($scope)[0];
-
-            $callbackParameters = $callbackAcceptor->getParameters();
-            $expectedArgs = count($callbackParameters);
-
-            if ($expectedArgs !== $acceptedArgs && !($expectedArgs === 0 && $acceptedArgs === 1)) {
-                $message = (1 === $expectedArgs)
-                    ? 'Callback expects %1$d argument, $accepted_args is set to %2$d.'
-                    : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.'
-                ;
-
-                return [
-                    RuleErrorBuilder::message(
-                        sprintf(
-                            $message,
-                            $expectedArgs,
-                            $acceptedArgs
-                        )
-                    )->build()
-                ];
-            }
+        if ($acceptedArgs === null) {
+            return;
         }
 
-        return [];
+        $callbackAcceptor = $callbackType->getCallableParametersAcceptors($this->currentScope)[0];
+        $callbackParameters = $callbackAcceptor->getParameters();
+        $expectedArgs = count($callbackParameters);
+
+        if ($expectedArgs === $acceptedArgs) {
+            return;
+        }
+
+        if ($expectedArgs === 0 && $acceptedArgs === 1) {
+            return;
+        }
+
+        $message = (1 === $expectedArgs)
+            ? 'Callback expects %1$d argument, $accepted_args is set to %2$d.'
+            : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.'
+        ;
+
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(sprintf(
+            $message,
+            $expectedArgs,
+            $acceptedArgs
+        ));
     }
 }
