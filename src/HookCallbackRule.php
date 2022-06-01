@@ -72,19 +72,14 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        list(
-            $hookNameArg,
-            $callbackArg
-        ) = $args;
-
-        $hookNameType = $scope->getType($hookNameArg->value);
+        $hookNameType = $scope->getType($args[0]->value);
         $hookNameValue = null;
 
         if ($hookNameType instanceof ConstantStringType) {
             $hookNameValue = $hookNameType->getValue();
         }
 
-        $callbackType = $scope->getType($callbackArg->value);
+        $callbackType = $scope->getType($args[1]->value);
 
         // If the callback is not valid, bail out and let PHPStan handle the error:
         if ($callbackType->isCallable()->no()) {
