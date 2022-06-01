@@ -31,10 +31,6 @@ add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 });
 
-// Core filter, callback is missing a return value
-add_filter('post_class', function() {});
-add_filter('post_class', function(array $classes) {});
-
 /**
  * Incorrect usage that's handled by PHPStan:
  *
