@@ -9,12 +9,14 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node;
+use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\Type;
 
 /**
  * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\FuncCall>
@@ -87,7 +89,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         }
 
         try {
-            $this->validateParamCount($args);
+            $this->validateParamCount($callbackType, $args[3] ?? null);
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
@@ -95,14 +97,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         return [];
     }
 
-    protected function validateParamCount(array $args): void
+    protected function validateParamCount(Type $callbackType, ?Arg $arg): void
     {
-        $callbackType = $this->currentScope->getType($args[1]->value);
         $acceptedArgs = 1;
 
-        if (isset($args[3])) {
+        if (isset($arg)) {
             $acceptedArgs = null;
-            $argumentType = $this->currentScope->getType($args[3]->value);
+            $argumentType = $this->currentScope->getType($arg->value);
 
             if ($argumentType instanceof ConstantIntegerType) {
                 $acceptedArgs = $argumentType->getValue();
