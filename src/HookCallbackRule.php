@@ -106,7 +106,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             $callbackParameters = $callbackAcceptor->getParameters();
             $expectedArgs = count($callbackParameters);
 
-            if ($expectedArgs !== $acceptedArgs && ($expectedArgs !== 0 && $acceptedArgs !== 1)) {
+            if ($expectedArgs !== $acceptedArgs && !($expectedArgs === 0 && $acceptedArgs === 1)) {
                 $message = (1 === $expectedArgs)
                     ? 'Callback expects %1$d argument, $accepted_args is set to %2$d.'
                     : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.'
