@@ -78,4 +78,18 @@ add_filter('not_a_core_filter', function($value) {
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 }, 10, 2);
+
+// Various callback types
 add_filter('not_a_core_filter', '__return_false');
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_callback');
+add_filter('not_a_core_filter', new TestInvokable(), 10, 2);
+
+function filter_callback() {
+    return 123;
+}
+
+class TestInvokable {
+	public function __invoke($one, $two) {
+        return 123;
+	}
+}
