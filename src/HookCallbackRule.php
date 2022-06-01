@@ -12,6 +12,7 @@ use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
@@ -88,8 +89,10 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
+        $callbackAcceptor = $callbackType->getCallableParametersAcceptors($scope)[0];
+
         try {
-            $this->validateParamCount($callbackType, $args[3] ?? null);
+            $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
@@ -97,7 +100,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         return [];
     }
 
-    protected function validateParamCount(Type $callbackType, ?Arg $arg): void
+    protected function validateParamCount(ParametersAcceptor $callbackAcceptor, ?Arg $arg): void
     {
         $acceptedArgs = 1;
 
@@ -114,7 +117,6 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $callbackAcceptor = $callbackType->getCallableParametersAcceptors($this->currentScope)[0];
         $callbackParameters = $callbackAcceptor->getParameters();
         $expectedArgs = count($callbackParameters);
 
