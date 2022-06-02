@@ -159,7 +159,12 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         );
 
         if (! $accepted) {
-            $message = 'Action callback must return void.';
+            $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
+
+            $message = sprintf(
+                'Action callback returns %s but should not return anything.',
+                $acceptedType->describe($acceptedVerbosityLevel)
+            );
 
             throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
         }
