@@ -94,15 +94,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         }
 
         $callbackAcceptor = $callbackType->getCallableParametersAcceptors($scope)[0];
-        $acceptingType = new MixedType();
-
-        if ('add_action' === $name->toString()) {
-            $acceptingType = new VoidType();
-        }
 
         try {
             $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
-            $this->validateReturnType($callbackAcceptor, $acceptingType);
+
+            if ('add_action' === $name->toString()) {
+                $this->validateActionReturnType($callbackAcceptor);
+            }
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
@@ -148,6 +146,23 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             $expectedArgs,
             $acceptedArgs
         ));
+    }
+
+    protected function validateActionReturnType(ParametersAcceptor $callbackAcceptor): void
+    {
+        $acceptingType = new VoidType();
+        $acceptedType = $callbackAcceptor->getReturnType();
+        $accepted = $this->ruleLevelHelper->accepts(
+            $acceptingType,
+            $acceptedType,
+            true
+        );
+
+        if (! $accepted) {
+            $message = 'Action callback must return void.';
+
+            throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        }
     }
 
     protected function validateReturnType(ParametersAcceptor $callbackAcceptor, Type $acceptingType): void

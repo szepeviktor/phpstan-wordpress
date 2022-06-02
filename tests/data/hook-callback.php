@@ -42,6 +42,11 @@ add_filter('post_class', function($class) {
 add_action('hello', function() {
     return true;
 });
+add_action('hello', function($value) {
+    if ($value) {
+        return true;
+    }
+});
 
 /**
  * Incorrect usage that's handled by PHPStan:
@@ -89,6 +94,13 @@ add_filter('not_a_core_filter', function($value) {
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 }, 10, 2);
+
+// Action callbacks must return void
+add_action('hello', function() {
+    return;
+});
+add_action('hello', function() {
+});
 
 // Various callback types
 add_filter('not_a_core_filter', '__return_false');

@@ -64,6 +64,10 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     'Action callback must return void.',
                     42,
                 ],
+                [
+                    'Action callback must return void.',
+                    45,
+                ],
             ]
         );
     }
