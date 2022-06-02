@@ -13,14 +13,14 @@ use function add_action;
  * Incorrect usage:
  */
 
-// Not a core filter, but callback is missing a return value
+// But callback is missing a return value
 add_filter('not_a_core_filter', function() {});
 
-// Core filter, callback is missing a return value
+// Callback is missing a return value
 add_filter('post_class', function() {});
 add_filter('post_class', function(array $classes) {});
 
-// Not a core filter, accepted args are incorrect
+// Accepted args are incorrect
 add_filter('not_a_core_filter', function($value) {
     return 123;
 }, 10, 0);
@@ -29,6 +29,18 @@ add_filter('not_a_core_filter', function($value) {
 }, 10, 2);
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
+});
+
+// Callback may miss a return value
+add_filter('post_class', function($class) {
+    if ($class) {
+        return [];
+    }
+});
+
+// Action callback must return void
+add_action('hello', function() {
+    return true;
 });
 
 /**
@@ -44,6 +56,9 @@ add_filter();
 // Invalid callback:
 add_filter('post_class','i_do_not_exist');
 
+// Unknown callback:
+add_filter('post_class',$_GET['callback']);
+
 // Invalid parameters:
 add_filter('post_class', function() {
     return 123;
@@ -56,7 +71,7 @@ add_filter('post_class', function() {
  * Correct usage:
  */
 
-// Not a core filter, but callback is ok
+// But callback is ok
 add_filter('not_a_core_filter', function() {
     return 123;
 }, 10, 0);

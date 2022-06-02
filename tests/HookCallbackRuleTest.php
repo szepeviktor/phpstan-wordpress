@@ -33,15 +33,15 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
             ],
             [
                 [
-                    'Filter callback has no return value.',
+                    'Filter callback return statement is missing.',
                     17,
                 ],
                 [
-                    'Filter callback has no return value.',
+                    'Filter callback return statement is missing.',
                     20,
                 ],
                 [
-                    'Filter callback has no return value.',
+                    'Filter callback return statement is missing.',
                     21,
                 ],
                 [
@@ -55,6 +55,14 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                 [
                     'Callback expects 2 arguments, $accepted_args is set to 1.',
                     30,
+                ],
+                [
+                    'Filter callback return statement is missing.',
+                    35,
+                ],
+                [
+                    'Action callback must return void.',
+                    42,
                 ],
             ]
         );

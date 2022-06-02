@@ -11,13 +11,17 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\Type;
+use PHPStan\Type\VerbosityLevel;
+use PHPStan\Type\VoidType;
 
 /**
  * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\FuncCall>
@@ -90,9 +94,15 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         }
 
         $callbackAcceptor = $callbackType->getCallableParametersAcceptors($scope)[0];
+        $acceptingType = new MixedType();
+
+        if ('add_action' === $name->toString()) {
+            $acceptingType = new VoidType();
+        }
 
         try {
             $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
+            $this->validateReturnType($callbackAcceptor, $acceptingType);
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
@@ -138,5 +148,31 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             $expectedArgs,
             $acceptedArgs
         ));
+    }
+
+    protected function validateReturnType(ParametersAcceptor $callbackAcceptor, Type $acceptingType): void
+    {
+        $acceptedType = $callbackAcceptor->getReturnType();
+        $accepted = $this->ruleLevelHelper->accepts(
+            $acceptingType,
+            $acceptedType,
+            true
+        );
+        $acceptingVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptingType);
+        $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
+
+        if (! $accepted) {
+            $message = sprintf(
+                'Callback should return %1$s but returns %2$s.',
+                $acceptingType->describe($acceptingVerbosityLevel),
+                $acceptedType->describe($acceptedVerbosityLevel)
+            );
+
+            if (! (new VoidType())->accepts($acceptedType, true)->no()) {
+                $message = 'Filter callback return statement is missing.';
+            }
+
+            throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        }
     }
 }
