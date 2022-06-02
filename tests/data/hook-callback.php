@@ -13,10 +13,10 @@ use function add_action;
  * Incorrect usage:
  */
 
-// But callback is missing a return value
+// Filter callback is missing a return value
 add_filter('not_a_core_filter', function() {});
 
-// Callback is missing a return value
+// Filter callback is missing a return value
 add_filter('post_class', function() {});
 add_filter('post_class', function(array $classes) {});
 
@@ -31,7 +31,7 @@ add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 });
 
-// Callback may miss a return value
+// Filter callback may miss a return value
 add_filter('post_class', function($class) {
     if ($class) {
         return [];
@@ -100,6 +100,15 @@ add_action('hello', function() {
     return;
 });
 add_action('hello', function() {
+});
+
+// Filter callback may exit, unfortunately
+add_filter('post_class', function(array $classes) {
+    if ($classes) {
+        exit('Goodbye');
+    }
+
+    return $classes;
 });
 
 // Various callback types

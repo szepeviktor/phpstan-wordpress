@@ -14,6 +14,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
@@ -93,13 +94,15 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        $callbackAcceptor = $callbackType->getCallableParametersAcceptors($scope)[0];
+        $callbackAcceptor = ParametersAcceptorSelector::selectSingle($callbackType->getCallableParametersAcceptors($scope));
 
         try {
             $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
 
             if ('add_action' === $name->toString()) {
                 $this->validateActionReturnType($callbackAcceptor);
+            } else {
+                $this->validateUnknownFilterReturnType($callbackAcceptor);
             }
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
@@ -170,7 +173,19 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         }
     }
 
-    protected function validateReturnType(ParametersAcceptor $callbackAcceptor, Type $acceptingType): void
+    protected function validateUnknownFilterReturnType(ParametersAcceptor $callbackAcceptor): void
+    {
+        $returnType = $callbackAcceptor->getReturnType();
+        $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
+
+        if ($isVoidSuperType->yes()) {
+            $message = 'Filter callback return statement is missing.';
+
+            throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        }
+    }
+
+    protected function validateKnownFilterReturnType(ParametersAcceptor $callbackAcceptor, Type $acceptingType): void
     {
         $acceptedType = $callbackAcceptor->getReturnType();
         $accepted = $this->ruleLevelHelper->accepts(
