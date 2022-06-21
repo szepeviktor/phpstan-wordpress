@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.parse_url_parse_url
+
 /**
  * Set return type of wp_parse_url().
  *
@@ -19,7 +21,6 @@ use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ConstantType;
-use PHPStan\Type\DynamicFunctionReturnTypeExtension;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
@@ -38,16 +39,15 @@ use const PHP_URL_QUERY;
 use const PHP_URL_SCHEME;
 use const PHP_URL_USER;
 
-final class WpParseUrlFunctionDynamicReturnTypeExtension implements DynamicFunctionReturnTypeExtension
+final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
-
-    /** @var array<int,Type>|null */
+    /** @var array<int, \PHPStan\Type\Type>|null */
     private $componentTypesPairedConstants = null;
 
-    /** @var array<string,Type>|null */
+    /** @var array<string, \PHPStan\Type\Type>|null */
     private $componentTypesPairedStrings = null;
 
-    /** @var Type|null */
+    /** @var \PHPStan\Type\Type|null */
     private $allComponentsTogetherType = null;
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
@@ -84,6 +84,7 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements DynamicFunct
 
         if ($urlType instanceof ConstantStringType) {
             try {
+                // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,Generic.PHP.NoSilencedErrors.Discouraged
                 $result = @parse_url($urlType->getValue(), $componentType->getValue());
             } catch (\ValueError $e) {
                 return new ConstantBooleanType(false);
@@ -160,5 +161,4 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements DynamicFunct
             'fragment' => $string,
         ];
     }
-
 }
