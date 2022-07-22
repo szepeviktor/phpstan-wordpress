@@ -35,6 +35,7 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         'single_term_title' => 1,
         'the_date' => 3,
         'the_modified_date' => 3,
+        'the_title' => 2,
         'wp_loginout' => 1,
         'wp_register' => 2,
         'wp_title' => 1,
