@@ -196,18 +196,20 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $acceptingVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptingType);
         $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
 
-        if (! $accepted) {
-            $message = sprintf(
-                'Callback should return %1$s but returns %2$s.',
-                $acceptingType->describe($acceptingVerbosityLevel),
-                $acceptedType->describe($acceptedVerbosityLevel)
-            );
-
-            if (! (new VoidType())->accepts($acceptedType, true)->no()) {
-                $message = 'Filter callback return statement is missing.';
-            }
-
-            throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        if ($accepted) {
+            return;
         }
+
+        $message = sprintf(
+            'Callback should return %1$s but returns %2$s.',
+            $acceptingType->describe($acceptingVerbosityLevel),
+            $acceptedType->describe($acceptedVerbosityLevel)
+        );
+
+        if (! (new VoidType())->accepts($acceptedType, true)->no()) {
+            $message = 'Filter callback return statement is missing.';
+        }
+
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
     }
 }
