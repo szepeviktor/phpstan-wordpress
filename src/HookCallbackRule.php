@@ -91,7 +91,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             if ($name->toString() === 'add_action') {
                 $this->validateActionReturnType($callbackAcceptor);
             } else {
-                $this->validateUnknownFilterReturnType($callbackAcceptor);
+                $this->validateFilterReturnType($callbackAcceptor);
             }
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
@@ -165,7 +165,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
     }
 
-    protected function validateUnknownFilterReturnType(ParametersAcceptor $callbackAcceptor): void
+    protected function validateFilterReturnType(ParametersAcceptor $callbackAcceptor): void
     {
         $returnType = $callbackAcceptor->getReturnType();
         $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
