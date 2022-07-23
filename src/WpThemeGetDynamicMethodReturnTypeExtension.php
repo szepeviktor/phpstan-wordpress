@@ -22,7 +22,6 @@ use PHPStan\Type\Type;
 
 class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
-
     /**
      * File headers.
      *
