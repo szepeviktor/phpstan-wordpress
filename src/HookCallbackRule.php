@@ -117,8 +117,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $callbackParameters = $callbackAcceptor->getParameters();
-        $expectedArgs = count($callbackParameters);
+        $expectedArgs = count($callbackAcceptor->getParameters());
 
         if ($expectedArgs === $acceptedArgs) {
             return;
@@ -143,10 +142,9 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
     protected function validateActionReturnType(ParametersAcceptor $callbackAcceptor): void
     {
-        $acceptingType = new VoidType();
         $acceptedType = $callbackAcceptor->getReturnType();
         $accepted = $this->ruleLevelHelper->accepts(
-            $acceptingType,
+            new VoidType(),
             $acceptedType,
             true
         );
@@ -155,14 +153,12 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
-
-        $message = sprintf(
-            'Action callback returns %s but should not return anything.',
-            $acceptedType->describe($acceptedVerbosityLevel)
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
+            sprintf(
+                'Action callback returns %s but should not return anything.',
+                $acceptedType->describe(VerbosityLevel::getRecommendedLevelByType($acceptedType))
+            )
         );
-
-        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
     }
 
     protected function validateFilterReturnType(ParametersAcceptor $callbackAcceptor): void
@@ -174,8 +170,8 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $message = 'Filter callback return statement is missing.';
-
-        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
+            'Filter callback return statement is missing.'
+        );
     }
 }
