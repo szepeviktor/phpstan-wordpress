@@ -152,16 +152,18 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             true
         );
 
-        if (! $accepted) {
-            $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
-
-            $message = sprintf(
-                'Action callback returns %s but should not return anything.',
-                $acceptedType->describe($acceptedVerbosityLevel)
-            );
-
-            throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        if ($accepted) {
+            return;
         }
+
+        $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
+
+        $message = sprintf(
+            'Action callback returns %s but should not return anything.',
+            $acceptedType->describe($acceptedVerbosityLevel)
+        );
+
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
     }
 
     protected function validateUnknownFilterReturnType(ParametersAcceptor $callbackAcceptor): void
