@@ -12,7 +12,6 @@
     ],
     "require": {
         "php": "^7.2 || ^8.0",
-        "johnbillion/wp-hooks": "^0.8.0",
         "php-stubs/wordpress-stubs": "^4.7 || ^5.0 || ^6.0",
         "phpstan/phpstan": "^1.6",
         "symfony/polyfill-php73": "^1.12.0"
