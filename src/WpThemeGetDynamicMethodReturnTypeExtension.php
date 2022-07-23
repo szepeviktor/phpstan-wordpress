@@ -28,19 +28,19 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
      * @var array<string,string>
      */
     private static $headers = [
-        'Name' => 'Theme Name',
-        'ThemeURI' => 'Theme URI',
-        'Description' => 'Description',
-        'Author' => 'Author',
-        'AuthorURI' => 'Author URI',
-        'Version' => 'Version',
-        'Template' => 'Template',
-        'Status' => 'Status',
-        'Tags' => 'Tags',
-        'TextDomain' => 'Text Domain',
-        'DomainPath' => 'Domain Path',
-        'RequiresWP' => 'Requires at least',
-        'RequiresPHP' => 'Requires PHP',
+        'Name',
+        'ThemeURI',
+        'Description',
+        'Author',
+        'AuthorURI',
+        'Version',
+        'Template',
+        'Status',
+        'Tags',
+        'TextDomain',
+        'DomainPath',
+        'RequiresWP',
+        'RequiresPHP',
     ];
 
     public function getClass(): string
@@ -68,7 +68,7 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
             return new ArrayType(new IntegerType(), new StringType());
         }
 
-        if (isset(self::$headers[$argumentType->getValue()])) {
+        if (in_array($argumentType->getValue(), self::$headers, true)) {
             return new StringType();
         }
 
