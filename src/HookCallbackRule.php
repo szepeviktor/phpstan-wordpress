@@ -79,7 +79,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $callbackType = $scope->getType($args[1]->value);
 
         // If the callback is not valid, bail out and let PHPStan handle the error:
-        if ($callbackType->isCallable()->no()) {
+        if (! $callbackType->isCallable()->yes()) {
             return [];
         }
 
