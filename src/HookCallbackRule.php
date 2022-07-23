@@ -170,10 +170,12 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $returnType = $callbackAcceptor->getReturnType();
         $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
 
-        if ($isVoidSuperType->yes()) {
-            $message = 'Filter callback return statement is missing.';
-
-            throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
+        if (! $isVoidSuperType->no()) {
+            return;
         }
+
+        $message = 'Filter callback return statement is missing.';
+
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
     }
 }
