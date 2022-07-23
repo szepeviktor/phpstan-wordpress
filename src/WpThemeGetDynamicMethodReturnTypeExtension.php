@@ -19,6 +19,7 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 
 class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
@@ -61,7 +62,11 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
         $argumentType = $scope->getType($methodCall->getArgs()[0]->value);
 
         if (!$argumentType instanceof ConstantStringType) {
-            return new ConstantBooleanType(false);
+            return TypeCombinator::union(
+                new StringType(),
+                new ArrayType(new IntegerType(), new StringType()),
+                new ConstantBooleanType(false)
+            );
         }
 
         if ($argumentType->getValue() === 'Tags') {
