@@ -17,7 +17,6 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
-use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\VoidType;
 
@@ -176,33 +175,5 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
             throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
         }
-    }
-
-    protected function validateKnownFilterReturnType(ParametersAcceptor $callbackAcceptor, Type $acceptingType): void
-    {
-        $acceptedType = $callbackAcceptor->getReturnType();
-        $accepted = $this->ruleLevelHelper->accepts(
-            $acceptingType,
-            $acceptedType,
-            true
-        );
-        $acceptingVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptingType);
-        $acceptedVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($acceptedType);
-
-        if ($accepted) {
-            return;
-        }
-
-        $message = sprintf(
-            'Callback should return %1$s but returns %2$s.',
-            $acceptingType->describe($acceptingVerbosityLevel),
-            $acceptedType->describe($acceptedVerbosityLevel)
-        );
-
-        if (! (new VoidType())->accepts($acceptedType, true)->no()) {
-            $message = 'Filter callback return statement is missing.';
-        }
-
-        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException($message);
     }
 }
