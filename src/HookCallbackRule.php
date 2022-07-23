@@ -166,7 +166,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $returnType = $callbackAcceptor->getReturnType();
         $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
 
-        if (! $isVoidSuperType->no()) {
+        if (! $isVoidSuperType->yes()) {
             return;
         }
 
