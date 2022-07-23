@@ -117,7 +117,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $expectedArgs = count($callbackAcceptor->getParameters());
+        $requiredParameters = array_filter(
+            $callbackAcceptor->getParameters(),
+            function(\PHPStan\Reflection\ParameterReflection $parameter): bool {
+                return ! $parameter->isOptional();
+            }
+        );
+        $expectedArgs = count($requiredParameters);
 
         if ($expectedArgs === $acceptedArgs) {
             return;

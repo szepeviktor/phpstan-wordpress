@@ -30,6 +30,12 @@ add_filter('not_a_core_filter', function($value) {
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 });
+add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
+    return 123;
+});
+add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
+    return 123;
+}, 10, 4);
 
 // Filter callback may miss a return value
 add_filter('post_class', function($class) {
@@ -94,6 +100,12 @@ add_filter('not_a_core_filter', function($value) {
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 }, 10, 2);
+add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
+    return 123;
+}, 10, 2);
+add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
+    return 123;
+}, 10, 3);
 
 // Action callbacks must return void
 add_action('hello', function() {
