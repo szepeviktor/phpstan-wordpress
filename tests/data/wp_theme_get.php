@@ -20,5 +20,5 @@ assertType('array<int, string>', $theme->get('Tags'));
 assertType('string', $theme->get('TextDomain'));
 assertType('string', $theme->get('DomainPath'));
 assertType('string', $theme->get('RequiresWP'));
-assertType('false', $theme->get('something'));
-assertType('false', $theme->get($_GET['something']));
+assertType('false', $theme->get('foo'));
+assertType('array<int, string>|string|false', $theme->get($_GET['foo']));
