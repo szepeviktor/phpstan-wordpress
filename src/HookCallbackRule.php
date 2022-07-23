@@ -97,7 +97,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         try {
             $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
 
-            if ('add_action' === $name->toString()) {
+            if ($name->toString() === 'add_action') {
                 $this->validateActionReturnType($callbackAcceptor);
             } else {
                 $this->validateUnknownFilterReturnType($callbackAcceptor);
@@ -137,7 +137,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $message = (1 === $expectedArgs)
+        $message = ($expectedArgs === 1)
             ? 'Callback expects %1$d argument, $accepted_args is set to %2$d.'
             : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.'
         ;
