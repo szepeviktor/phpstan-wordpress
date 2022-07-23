@@ -17,7 +17,6 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\VoidType;
@@ -76,13 +75,6 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         // If we don't have enough arguments, bail out and let PHPStan handle the error:
         if (count($args) < 2) {
             return [];
-        }
-
-        $hookNameType = $scope->getType($args[0]->value);
-        $hookNameValue = null;
-
-        if ($hookNameType instanceof ConstantStringType) {
-            $hookNameValue = $hookNameType->getValue();
         }
 
         $callbackType = $scope->getType($args[1]->value);
