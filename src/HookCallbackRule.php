@@ -139,14 +139,15 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
         $message = ($expectedArgs === 1)
             ? 'Callback expects %1$d argument, $accepted_args is set to %2$d.'
-            : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.'
-        ;
+            : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.';
 
-        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(sprintf(
-            $message,
-            $expectedArgs,
-            $acceptedArgs
-        ));
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
+            sprintf(
+                $message,
+                $expectedArgs,
+                $acceptedArgs
+            )
+        );
     }
 
     protected function validateActionReturnType(ParametersAcceptor $callbackAcceptor): void
