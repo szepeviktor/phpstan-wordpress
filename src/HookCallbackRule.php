@@ -71,14 +71,14 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
         $args = $node->getArgs();
 
-        // If we don't have enough arguments, bail out and let PHPStan handle the error:
+        // If we don't have enough arguments, let PHPStan handle the error:
         if (count($args) < 2) {
             return [];
         }
 
         $callbackType = $scope->getType($args[1]->value);
 
-        // If the callback is not valid, bail out and let PHPStan handle the error:
+        // If the callback is not valid, let PHPStan handle the error:
         if (! $callbackType->isCallable()->yes()) {
             return [];
         }
@@ -120,7 +120,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $allParameters = $callbackAcceptor->getParameters();
         $requiredParameters = array_filter(
             $allParameters,
-            function(\PHPStan\Reflection\ParameterReflection $parameter): bool {
+            static function (\PHPStan\Reflection\ParameterReflection $parameter): bool {
                 return ! $parameter->isOptional();
             }
         );
