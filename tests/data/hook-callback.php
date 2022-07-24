@@ -13,44 +13,58 @@ use function add_action;
  * Incorrect usage:
  */
 
-// Filter callback is missing a return value
+// Filter callback return statement is missing.
 add_filter('not_a_core_filter', function() {});
 
-// Filter callback is missing a return value
+// Filter callback return statement is missing.
 add_filter('post_class', function() {});
+
+// Filter callback return statement is missing.
 add_filter('post_class', function(array $classes) {});
 
-// Accepted args are incorrect
+// Callback expects 1 parameter, $accepted_args is set to 0.
 add_filter('not_a_core_filter', function($value) {
     return 123;
 }, 10, 0);
+
+// Callback expects 1 parameter, $accepted_args is set to 2.
 add_filter('not_a_core_filter', function($value) {
     return 123;
 }, 10, 2);
+
+// Callback expects 0-1 parameters, $accepted_args is set to 2.
 add_filter('not_a_core_filter', function($value = null) {
     return 123;
 }, 10, 2);
+
+// Callback expects 2 parameters, $accepted_args is set to 1.
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 });
+
+// Callback expects 2-4 parameter, $accepted_args is set to 1.
 add_filter('not_a_core_filter', function($value1, $value2, $value3 = null, $value4 = null) {
     return 123;
 });
+
+// Callback expects 2-3 parameter, $accepted_args is set to 4.
 add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
     return 123;
 }, 10, 4);
 
-// Filter callback may miss a return value
+// Filter callback return statement is missing.
 add_filter('post_class', function($class) {
     if ($class) {
         return [];
     }
 });
 
-// Action callback must return void
+// Action callback returns true but should not return anything.
 add_action('hello', function() {
     return true;
 });
+
+// Action callback returns true but should not return anything.
 add_action('hello', function($value) {
     if ($value) {
         return true;
@@ -85,7 +99,6 @@ add_filter('post_class', function() {
  * Correct usage:
  */
 
-// But callback is ok
 add_filter('not_a_core_filter', function() {
     return 123;
 }, 10, 0);

@@ -42,43 +42,43 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                 ],
                 [
                     'Filter callback return statement is missing.',
-                    21,
+                    23,
                 ],
                 [
                     'Callback expects 1 parameter, $accepted_args is set to 0.',
-                    24,
+                    26,
                 ],
                 [
                     'Callback expects 1 parameter, $accepted_args is set to 2.',
-                    27,
+                    31,
                 ],
                 [
                     'Callback expects 0-1 parameters, $accepted_args is set to 2.',
-                    30,
-                ],
-                [
-                    'Callback expects 2 parameters, $accepted_args is set to 1.',
-                    33,
-                ],
-                [
-                    'Callback expects 2-4 parameters, $accepted_args is set to 1.',
                     36,
                 ],
                 [
+                    'Callback expects 2 parameters, $accepted_args is set to 1.',
+                    41,
+                ],
+                [
+                    'Callback expects 2-4 parameters, $accepted_args is set to 1.',
+                    46,
+                ],
+                [
                     'Callback expects 2-3 parameters, $accepted_args is set to 4.',
-                    39,
-                ],
-                [
-                    'Filter callback return statement is missing.',
-                    44,
-                ],
-                [
-                    'Action callback returns true but should not return anything.',
                     51,
                 ],
                 [
+                    'Filter callback return statement is missing.',
+                    56,
+                ],
+                [
                     'Action callback returns true but should not return anything.',
-                    54,
+                    63,
+                ],
+                [
+                    'Action callback returns true but should not return anything.',
+                    68,
                 ],
             ]
         );
