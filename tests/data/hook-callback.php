@@ -71,6 +71,17 @@ add_action('hello', function($value) {
     }
 });
 
+function no_return_value( $value ) {}
+
+// Filter callback return statement is missing.
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\no_return_value');
+
+// Action callback returns false but should not return anything.
+add_action('hello', '__return_false');
+
+// Action callback returns 123 but should not return anything.
+add_action('hello', new TestInvokable(), 10, 2);
+
 /**
  * Incorrect usage that's handled by PHPStan:
  *

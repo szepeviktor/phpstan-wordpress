@@ -80,6 +80,18 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     'Action callback returns true but should not return anything.',
                     68,
                 ],
+                [
+                    'Filter callback return statement is missing.',
+                    77,
+                ],
+                [
+                    'Action callback returns false but should not return anything.',
+                    80,
+                ],
+                [
+                    'Action callback returns 123 but should not return anything.',
+                    83,
+                ],
             ]
         );
     }
