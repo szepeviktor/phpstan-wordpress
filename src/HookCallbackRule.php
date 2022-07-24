@@ -102,46 +102,58 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
     protected function validateParamCount(ParametersAcceptor $callbackAcceptor, ?Arg $arg): void
     {
-        $acceptedArgs = 1;
+        $acceptedArgsParam = 1;
 
         if (isset($arg)) {
-            $acceptedArgs = null;
+            $acceptedArgsParam = null;
             $argumentType = $this->currentScope->getType($arg->value);
 
             if ($argumentType instanceof ConstantIntegerType) {
-                $acceptedArgs = $argumentType->getValue();
+                $acceptedArgsParam = $argumentType->getValue();
             }
         }
 
-        if ($acceptedArgs === null) {
+        if ($acceptedArgsParam === null) {
             return;
         }
 
+        $allParameters = $callbackAcceptor->getParameters();
         $requiredParameters = array_filter(
-            $callbackAcceptor->getParameters(),
+            $allParameters,
             function(\PHPStan\Reflection\ParameterReflection $parameter): bool {
                 return ! $parameter->isOptional();
             }
         );
-        $expectedArgs = count($requiredParameters);
+        $expectedArgs = count($allParameters);
+        $expectedRequiredArgs = count($requiredParameters);
 
-        if ($expectedArgs === $acceptedArgs) {
+        if (($acceptedArgsParam >= $expectedRequiredArgs) && ($acceptedArgsParam <= $expectedArgs)) {
             return;
         }
 
-        if ($expectedArgs === 0 && $acceptedArgs === 1) {
+        if ($expectedArgs === 0 && $acceptedArgsParam === 1) {
             return;
         }
 
-        $message = ($expectedArgs === 1)
-            ? 'Callback expects %1$d argument, $accepted_args is set to %2$d.'
-            : 'Callback expects %1$d arguments, $accepted_args is set to %2$d.';
+        $expectedParametersMessage = $expectedArgs;
+
+        if ($expectedArgs !== $expectedRequiredArgs) {
+            $expectedParametersMessage = sprintf(
+                '%1$d-%2$d',
+                $expectedRequiredArgs,
+                $expectedArgs
+            );
+        }
+
+        $message = ($expectedParametersMessage === 1)
+            ? 'Callback expects %1$d parameter, $accepted_args is set to %2$d.'
+            : 'Callback expects %1$s parameters, $accepted_args is set to %2$d.';
 
         throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
             sprintf(
                 $message,
-                $expectedArgs,
-                $acceptedArgs
+                $expectedParametersMessage,
+                $acceptedArgsParam
             )
         );
     }

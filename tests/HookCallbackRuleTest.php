@@ -45,36 +45,40 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     21,
                 ],
                 [
-                    'Callback expects 1 argument, $accepted_args is set to 0.',
+                    'Callback expects 1 parameter, $accepted_args is set to 0.',
                     24,
                 ],
                 [
-                    'Callback expects 1 argument, $accepted_args is set to 2.',
+                    'Callback expects 1 parameter, $accepted_args is set to 2.',
                     27,
                 ],
                 [
-                    'Callback expects 2 arguments, $accepted_args is set to 1.',
+                    'Callback expects 0-1 parameters, $accepted_args is set to 2.',
                     30,
                 ],
                 [
-                    'Callback expects 2 arguments, $accepted_args is set to 1.',
+                    'Callback expects 2 parameters, $accepted_args is set to 1.',
                     33,
                 ],
                 [
-                    'Callback expects 2 arguments, $accepted_args is set to 4.',
+                    'Callback expects 2-4 parameters, $accepted_args is set to 1.',
                     36,
                 ],
                 [
-                    'Filter callback return statement is missing.',
-                    41,
+                    'Callback expects 2-3 parameters, $accepted_args is set to 4.',
+                    39,
                 ],
                 [
-                    'Action callback returns true but should not return anything.',
-                    48,
+                    'Filter callback return statement is missing.',
+                    44,
                 ],
                 [
                     'Action callback returns true but should not return anything.',
                     51,
+                ],
+                [
+                    'Action callback returns true but should not return anything.',
+                    54,
                 ],
             ]
         );

@@ -27,10 +27,13 @@ add_filter('not_a_core_filter', function($value) {
 add_filter('not_a_core_filter', function($value) {
     return 123;
 }, 10, 2);
+add_filter('not_a_core_filter', function($value = null) {
+    return 123;
+}, 10, 2);
 add_filter('not_a_core_filter', function($value1, $value2) {
     return 123;
 });
-add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
+add_filter('not_a_core_filter', function($value1, $value2, $value3 = null, $value4 = null) {
     return 123;
 });
 add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
@@ -106,6 +109,15 @@ add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
 add_filter('not_a_core_filter', function($value1, $value2, $value3 = null) {
     return 123;
 }, 10, 3);
+add_filter('not_a_core_filter', function($value = null) {
+    return 123;
+});
+add_filter('not_a_core_filter', function($value = null) {
+    return 123;
+}, 10, 0);
+add_filter('not_a_core_filter', function($value = null) {
+    return 123;
+}, 10, 1);
 
 // Action callbacks must return void
 add_action('hello', function() {
