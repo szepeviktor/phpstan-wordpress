@@ -33,9 +33,6 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     /** @var \PHPStan\Rules\RuleLevelHelper */
     protected $ruleLevelHelper;
 
-    /** @var \PhpParser\Node\Expr\FuncCall */
-    protected $currentNode;
-
     /** @var \PHPStan\Analyser\Scope */
     protected $currentScope;
 
@@ -58,7 +55,6 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     public function processNode(Node $node, Scope $scope): array
     {
         $name = $node->name;
-        $this->currentNode = $node;
         $this->currentScope = $scope;
 
         if (!($name instanceof \PhpParser\Node\Name)) {
