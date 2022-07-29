@@ -12,13 +12,14 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\StringType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\NullType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
 class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -34,27 +35,40 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         $output = 'OBJECT';
         $args = $functionCall->getArgs();
 
-        if (count($args) >= 2 && $args[1]->value instanceof ConstFetch) {
-            $output = $args[1]->value->name->getLast();
+        $objectType = TypeCombinator::union(
+            new ObjectType('WP_Post'),
+            new NullType()
+        );
+        $associativeArrayType = TypeCombinator::union(
+            new ArrayType(new StringType(), new MixedType()),
+            new NullType()
+        );
+        $numericArrayType = TypeCombinator::union(
+            new ArrayType(new IntegerType(), new MixedType()),
+            new NullType()
+        );
+
+        if (count($args) >= 2) {
+            // When called with an $output that isn't a constant string, return default return type
+            if (! $scope->getType($args[1]->value) instanceof ConstantStringType) {
+                return TypeCombinator::union(
+                    $objectType, $associativeArrayType, $numericArrayType
+                );
+            }
+            if ($args[1]->value instanceof ConstFetch) {
+                $output = $args[1]->value->name->getLast();
+            }
         }
+
         switch ($output) {
             case 'ARRAY_A':
-                $returnType = TypeCombinator::union(
-                    new ArrayType(new StringType(), new MixedType()),
-                    new NullType()
-                );
+                $returnType = $associativeArrayType;
                 break;
             case 'ARRAY_N':
-                $returnType = TypeCombinator::union(
-                    new ArrayType(new IntegerType(), new MixedType()),
-                    new NullType()
-                );
+                $returnType = $numericArrayType;
                 break;
             default:
-                $returnType = TypeCombinator::union(
-                    new ObjectType('WP_Post'),
-                    new NullType()
-                );
+                $returnType = $objectType;
         }
 
         if ($functionReflection->getName() !== 'get_post') {
