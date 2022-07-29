@@ -52,7 +52,9 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             // When called with an $output that isn't a constant string, return default return type
             if (! $scope->getType($args[1]->value) instanceof ConstantStringType) {
                 return TypeCombinator::union(
-                    $objectType, $associativeArrayType, $numericArrayType
+                    $objectType,
+                    $associativeArrayType,
+                    $numericArrayType
                 );
             }
             if ($args[1]->value instanceof ConstFetch) {
