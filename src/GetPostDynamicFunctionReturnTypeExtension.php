@@ -29,48 +29,32 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         return in_array($functionReflection->getName(), ['get_post', 'get_page_by_path'], true);
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/get_post/
+     * @see https://developer.wordpress.org/reference/functions/get_page_by_path/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $output = 'OBJECT';
         $args = $functionCall->getArgs();
 
-        $objectType = TypeCombinator::union(
-            new ObjectType('WP_Post'),
-            new NullType()
-        );
-        $associativeArrayType = TypeCombinator::union(
-            new ArrayType(new StringType(), new MixedType()),
-            new NullType()
-        );
-        $numericArrayType = TypeCombinator::union(
-            new ArrayType(new IntegerType(), new MixedType()),
-            new NullType()
-        );
-
+        $returnType = self::objectType();
         if (count($args) >= 2) {
             // When called with an $output that isn't a constant string, return default return type
             if (! $scope->getType($args[1]->value) instanceof ConstantStringType) {
-                return TypeCombinator::union(
-                    $objectType,
-                    $associativeArrayType,
-                    $numericArrayType
-                );
+                $returnType = self::defaultType();
             }
             if ($args[1]->value instanceof ConstFetch) {
                 $output = $args[1]->value->name->getLast();
+                switch ($output) {
+                    case 'ARRAY_A':
+                        $returnType = self::associativeArrayType();
+                        break;
+                    case 'ARRAY_N':
+                        $returnType = self::numericArrayType();
+                        break;
+                }
             }
-        }
-
-        switch ($output) {
-            case 'ARRAY_A':
-                $returnType = $associativeArrayType;
-                break;
-            case 'ARRAY_N':
-                $returnType = $numericArrayType;
-                break;
-            default:
-                $returnType = $objectType;
         }
 
         if ($functionReflection->getName() !== 'get_post') {
@@ -83,5 +67,38 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         }
 
         return $returnType;
+    }
+
+    protected static function objectType(): Type
+    {
+        return TypeCombinator::union(
+            new ObjectType('WP_Post'),
+            new NullType()
+        );
+    }
+
+    protected static function associativeArrayType(): Type
+    {
+        return TypeCombinator::union(
+            new ArrayType(new StringType(), new MixedType()),
+            new NullType()
+        );
+    }
+
+    protected static function numericArrayType(): Type
+    {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new MixedType()),
+            new NullType()
+        );
+    }
+
+    protected static function defaultType(): Type
+    {
+        return TypeCombinator::union(
+            self::objectType(),
+            self::associativeArrayType(),
+            self::numericArrayType()
+        );
     }
 }

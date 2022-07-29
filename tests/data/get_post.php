@@ -16,7 +16,7 @@ assertType('WP_Post|null', get_post(1, OBJECT));
 assertType('array<int|string, mixed>|WP_Post|null', get_post(1, $_GET['foo']));
 assertType('WP_Post', get_post($wpPostType));
 assertType('WP_Post', get_post($wpPostType, OBJECT));
-assertType('array<int|string, mixed>|WP_Post|null', get_post($wpPostType, $_GET['foo']));
+assertType('array<int|string, mixed>|WP_Post', get_post($wpPostType, $_GET['foo']));
 assertType('WP_Post|null', get_page_by_path('page/path'));
 assertType('WP_Post|null', get_page_by_path('page/path', OBJECT));
 assertType('array<int|string, mixed>|WP_Post|null', get_page_by_path('page/path', $_GET['foo']));
