@@ -12,16 +12,15 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\StringType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\NullType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\Constant\ConstantStringType;
 
 class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -30,35 +29,76 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         return in_array($functionReflection->getName(), ['get_post', 'get_page_by_path'], true);
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/get_post/
+     * @see https://developer.wordpress.org/reference/functions/get_page_by_path/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $output = 'OBJECT';
         $args = $functionCall->getArgs();
 
-        if (count($functionCall->args) >= 2) {
-            $argumentType = $scope->getType($args[1]->value);
-
+        $returnType = self::objectType();
+        if (count($args) >= 2) {
             // When called with an $output that isn't a constant string, return default return type
-            if (! $argumentType instanceof ConstantStringType) {
-                return ParametersAcceptorSelector::selectFromArgs(
-                    $scope,
-                    $args,
-                    $functionReflection->getVariants()
-                )->getReturnType();
+            if (! $scope->getType($args[1]->value) instanceof ConstantStringType) {
+                $returnType = self::defaultType();
+            }
+            if ($args[1]->value instanceof ConstFetch) {
+                $output = $args[1]->value->name->getLast();
+                switch ($output) {
+                    case 'ARRAY_A':
+                        $returnType = self::associativeArrayType();
+                        break;
+                    case 'ARRAY_N':
+                        $returnType = self::numericArrayType();
+                        break;
+                }
             }
         }
 
-        if (count($args) >= 2 && $args[1]->value instanceof ConstFetch) {
-            $output = $args[1]->value->name->getLast();
-        }
-        if ($output === 'ARRAY_A') {
-            return TypeCombinator::union(new ArrayType(new StringType(), new MixedType()), new NullType());
-        }
-        if ($output === 'ARRAY_N') {
-            return TypeCombinator::union(new ArrayType(new IntegerType(), new MixedType()), new NullType());
+        if ($functionReflection->getName() !== 'get_post') {
+            return $returnType;
         }
 
-        return TypeCombinator::union(new ObjectType('WP_Post'), new NullType());
+        $firstArgType = count($args) > 0 ? $scope->getType($args[0]->value) : new NullType();
+        if ($firstArgType instanceof ObjectType && $firstArgType->isInstanceOf('WP_Post')->yes()) {
+            $returnType = TypeCombinator::remove($returnType, new NullType());
+        }
+
+        return $returnType;
+    }
+
+    protected static function objectType(): Type
+    {
+        return TypeCombinator::union(
+            new ObjectType('WP_Post'),
+            new NullType()
+        );
+    }
+
+    protected static function associativeArrayType(): Type
+    {
+        return TypeCombinator::union(
+            new ArrayType(new StringType(), new MixedType()),
+            new NullType()
+        );
+    }
+
+    protected static function numericArrayType(): Type
+    {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new MixedType()),
+            new NullType()
+        );
+    }
+
+    protected static function defaultType(): Type
+    {
+        return TypeCombinator::union(
+            self::objectType(),
+            self::associativeArrayType(),
+            self::numericArrayType()
+        );
     }
 }
