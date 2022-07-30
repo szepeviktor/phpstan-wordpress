@@ -120,30 +120,36 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
                 return ! $parameter->isOptional();
             }
         );
-        $expectedArgs = count($allParameters);
-        $expectedRequiredArgs = count($requiredParameters);
+        $maxArgs = count($allParameters);
+        $minArgs = count($requiredParameters);
 
-        if (($acceptedArgsParam >= $expectedRequiredArgs) && ($acceptedArgsParam <= $expectedArgs)) {
+        if (($acceptedArgsParam >= $minArgs) && ($acceptedArgsParam <= $maxArgs)) {
             return;
         }
 
-        if ($expectedArgs === 0 && $acceptedArgsParam === 1) {
+        if ($minArgs === 0 && $acceptedArgsParam === 1) {
             return;
         }
 
-        $expectedParametersMessage = $expectedArgs;
+        $expectedParametersMessage = $minArgs;
 
-        if ($expectedArgs !== $expectedRequiredArgs) {
-            $expectedParametersMessage = sprintf(
-                '%1$d-%2$d',
-                $expectedRequiredArgs,
-                $expectedArgs
-            );
+        if ($callbackAcceptor->isVariadic()) {
+            $message = ($minArgs === 1)
+                ? 'Callback expects at least %1$d parameter, $accepted_args is set to %2$d.'
+                : 'Callback expects at least %1$s parameters, $accepted_args is set to %2$d.';
+        } else {
+            if ($maxArgs !== $minArgs) {
+                $expectedParametersMessage = sprintf(
+                    '%1$d-%2$d',
+                    $minArgs,
+                    $maxArgs
+                );
+            }
+
+            $message = ($expectedParametersMessage === 1)
+                ? 'Callback expects %1$d parameter, $accepted_args is set to %2$d.'
+                : 'Callback expects %1$s parameters, $accepted_args is set to %2$d.';
         }
-
-        $message = ($expectedParametersMessage === 1)
-            ? 'Callback expects %1$d parameter, $accepted_args is set to %2$d.'
-            : 'Callback expects %1$s parameters, $accepted_args is set to %2$d.';
 
         throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
             sprintf(
