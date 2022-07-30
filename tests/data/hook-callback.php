@@ -109,6 +109,12 @@ add_filter('post_class', 'i_do_not_exist');
 // Invalid callback:
 add_filter('post_class', __NAMESPACE__ . '\\i_do_not_exist');
 
+// Invalid callback:
+add_filter('post_class', [new TestClass, 'i_do_not_exist']);
+
+// Invalid callback:
+add_filter('post_class', new TestClass);
+
 // Unknown callback:
 add_filter('post_class', $_GET['callback']);
 
@@ -128,7 +134,7 @@ add_filter('not_a_core_filter', function() {
     return 123;
 }, 10, 0);
 add_filter('not_a_core_filter', function() {
-    // We're allowing 0 parameters when `$accepted_args` is default value.
+    // We're allowing 0 parameters when `$accepted_args` is default value of 1.
     // This might change in the future to get more strict.
     return 123;
 });
@@ -166,6 +172,7 @@ add_action('hello', function() {
 });
 add_action('hello', function() {
 });
+add_action('hello', __NAMESPACE__ . '\\no_return_value');
 
 // Filter callback may exit, unfortunately
 add_filter('post_class', function(array $classes) {
@@ -185,7 +192,7 @@ add_action('hello', function($result) {
 
 // Various callback types
 add_filter('not_a_core_filter', '__return_false');
-add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_callback');
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\return_value');
 add_filter('not_a_core_filter', new TestInvokable(), 10, 2);
 add_filter('not_a_core_filter', [new TestClass, 'foo']);
 
@@ -205,7 +212,7 @@ add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_variadic', 10, 999);
 
 function no_return_value( $value ) {}
 
-function filter_callback() {
+function return_value() {
     return 123;
 }
 
