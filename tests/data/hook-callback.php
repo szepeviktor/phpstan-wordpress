@@ -93,10 +93,13 @@ add_filter('post_class');
 add_filter();
 
 // Invalid callback:
-add_filter('post_class','i_do_not_exist');
+add_filter('post_class', 'i_do_not_exist');
+
+// Invalid callback:
+add_filter('post_class', __NAMESPACE__ . '\\i_do_not_exist');
 
 // Unknown callback:
-add_filter('post_class',$_GET['callback']);
+add_filter('post_class', $_GET['callback']);
 
 // Invalid parameters:
 add_filter('post_class', function() {
@@ -159,17 +162,35 @@ add_filter('post_class', function(array $classes) {
     return $classes;
 });
 
+// Action callback may exit, unfortunately
+add_action('hello', function($result) {
+    if (! $result) {
+        exit('Goodbye');
+    }
+});
+
 // Various callback types
 add_filter('not_a_core_filter', '__return_false');
 add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_callback');
 add_filter('not_a_core_filter', new TestInvokable(), 10, 2);
+add_filter('not_a_core_filter', [new TestClass, 'foo']);
+
+$test_class = new TestClass();
+
+add_filter('not_a_core_filter', [$test_class, 'foo']);
 
 function filter_callback() {
     return 123;
 }
 
 class TestInvokable {
-	public function __invoke($one, $two) {
+    public function __invoke($one, $two) {
         return 123;
-	}
+    }
+}
+
+class TestClass {
+    public function foo() {
+        return 123;
+    }
 }
