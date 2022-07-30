@@ -71,8 +71,6 @@ add_action('hello', function($value) {
     }
 });
 
-function no_return_value( $value ) {}
-
 // Filter callback return statement is missing.
 add_filter('not_a_core_filter', __NAMESPACE__ . '\\no_return_value');
 
@@ -81,6 +79,19 @@ add_action('hello', '__return_false');
 
 // Action callback returns 123 but should not return anything.
 add_action('hello', new TestInvokable(), 10, 2);
+
+// Callback expects at least 1 parameter, $accepted_args is set to 0.
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_variadic', 10, 0);
+
+// Callback expects at least 1 parameter, $accepted_args is set to 0.
+add_filter('not_a_core_filter', function( $one, ...$two ) {
+    return 123;
+}, 10, 0);
+
+// Callback expects 0-3 parameters, $accepted_args is set to 4.
+add_filter('not_a_core_filter', function($one = null, $two = null, $three = null) {
+    return 123;
+}, 10, 4);
 
 /**
  * Incorrect usage that's handled by PHPStan:
@@ -145,6 +156,9 @@ add_filter('not_a_core_filter', function($value = null) {
 add_filter('not_a_core_filter', function($value = null) {
     return 123;
 }, 10, 1);
+add_filter('not_a_core_filter', function($one = null, $two = null, $three = null) {
+    return 123;
+});
 
 // Action callbacks must return void
 add_action('hello', function() {
@@ -179,8 +193,24 @@ $test_class = new TestClass();
 
 add_filter('not_a_core_filter', [$test_class, 'foo']);
 
+// Variadic callbacks
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_variadic');
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_variadic', 10, 1);
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_variadic', 10, 2);
+add_filter('not_a_core_filter', __NAMESPACE__ . '\\filter_variadic', 10, 999);
+
+/**
+ * Symbol definitions for use in these tests.
+ */
+
+function no_return_value( $value ) {}
+
 function filter_callback() {
     return 123;
+}
+
+function filter_variadic( $one, ...$two ) {
+    return $one;
 }
 
 class TestInvokable {
