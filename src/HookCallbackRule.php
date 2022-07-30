@@ -133,22 +133,22 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
         $expectedParametersMessage = $minArgs;
 
+        if ($maxArgs !== $minArgs) {
+            $expectedParametersMessage = sprintf(
+                '%1$d-%2$d',
+                $minArgs,
+                $maxArgs
+            );
+        }
+
+        $message = ($expectedParametersMessage === 1)
+            ? 'Callback expects %1$d parameter, $accepted_args is set to %2$d.'
+            : 'Callback expects %1$s parameters, $accepted_args is set to %2$d.';
+
         if ($callbackAcceptor->isVariadic()) {
             $message = ($minArgs === 1)
                 ? 'Callback expects at least %1$d parameter, $accepted_args is set to %2$d.'
                 : 'Callback expects at least %1$s parameters, $accepted_args is set to %2$d.';
-        } else {
-            if ($maxArgs !== $minArgs) {
-                $expectedParametersMessage = sprintf(
-                    '%1$d-%2$d',
-                    $minArgs,
-                    $maxArgs
-                );
-            }
-
-            $message = ($expectedParametersMessage === 1)
-                ? 'Callback expects %1$d parameter, $accepted_args is set to %2$d.'
-                : 'Callback expects %1$s parameters, $accepted_args is set to %2$d.';
         }
 
         throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
