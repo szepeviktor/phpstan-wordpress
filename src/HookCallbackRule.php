@@ -127,6 +127,10 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
+        if (($acceptedArgsParam >= $minArgs) && $callbackAcceptor->isVariadic()) {
+            return;
+        }
+
         if ($minArgs === 0 && $acceptedArgsParam === 1) {
             return;
         }
