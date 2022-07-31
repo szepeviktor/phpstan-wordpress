@@ -24,6 +24,11 @@
         "phpunit/phpunit": "^8 || ^9",
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6"
     },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "SzepeViktor\\PHPStan\\WordPress\\": "src/"
