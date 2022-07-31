@@ -89,7 +89,7 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     78,
                 ],
                 [
-                    'Action callback returns 123 but should not return anything.',
+                    'Action callback returns int but should not return anything.',
                     81,
                 ],
                 [
@@ -105,7 +105,7 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     92,
                 ],
                 [
-                    'Action callback returns 123 but should not return anything.',
+                    'Action callback returns int but should not return anything.',
                     97,
                 ],
             ]

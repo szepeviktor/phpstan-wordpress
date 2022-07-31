@@ -72,16 +72,16 @@ add_action('action', function($value) {
 });
 
 // Filter callback return statement is missing.
-add_filter('filter', __NAMESPACE__ . '\\no_return_value');
+add_filter('filter', __NAMESPACE__ . '\\no_return_value_typed');
 
 // Action callback returns false but should not return anything.
 add_action('action', '__return_false');
 
-// Action callback returns 123 but should not return anything.
-add_action('action', new TestInvokable(), 10, 2);
+// Action callback returns int but should not return anything.
+add_action('action', new TestInvokableTyped(), 10, 2);
 
 // Callback expects at least 1 parameter, $accepted_args is set to 0.
-add_filter('filter', __NAMESPACE__ . '\\filter_variadic', 10, 0);
+add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 0);
 
 // Callback expects at least 1 parameter, $accepted_args is set to 0.
 add_filter('filter', function( $one, ...$two ) {
@@ -92,6 +92,9 @@ add_filter('filter', function( $one, ...$two ) {
 add_filter('filter', function($one = null, $two = null, $three = null) {
     return 123;
 }, 10, 4);
+
+// Action callback returns int but should not return anything.
+add_action('action', __NAMESPACE__ . '\\return_value_typed');
 
 /**
  * Incorrect usage that's handled by PHPStan:
@@ -110,10 +113,10 @@ add_filter('filter', 'i_do_not_exist');
 add_filter('filter', __NAMESPACE__ . '\\i_do_not_exist');
 
 // Invalid callback:
-add_filter('filter', [new TestClass, 'i_do_not_exist']);
+add_filter('filter', [new TestClassTyped, 'i_do_not_exist']);
 
 // Invalid callback:
-add_filter('filter', new TestClass);
+add_filter('filter', new TestClassTyped);
 
 // Unknown callback:
 add_filter('filter', $_GET['callback']);
@@ -172,7 +175,7 @@ add_action('action', function() {
 });
 add_action('action', function() {
 });
-add_action('action', __NAMESPACE__ . '\\no_return_value');
+add_action('action', __NAMESPACE__ . '\\no_return_value_typed');
 
 // Filter callback may exit, unfortunately
 add_filter('filter', function(array $classes) {
@@ -192,42 +195,42 @@ add_action('action', function($result) {
 
 // Various callback types
 add_filter('filter', '__return_false');
-add_filter('filter', __NAMESPACE__ . '\\return_value');
-add_filter('filter', new TestInvokable(), 10, 2);
-add_filter('filter', [new TestClass, 'foo']);
+add_filter('filter', __NAMESPACE__ . '\\return_value_typed');
+add_filter('filter', new TestInvokableTyped(), 10, 2);
+add_filter('filter', [new TestClassTyped, 'foo']);
 
-$test_class = new TestClass();
+$test_class = new TestClassTyped();
 
 add_filter('filter', [$test_class, 'foo']);
 
 // Variadic callbacks
-add_filter('filter', __NAMESPACE__ . '\\filter_variadic');
-add_filter('filter', __NAMESPACE__ . '\\filter_variadic', 10, 1);
-add_filter('filter', __NAMESPACE__ . '\\filter_variadic', 10, 2);
-add_filter('filter', __NAMESPACE__ . '\\filter_variadic', 10, 999);
+add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed');
+add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 1);
+add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 2);
+add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 999);
 
 /**
  * Symbol definitions for use in these tests.
  */
 
-function no_return_value( $value ) {}
+function no_return_value_typed( $value ) : void {}
 
-function return_value() {
+function return_value_typed() : int {
     return 123;
 }
 
-function filter_variadic( $one, ...$two ) {
-    return $one;
+function filter_variadic_typed( $one, ...$two ) : int {
+    return 123;
 }
 
-class TestInvokable {
-    public function __invoke($one, $two) {
+class TestInvokableTyped {
+    public function __invoke($one, $two) : int {
         return 123;
     }
 }
 
-class TestClass {
-    public function foo() {
+class TestClassTyped {
+    public function foo() : int {
         return 123;
     }
 }
