@@ -104,6 +104,10 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     'Callback expects 0-3 parameters, $accepted_args is set to 4.',
                     92,
                 ],
+                [
+                    'Action callback returns 123 but should not return anything.',
+                    97,
+                ],
             ]
         );
     }
