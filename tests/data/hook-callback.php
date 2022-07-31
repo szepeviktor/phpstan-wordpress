@@ -52,13 +52,6 @@ add_filter('filter', function($value1, $value2, $value3 = null) {
     return 123;
 }, 10, 4);
 
-// Filter callback return statement is missing.
-add_filter('filter', function($class) {
-    if ($class) {
-        return [];
-    }
-});
-
 // Action callback returns true but should not return anything.
 add_action('action', function() {
     return true;
@@ -128,6 +121,13 @@ add_filter('filter', function() {
 add_filter('filter', function() {
     return 123;
 }, 10, false);
+
+// Filter callback return statement may be missing.
+add_filter('filter', function($class) {
+    if ($class) {
+        return [];
+    }
+});
 
 /**
  * Correct usage:

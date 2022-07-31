@@ -69,44 +69,40 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     51,
                 ],
                 [
-                    'Filter callback return statement is missing.',
+                    'Action callback returns true but should not return anything.',
                     56,
                 ],
                 [
                     'Action callback returns true but should not return anything.',
-                    63,
-                ],
-                [
-                    'Action callback returns true but should not return anything.',
-                    68,
+                    61,
                 ],
                 [
                     'Filter callback return statement is missing.',
-                    75,
+                    68,
                 ],
                 [
                     'Action callback returns false but should not return anything.',
-                    78,
+                    71,
                 ],
                 [
                     'Action callback returns int but should not return anything.',
-                    81,
+                    74,
                 ],
                 [
                     'Callback expects at least 1 parameter, $accepted_args is set to 0.',
-                    84,
+                    77,
                 ],
                 [
                     'Callback expects at least 1 parameter, $accepted_args is set to 0.',
-                    87,
+                    80,
                 ],
                 [
                     'Callback expects 0-3 parameters, $accepted_args is set to 4.',
-                    92,
+                    85,
                 ],
                 [
                     'Action callback returns int but should not return anything.',
-                    97,
+                    90,
                 ],
             ]
         );
