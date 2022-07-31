@@ -96,20 +96,20 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         return [];
     }
 
-    protected function validateParamCount(ParametersAcceptor $callbackAcceptor, ?Arg $arg): void
+    protected function validateParamCount(ParametersAcceptor $callbackAcceptor, ?Arg $acceptedArgsParam): void
     {
-        $acceptedArgsParam = 1;
+        $acceptedArgs = 1;
 
-        if (isset($arg)) {
-            $acceptedArgsParam = null;
-            $argumentType = $this->currentScope->getType($arg->value);
+        if (isset($acceptedArgsParam)) {
+            $acceptedArgs = null;
+            $argumentType = $this->currentScope->getType($acceptedArgsParam->value);
 
             if ($argumentType instanceof ConstantIntegerType) {
-                $acceptedArgsParam = $argumentType->getValue();
+                $acceptedArgs = $argumentType->getValue();
             }
         }
 
-        if ($acceptedArgsParam === null) {
+        if ($acceptedArgs === null) {
             return;
         }
 
@@ -123,15 +123,15 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $maxArgs = count($allParameters);
         $minArgs = count($requiredParameters);
 
-        if (($acceptedArgsParam >= $minArgs) && ($acceptedArgsParam <= $maxArgs)) {
+        if (($acceptedArgs >= $minArgs) && ($acceptedArgs <= $maxArgs)) {
             return;
         }
 
-        if (($acceptedArgsParam >= $minArgs) && $callbackAcceptor->isVariadic()) {
+        if (($acceptedArgs >= $minArgs) && $callbackAcceptor->isVariadic()) {
             return;
         }
 
-        if ($minArgs === 0 && $acceptedArgsParam === 1) {
+        if ($minArgs === 0 && $acceptedArgs === 1) {
             return;
         }
 
@@ -159,7 +159,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             sprintf(
                 $message,
                 $expectedParametersMessage,
-                $acceptedArgsParam
+                $acceptedArgs
             )
         );
     }
