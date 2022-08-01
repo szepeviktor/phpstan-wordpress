@@ -96,7 +96,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         return [];
     }
 
-    protected function validateParamCount(ParametersAcceptor $callbackAcceptor, ?Arg $acceptedArgsParam): void
+    protected function getAcceptedArgs(?Arg $acceptedArgsParam): ?int
     {
         $acceptedArgs = 1;
 
@@ -108,6 +108,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
                 $acceptedArgs = $argumentType->getValue();
             }
         }
+
+        return $acceptedArgs;
+    }
+
+    protected function validateParamCount(ParametersAcceptor $callbackAcceptor, ?Arg $acceptedArgsParam): void
+    {
+        $acceptedArgs = $this->getAcceptedArgs($acceptedArgsParam);
 
         if ($acceptedArgs === null) {
             return;
@@ -135,6 +142,18 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
+            self::buildParameterCountMessage(
+                $minArgs,
+                $maxArgs,
+                $acceptedArgs,
+                $callbackAcceptor,
+            )
+        );
+    }
+
+    protected static function buildParameterCountMessage(int $minArgs, int $maxArgs, int $acceptedArgs, ParametersAcceptor $callbackAcceptor): string
+    {
         $expectedParametersMessage = $minArgs;
 
         if ($maxArgs !== $minArgs) {
@@ -155,12 +174,10 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
                 : 'Callback expects at least %1$s parameters, $accepted_args is set to %2$d.';
         }
 
-        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
-            sprintf(
-                $message,
-                $expectedParametersMessage,
-                $acceptedArgs
-            )
+        return sprintf(
+            $message,
+            $expectedParametersMessage,
+            $acceptedArgs
         );
     }
 
