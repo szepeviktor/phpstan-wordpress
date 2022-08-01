@@ -147,7 +147,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
                 $minArgs,
                 $maxArgs,
                 $acceptedArgs,
-                $callbackAcceptor,
+                $callbackAcceptor
             )
         );
     }
