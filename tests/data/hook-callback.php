@@ -89,6 +89,12 @@ add_filter('filter', function($one = null, $two = null, $three = null) {
 // Action callback returns int but should not return anything.
 add_action('action', __NAMESPACE__ . '\\return_value_typed');
 
+// Callback expects 0 parameters, $accepted_args is set to 2.
+add_filter('filter', '__return_false', 10, 2);
+
+// Action callback returns false but should not return anything (with incorrect number of accepted args).
+add_action('action', '__return_false', 10, 2);
+
 /**
  * Incorrect usage that's handled by PHPStan:
  *
@@ -114,7 +120,7 @@ add_filter('filter', new TestClassTyped);
 // Unknown callback:
 add_filter('filter', $_GET['callback']);
 
-// Invalid parameters:
+// Valid callback but with invalid parameters:
 add_filter('filter', function() {
     return 123;
 }, false);

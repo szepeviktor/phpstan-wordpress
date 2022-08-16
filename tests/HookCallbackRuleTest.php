@@ -104,6 +104,14 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     'Action callback returns int but should not return anything.',
                     90,
                 ],
+                [
+                    'Callback expects 0 parameters, $accepted_args is set to 2.',
+                    93,
+                ],
+                [
+                    'Action callback returns false but should not return anything.',
+                    96,
+                ],
             ]
         );
     }

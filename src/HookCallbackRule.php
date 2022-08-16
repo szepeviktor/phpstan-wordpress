@@ -82,13 +82,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $callbackAcceptor = ParametersAcceptorSelector::selectSingle($callbackType->getCallableParametersAcceptors($scope));
 
         try {
-            $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
-
             if ($name->toString() === 'add_action') {
                 $this->validateActionReturnType($callbackAcceptor);
             } else {
                 $this->validateFilterReturnType($callbackAcceptor);
             }
+
+            $this->validateParamCount($callbackAcceptor, $args[3] ?? null);
         } catch (\SzepeViktor\PHPStan\WordPress\HookCallbackException $e) {
             return [RuleErrorBuilder::message($e->getMessage())->build()];
         }
