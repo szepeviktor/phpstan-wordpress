@@ -95,6 +95,9 @@ add_filter('filter', '__return_false', 10, 2);
 // Action callback returns false but should not return anything (with incorrect number of accepted args).
 add_action('action', '__return_false', 10, 2);
 
+// Filter callback return statement is missing.
+add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
+
 /**
  * Incorrect usage that's handled by PHPStan:
  *
@@ -134,6 +137,14 @@ add_filter('filter', function($class) {
         return [];
     }
 });
+
+// Incorrect function return type:
+add_filter('filter', function(array $classes): array {
+    return 123;
+});
+
+// Callback function with no declared return type.
+add_action('action', __NAMESPACE__ . '\\return_value_untyped');
 
 /**
  * Correct usage:
@@ -181,6 +192,8 @@ add_action('action', function() {
 });
 add_action('action', function() {
 });
+add_action('action', function(): void {
+});
 add_action('action', __NAMESPACE__ . '\\no_return_value_typed');
 
 // Filter callback may exit, unfortunately
@@ -222,6 +235,12 @@ add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 999);
 function no_return_value_typed( $value ) : void {}
 
 function return_value_typed() : int {
+    return 123;
+}
+
+function no_return_value_untyped( $value ) {}
+
+function return_value_untyped() {
     return 123;
 }
 
