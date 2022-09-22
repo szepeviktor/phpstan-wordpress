@@ -60,12 +60,7 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             $fields = $variables['fields'] ?? 'all';
         }
 
-        // Without constant argument return default return type
-        if (! isset($fields)) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Site'));
-        }
-
-        switch ($fields) {
+        switch ($fields ?? null) {
             case 'count':
                 return new IntegerType();
             case 'ids':
