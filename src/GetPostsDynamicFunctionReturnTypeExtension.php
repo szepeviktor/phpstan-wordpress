@@ -22,7 +22,7 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['get_posts'], true);
+        return $functionReflection->getName() === 'get_posts';
     }
 
     /**
