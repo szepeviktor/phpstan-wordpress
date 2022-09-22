@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Set return type of get_posts().
+ * Set return type of get_sites().
  */
 
 declare(strict_types=1);
@@ -18,11 +18,11 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantStringType;
 
-class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
+class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return $functionReflection->getName() === 'get_posts';
+        return $functionReflection->getName() === 'get_sites';
     }
 
     /**
@@ -35,8 +35,10 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         // Called without arguments
         if (count($args) === 0) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
+            return new ArrayType(new IntegerType(), new ObjectType('WP_Site'));
         }
+
+        $fields = '';
 
         $argumentType = $scope->getType($args[0]->value);
 
@@ -54,24 +56,20 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 break;
             }
         }
+
         // Called with a string argument
         if ($argumentType instanceof ConstantStringType) {
             parse_str($argumentType->getValue(), $variables);
             $fields = $variables['fields'] ?? 'all';
         }
 
-        // Without constant argument return default return type
-        if (! isset($fields)) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
-        }
-
         switch ($fields) {
-            case 'id=>parent':
+            case 'count':
+                return new IntegerType();
             case 'ids':
                 return new ArrayType(new IntegerType(), new IntegerType());
-            case 'all':
             default:
-                return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
+                return new ArrayType(new IntegerType(), new ObjectType('WP_Site'));
         }
     }
 }
