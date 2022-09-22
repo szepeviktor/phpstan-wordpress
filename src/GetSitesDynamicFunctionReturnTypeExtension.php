@@ -38,6 +38,8 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             return new ArrayType(new IntegerType(), new ObjectType('WP_Site'));
         }
 
+        $fields = '';
+
         $argumentType = $scope->getType($args[0]->value);
 
         // Called with an array argument
@@ -54,13 +56,14 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 break;
             }
         }
+
         // Called with a string argument
         if ($argumentType instanceof ConstantStringType) {
             parse_str($argumentType->getValue(), $variables);
             $fields = $variables['fields'] ?? 'all';
         }
 
-        switch ($fields ?? null) {
+        switch ($fields) {
             case 'count':
                 return new IntegerType();
             case 'ids':
