@@ -46,7 +46,7 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
 
     public function getClass(): string
     {
-        return '\WP_Theme';
+        return \WP_Theme::class;
     }
 
     public function isMethodSupported(MethodReflection $methodReflection): bool
