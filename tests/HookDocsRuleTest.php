@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\FileTypeMapper;
 use SzepeViktor\PHPStan\WordPress\HookDocsRule;
@@ -13,7 +14,7 @@ use SzepeViktor\PHPStan\WordPress\HookDocsRule;
  */
 class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
 {
-    protected function getRule(): \PHPStan\Rules\Rule
+    protected function getRule(): Rule
     {
         /** @var \PHPStan\Type\FileTypeMapper */
         $fileTypeMapper = self::getContainer()->getByType(FileTypeMapper::class);

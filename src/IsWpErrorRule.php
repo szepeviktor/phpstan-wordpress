@@ -10,6 +10,7 @@ namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
@@ -46,7 +47,7 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
     {
         $name = $node->name;
 
-        if (! ($name instanceof \PhpParser\Node\Name)) {
+        if (! ($name instanceof Name)) {
             return [];
         }
 

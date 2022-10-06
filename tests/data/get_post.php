@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use stdClass;
 use function PHPStan\Testing\assertType;
 
 /** @var \WP_Post $wpPostType */
-$wpPostType = new \stdClass();
+$wpPostType = new stdClass();
 
 // Default output
 assertType('WP_Post|null', get_post());

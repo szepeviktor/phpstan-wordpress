@@ -11,7 +11,10 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\ResolvedPhpDocBlock;
 use PHPStan\PhpDoc\Tag\ParamTag;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
@@ -67,7 +70,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $this->currentNode = $node;
         $this->currentScope = $scope;
 
-        if (!($name instanceof \PhpParser\Node\Name)) {
+        if (!($name instanceof Name)) {
             return [];
         }
 
@@ -91,7 +94,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      * @param \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
      * @return array<int,\PHPStan\Rules\RuleError>
      */
-    public function validateDocBlock(\PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc): array
+    public function validateDocBlock(ResolvedPhpDocBlock $resolvedPhpDoc): array
     {
         // Count all documented `@param` tag strings in the docblock.
         $numberOfParamTagStrings = substr_count($resolvedPhpDoc->getPhpDocString(), '* @param ');
@@ -169,7 +172,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      */
     public function validateParamDocumentation(
         int $numberOfParamTags,
-        \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
+        ResolvedPhpDocBlock $resolvedPhpDoc
     ): void {
         $nodeArgs = $this->currentNode->getArgs();
         $numberOfParams = count($nodeArgs) - 1;
@@ -182,7 +185,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         // We might have an invalid `@param` tag because it's named `$this`.
         if (strpos($resolvedPhpDoc->getPhpDocString(), ' $this') !== false) {
             foreach ($nodeArgs as $param) {
-                if (($param->value instanceof \PhpParser\Node\Expr\Variable) && $param->value->name === 'this') {
+                if (($param->value instanceof Variable) && $param->value->name === 'this') {
                     // PHPStan does not detect param tags named `$this`, it skips the tag.
                     // We can indirectly detect this by checking the actual parameter name,
                     // and if one of them is `$this` assume that's the problem.
