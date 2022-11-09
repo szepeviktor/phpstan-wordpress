@@ -17,15 +17,12 @@
         "symfony/polyfill-php73": "^1.12.0"
     },
     "require-dev": {
-        "automattic/phpcs-neutron-standard": "^1.7",
         "composer/composer": "^2.1.14",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^1.2",
-        "phpunit/phpunit": "^8 || ^9",
-        "slevomat/coding-standard": "^8.0",
-        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6",
-        "wp-coding-standards/wpcs": "^2.3"
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6.1"
     },
     "autoload-dev": {
         "classmap": [
