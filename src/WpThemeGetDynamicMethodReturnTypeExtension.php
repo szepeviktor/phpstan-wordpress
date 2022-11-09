@@ -26,7 +26,7 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
     /**
      * File headers.
      *
-     * @var string[]
+     * @var list<string>
      */
     protected static $headers = [
         'Name',
