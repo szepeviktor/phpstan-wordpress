@@ -92,6 +92,7 @@ services:
         tags:
             - phpstan.parser.richParserNodeVisitor
 rules:
+    - SzepeViktor\PHPStan\WordPress\HookCallbackRule
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
     - SzepeViktor\PHPStan\WordPress\IsWpErrorRule
 parameters:
