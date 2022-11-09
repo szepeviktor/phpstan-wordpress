@@ -24,7 +24,7 @@ jobs:
       php: "7.4"
       install:
         - "composer update --no-interaction --prefer-lowest"
-        - "composer update --no-interaction --with-all-dependencies szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset"
+        - "composer update --no-interaction --with-all-dependencies szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset 'php-stubs/wordpress-stubs:^6.1'"
 
 cache:
   directories:
