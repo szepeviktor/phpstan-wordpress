@@ -20,6 +20,7 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Theme;
 
 class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\DynamicMethodReturnTypeExtension
 {
@@ -46,7 +47,7 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
 
     public function getClass(): string
     {
-        return 'WP_Theme';
+        return WP_Theme::class;
     }
 
     public function isMethodSupported(MethodReflection $methodReflection): bool

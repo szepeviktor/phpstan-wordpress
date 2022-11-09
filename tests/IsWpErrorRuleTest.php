@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
 use SzepeViktor\PHPStan\WordPress\IsWpErrorRule;
 
@@ -12,7 +13,7 @@ use SzepeViktor\PHPStan\WordPress\IsWpErrorRule;
  */
 class IsWpErrorRuleTest extends \PHPStan\Testing\RuleTestCase
 {
-    protected function getRule(): \PHPStan\Rules\Rule
+    protected function getRule(): Rule
     {
         /** @var \PHPStan\Rules\RuleLevelHelper */
         $ruleLevelHelper = self::getContainer()->getByType(RuleLevelHelper::class);

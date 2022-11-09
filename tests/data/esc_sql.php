@@ -18,4 +18,4 @@ assertType('array<string, string>', esc_sql(['someValue' => 'toEscape']));
 assertType('string', esc_sql('someValueToEscape'));
 
 // Wrong type provided (esc_sql() returns an empty string in that case)
-assertType('string', esc_sql(new \stdClass()));
+assertType('string', esc_sql(new stdClass()));
