@@ -6,7 +6,6 @@
 
     <exclude-pattern>tests/data/*</exclude-pattern>
     <exclude-pattern>tests/functions.php</exclude-pattern>
-    <exclude-pattern>tests/WP_UnitTestCase_Base.php</exclude-pattern>
 
     <rule ref="PSR12NeutronRuleset">
         <exclude name="Generic.Files.LineLength"/>
