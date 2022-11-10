@@ -29,23 +29,19 @@ class AssertNotWpErrorTypeSpecifyingExtension implements \PHPStan\Type\MethodTyp
 
     public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
     {
-        return strtolower($methodReflection->getName()) === 'assertNotWPError'
+        return strtolower($methodReflection->getName()) === 'assertnotwperror'
             && isset($node->args[0])
-            && !$context->null();
+            && $context->null();
     }
 
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
     {
-        if ($context->null()) {
-            throw new \PHPStan\ShouldNotHappenException();
-        }
-
         $expr = $node->getArgs()[0]->value;
         $typeBefore = $scope->getType($expr);
         $type = TypeCombinator::remove($typeBefore, new ObjectType('WP_Error'));
 
-        return $this->typeSpecifier->create($expr, $type, $context);
+        return $this->typeSpecifier->create($expr, $type, TypeSpecifierContext::createTruthy());
     }
 
     public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void
