@@ -6,6 +6,7 @@
 
     <exclude-pattern>tests/data/*</exclude-pattern>
     <exclude-pattern>tests/functions.php</exclude-pattern>
+    <exclude-pattern>tests/WP_UnitTestCase_Base.php</exclude-pattern>
 
     <rule ref="PSR12NeutronRuleset">
         <exclude name="Generic.Files.LineLength"/>
@@ -15,6 +16,7 @@
 
     <!-- PHPCS does not understand yield -->
     <rule ref="NeutronStandard.Functions.TypeHint.UnusedReturnType">
+        <exclude-pattern>tests/AssertMethodTypeSpecifyingExtensionTest.php</exclude-pattern>
         <exclude-pattern>tests/DynamicReturnTypeExtensionTest.php</exclude-pattern>
     </rule>
 </ruleset>

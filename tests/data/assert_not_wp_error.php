@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use WP_UnitTestCase_Base;
 use function PHPStan\Testing\assertType;
 
-class Foo
+class AssertNotWpError
 {
 
     public function inheritedAssertMethodsNarrowType(): void
