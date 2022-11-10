@@ -91,6 +91,14 @@ services:
         class: SzepeViktor\PHPStan\WordPress\HookDocsVisitor
         tags:
             - phpstan.parser.richParserNodeVisitor
+    -
+        class: SzepeViktor\PHPStan\WordPress\AssertWpErrorTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\AssertNotWpErrorTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
 rules:
     - SzepeViktor\PHPStan\WordPress\HookCallbackRule
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
