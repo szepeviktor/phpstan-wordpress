@@ -13,7 +13,7 @@ class AssertNotWpError
     public function inheritedAssertMethodsNarrowType(): void
     {
         /** @var \WP_Error|int $no */
-        $no = $no;
+        $no = $_GET['no'];
 
         $customAsserter = new class () extends WP_UnitTestCase_Base {};
         $customAsserter->assertNotWPError($no);
