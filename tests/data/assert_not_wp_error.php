@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use function PHPStan\Testing\assertType;
+use WP_UnitTestCase_Base;
 
 class Foo
 {
@@ -12,7 +13,7 @@ class Foo
     public function inheritedAssertMethodsNarrowType(): void
     {
         /** @var \WP_Error|int $no */
-        $no = $no;
+        $no = $_GET['no'];
 
         $customAsserter = new class () extends WP_UnitTestCase_Base {};
         $customAsserter->assertNotWPError($no);
