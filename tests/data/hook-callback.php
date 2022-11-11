@@ -214,6 +214,9 @@ add_action('action', function($result) {
 
 // Various callback types
 add_filter('filter', '__return_false');
+add_filter('filter', __NAMESPACE__ . '\\return_value_mixed_union');
+add_filter('filter', __NAMESPACE__ . '\\return_value_documented');
+add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
 add_filter('filter', __NAMESPACE__ . '\\return_value_typed');
 add_filter('filter', new TestInvokableTyped(), 10, 2);
 add_filter('filter', [new TestClassTyped, 'foo']);
@@ -239,6 +242,22 @@ function return_value_typed() : int {
 }
 
 function no_return_value_untyped( $value ) {}
+
+/**
+ * Return type documented as a union that includes mixed.
+ *
+ * @return int|mixed
+ */
+function return_value_mixed_union() {
+    return 123;
+}
+
+/**
+ * @return int
+ */
+function return_value_documented() {
+    return 123;
+}
 
 function return_value_untyped() {
     return 123;
