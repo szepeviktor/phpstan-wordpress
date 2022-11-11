@@ -19,6 +19,7 @@ use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\VoidType;
+use PHPStan\Type\MixedType;
 
 /**
  * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\FuncCall>
@@ -206,8 +207,9 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     {
         $returnType = $callbackAcceptor->getReturnType();
         $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
+        $isMixedType = $returnType->equals(new MixedType());
 
-        if (! $isVoidSuperType->yes()) {
+        if ($isMixedType || $isVoidSuperType->no()) {
             return;
         }
 
