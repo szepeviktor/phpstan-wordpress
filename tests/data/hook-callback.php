@@ -99,7 +99,7 @@ add_action('action', '__return_false', 10, 2);
 add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
 
 // Action callback returns mixed but should not return anything.
-add_action('action', __NAMESPACE__ . 'return_value_mixed');
+add_action('action', __NAMESPACE__ . '\\return_value_mixed');
 
 /**
  * Incorrect usage that's handled by PHPStan:
