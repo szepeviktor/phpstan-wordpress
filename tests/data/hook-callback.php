@@ -185,6 +185,7 @@ add_filter('filter', function($value = null) {
 add_filter('filter', function($one = null, $two = null, $three = null) {
     return 123;
 });
+add_filter('filter', 'return_mixed');
 
 // Action callbacks must return void
 add_action('action', function() {
@@ -246,6 +247,10 @@ function return_value_untyped() {
 
 function filter_variadic_typed( $one, ...$two ) : int {
     return 123;
+}
+
+function return_mixed($value) : mixed {
+    return $value;
 }
 
 class TestInvokableTyped {
