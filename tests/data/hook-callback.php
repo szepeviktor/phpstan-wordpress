@@ -101,6 +101,9 @@ add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
 // Action callback returns mixed but should not return anything.
 add_action('action', __NAMESPACE__ . '\\return_value_mixed');
 
+// Action callback returns mixed but should not return anything.
+add_action('action', __NAMESPACE__ . '\\return_value_implicit_mixed');
+
 /**
  * Incorrect usage that's handled by PHPStan:
  *
