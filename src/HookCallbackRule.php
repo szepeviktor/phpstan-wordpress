@@ -17,6 +17,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\VoidType;
 
@@ -205,9 +206,12 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     protected function validateFilterReturnType(ParametersAcceptor $callbackAcceptor): void
     {
         $returnType = $callbackAcceptor->getReturnType();
-        $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
 
-        if (! $isVoidSuperType->yes()) {
+        if ($returnType instanceof MixedType && $returnType->isExplicitMixed()) {
+            return;
+        }
+
+        if (! $returnType->isSuperTypeOf(new VoidType())->yes()) {
             return;
         }
 
