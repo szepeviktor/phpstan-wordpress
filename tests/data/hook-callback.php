@@ -265,6 +265,8 @@ function return_value_implicit_mixed( $value ) {
 /**
  * Return type documented as a union that includes mixed.
  *
+ * This is added as a regression test for a bug.
+ *
  * @return int|mixed
  */
 function return_value_mixed_union() {
