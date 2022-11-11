@@ -98,6 +98,9 @@ add_action('action', '__return_false', 10, 2);
 // Filter callback return statement is missing.
 add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
 
+// Action callback returns mixed but should not return anything.
+add_action('action', __NAMESPACE__ . 'return_value_mixed');
+
 /**
  * Incorrect usage that's handled by PHPStan:
  *
@@ -214,6 +217,7 @@ add_action('action', function($result) {
 
 // Various callback types
 add_filter('filter', '__return_false');
+add_filter('filter', __NAMESPACE__ . '\\return_value_mixed');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed_union');
 add_filter('filter', __NAMESPACE__ . '\\return_value_documented');
 add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
@@ -242,6 +246,13 @@ function return_value_typed() : int {
 }
 
 function no_return_value_untyped( $value ) {}
+
+/**
+ * @return mixed
+ */
+function return_value_mixed() {
+    return 123;
+}
 
 /**
  * Return type documented as a union that includes mixed.

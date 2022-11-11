@@ -116,6 +116,10 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     'Filter callback return statement is missing.',
                     99,
                 ],
+                [
+                    'Action callback returns mixed but should not return anything.',
+                    102,
+                ],
             ]
         );
     }
