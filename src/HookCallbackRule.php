@@ -17,6 +17,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\VerbosityLevel;
 use PHPStan\Type\VoidType;
 
@@ -184,30 +185,43 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     protected function validateActionReturnType(ParametersAcceptor $callbackAcceptor): void
     {
         $acceptedType = $callbackAcceptor->getReturnType();
+        $exception = new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
+            sprintf(
+                'Action callback returns %s but should not return anything.',
+                $acceptedType->describe(VerbosityLevel::getRecommendedLevelByType($acceptedType))
+            )
+        );
+
+        if ($acceptedType instanceof MixedType && $acceptedType->isExplicitMixed()) {
+            throw $exception;
+        }
+
         $accepted = $this->ruleLevelHelper->accepts(
             new VoidType(),
             $acceptedType,
             true
         );
 
-        if ($accepted) {
-            return;
+        if (! $accepted) {
+            throw $exception;
         }
-
-        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
-            sprintf(
-                'Action callback returns %s but should not return anything.',
-                $acceptedType->describe(VerbosityLevel::getRecommendedLevelByType($acceptedType))
-            )
-        );
     }
 
     protected function validateFilterReturnType(ParametersAcceptor $callbackAcceptor): void
     {
         $returnType = $callbackAcceptor->getReturnType();
-        $isVoidSuperType = $returnType->isSuperTypeOf(new VoidType());
 
-        if (! $isVoidSuperType->yes()) {
+        if ($returnType instanceof MixedType) {
+            return;
+        }
+
+        $accepted = $this->ruleLevelHelper->accepts(
+            new VoidType(),
+            $returnType,
+            true
+        );
+
+        if (! $accepted) {
             return;
         }
 
