@@ -95,9 +95,6 @@ add_filter('filter', '__return_false', 10, 2);
 // Action callback returns false but should not return anything (with incorrect number of accepted args).
 add_action('action', '__return_false', 10, 2);
 
-// Filter callback return statement is missing.
-add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
-
 // Action callback returns mixed but should not return anything.
 add_action('action', __NAMESPACE__ . '\\return_value_mixed');
 
@@ -148,7 +145,7 @@ add_filter('filter', function(array $classes): array {
 
 // Callback function with no declared return type.
 add_action('action', __NAMESPACE__ . '\\return_value_untyped');
-add_action('action', __NAMESPACE__ . '\\return_value_implicit_mixed');
+add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
 
 /**
  * Correct usage:
@@ -219,7 +216,7 @@ add_action('action', function($result) {
 // Various callback types
 add_filter('filter', '__return_false');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed');
-add_filter('filter', __NAMESPACE__ . '\\return_value_implicit_mixed');
+add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed_union');
 add_filter('filter', __NAMESPACE__ . '\\return_value_documented');
 add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
@@ -254,10 +251,6 @@ function no_return_value_untyped( $value ) {}
  */
 function return_value_mixed() {
     return 123;
-}
-
-function return_value_implicit_mixed( $value ) {
-    return $value;
 }
 
 /**

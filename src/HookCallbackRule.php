@@ -211,11 +211,17 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     {
         $returnType = $callbackAcceptor->getReturnType();
 
-        if ($returnType instanceof MixedType && $returnType->isExplicitMixed()) {
+        if ($returnType instanceof MixedType) {
             return;
         }
 
-        if (! $returnType->isSuperTypeOf(new VoidType())->yes()) {
+        $accepted = $this->ruleLevelHelper->accepts(
+            new VoidType(),
+            $returnType,
+            true
+        );
+
+        if (! $accepted) {
             return;
         }
 
