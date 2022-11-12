@@ -56,7 +56,7 @@
         "test:cs": "phpcs",
         "test:cs:fix": "phpcbf",
         "test:phpstan": "phpstan analyze",
-        "test:phpunit": "phpunit -d memory_limit=1G",
+        "test:phpunit": "phpunit",
         "test:syntax": "parallel-lint bootstrap.php src/ tests/"
     }
 }
