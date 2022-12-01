@@ -234,6 +234,24 @@ add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 1);
 add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 2);
 add_filter('filter', __NAMESPACE__ . '\\filter_variadic_typed', 10, 999);
 
+// Multiple callbacks with varying signatures
+class MultipleSignatures {
+    const ACTIONS = array(
+        'one',
+        'two',
+    );
+
+    public static function init(): void {
+        foreach ( self::ACTIONS as $action ) {
+            add_action( 'action', array( self::class, $action ) );
+        }
+    }
+
+    public static function one( int $param ): void {}
+
+    public static function two( string $param ): void {}
+}
+
 /**
  * Symbol definitions for use in these tests.
  */

@@ -80,7 +80,8 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        $callbackAcceptor = ParametersAcceptorSelector::selectSingle($callbackType->getCallableParametersAcceptors($scope));
+        $parametersAcceptors = $callbackType->getCallableParametersAcceptors($scope);
+        $callbackAcceptor = ParametersAcceptorSelector::selectFromArgs($scope, $args, $parametersAcceptors);
 
         try {
             if ($name->toString() === 'add_action') {
