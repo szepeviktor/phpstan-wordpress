@@ -27,8 +27,8 @@ jobs:
         - "composer update --no-interaction --with-all-dependencies szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset 'php-stubs/wordpress-stubs:^6.1'"
     - name: "Check exported files"
       php: "7.4"
-      before_install: null
-      install: null
+      before_install: "skip"
+      install: "skip"
       script:
         - |
           EXPECTED="LICENSE,README.md,bootstrap.php,composer.json,extension.neon"
