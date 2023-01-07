@@ -43,7 +43,7 @@ script:
   - "composer test:cs -- -s"
   - "composer test:phpstan -- --ansi --no-progress"
   - |
-    EXPECTED="LICENSE,README.md,composer.json"
+    EXPECTED="LICENSE,README.md,bootstrap.php,composer.json,extension.neon"
     CURRENT="$(git archive HEAD | tar --list --exclude="src" --exclude="src/*" | paste --serial --delimiters=",")"
     echo "CURRENT =${CURRENT}"
     echo "EXPECTED=${EXPECTED}"
