@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Whether current WordPress query has results to loop over.
+ *
+ * @return bool
+ * @phpstan-impure
+ */
+function have_posts()
+{
+}
+
+class WP_Query
+{
+    /**
+     * Determines whether there are more posts available in the loop.
+     *
+     * @return bool True if posts are available, false if end of loop.
+     * @phpstan-impure
+     */
+    public function have_posts()
+    {
+    }
+}
+
+/**
+ * ACF have_rows()
+ *
+ * @param   string $selector The field name or field key.
+ * @param   mixed  $post_id The post ID where the value is saved. Defaults to the current post.
+ * @return  bool
+ * @phpstan-impure
+ */
+function have_rows($selector, $post_id = \false)
+{
+}
