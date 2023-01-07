@@ -53,8 +53,8 @@ Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
 Just start the analysis: `vendor/bin/phpstan analyze`
 then fix an error and `GOTO 10`!
 
-You find futher information in the `example` directory
-e.g. [`example/phpstan.neon.dist`](/example/phpstan.neon.dist)
+You find futher information in the `examples` directory
+e.g. [`examples/phpstan.neon.dist`](/examples/phpstan.neon.dist)
 
 ### Usage in WooCommerce webshops
 
@@ -71,7 +71,9 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 
 ### Usage of an `apply_filters()` docblock
 
-WordPress core -- and the wider WordPress ecosystem -- uses PHPDoc docblocks in a non-standard manner to document the parameters passed to `apply_filters()`. Example:
+WordPress core - and the wider WordPress ecosystem - uses PHPDoc docblocks
+in a non-standard manner to document the parameters passed to `apply_filters()`.
+Example:
 
 ```php
 /**
@@ -83,9 +85,12 @@ WordPress core -- and the wider WordPress ecosystem -- uses PHPDoc docblocks in 
 $title = apply_filters( 'list_pages', $title, $page );
 ```
 
-This extension understands these docblocks when they're present in your code and uses them to instruct PHPStan to treat the return type of the filter as certain, according to the first `@param` tag. In the example above this means PHPStan treats the type of `$title` as `string`.
+This extension understands these docblocks when they're present in your code
+and uses them to instruct PHPStan to treat the return type of the filter as certain,
+according to the first `@param` tag. In the example above this means PHPStan treats the type of `$title` as `string`.
 
-To make the best use of this feature, ensure that the type of the first `@param` tag in each of these such docblocks is accurate and correct.
+To make the best use of this feature,
+ensure that the type of the first `@param` tag in each of these such docblocks is accurate and correct.
 
 ### Make your code testable
 

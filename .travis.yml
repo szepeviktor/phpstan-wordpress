@@ -42,3 +42,9 @@ script:
   - "composer test:phpunit -- --verbose"
   - "composer test:cs -- -s"
   - "composer test:phpstan -- --ansi --no-progress"
+  - |
+    EXPECTED="LICENSE,README.md,composer.json"
+    CURRENT="$(git archive HEAD | tar --list --exclude="src" --exclude="src/*" | paste --serial --delimiters=",")"
+    echo "CURRENT =${CURRENT}"
+    echo "EXPECTED=${EXPECTED}"
+    test "${CURRENT}" = "${EXPECTED}"
