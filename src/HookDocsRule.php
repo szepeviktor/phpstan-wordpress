@@ -121,16 +121,16 @@ class HookDocsRule implements \PHPStan\Rules\Rule
 
         $nodeArgs = $this->currentNode->getArgs();
         $errors = [];
-        $i = 1;
+        $paramIndex = 1;
 
         foreach ($paramTags as $paramName => $paramTag) {
             try {
-                $this->validateSingleParamTag($paramName, $paramTag, $nodeArgs[$i]);
-            } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $e) {
-                $errors[] = RuleErrorBuilder::message($e->getMessage())->build();
+                $this->validateSingleParamTag($paramName, $paramTag, $nodeArgs[$paramIndex]);
+            } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $exception) {
+                $errors[] = RuleErrorBuilder::message($exception->getMessage())->build();
             }
 
-            $i += 1;
+            $paramIndex += 1;
         }
 
         return $errors;
