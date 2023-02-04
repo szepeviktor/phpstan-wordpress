@@ -53,7 +53,7 @@ Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
 Just start the analysis: `vendor/bin/phpstan analyze`
 then fix an error and `GOTO 10`!
 
-You find futher information in the `examples` directory
+You find further information in the `examples` directory
 e.g. [`examples/phpstan.neon.dist`](/examples/phpstan.neon.dist)
 
 ### Usage in WooCommerce webshops
