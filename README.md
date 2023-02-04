@@ -1,8 +1,8 @@
 # WordPress extensions for PHPStan
 
-[![Build Status](https://travis-ci.com/szepeviktor/phpstan-wordpress.svg?branch=master)](https://travis-ci.com/github/szepeviktor/phpstan-wordpress)
-[![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
 [![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress/stats)
+[![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
+[![Build Status](https://travis-ci.com/szepeviktor/phpstan-wordpress.svg?branch=master)](https://travis-ci.com/github/szepeviktor/phpstan-wordpress)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
 
 Static analysis for the WordPress ecosystem.
