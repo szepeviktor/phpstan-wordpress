@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-
 /**
  * Set return type of term_exists().
  */
@@ -39,6 +37,8 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
 
     /**
      * @see https://developer.wordpress.org/reference/functions/term_exists/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {

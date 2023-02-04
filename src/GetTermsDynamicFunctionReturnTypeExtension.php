@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-
 /**
  * Set return type of get_terms() and related functions.
  */
@@ -42,6 +40,8 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     /**
      * @see https://developer.wordpress.org/reference/functions/get_terms/
      * @see https://developer.wordpress.org/reference/classes/wp_term_query/__construct/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {

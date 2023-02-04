@@ -19,4 +19,9 @@
         <exclude-pattern>tests/AssertMethodTypeSpecifyingExtensionTest.php</exclude-pattern>
         <exclude-pattern>tests/DynamicReturnTypeExtensionTest.php</exclude-pattern>
     </rule>
+
+    <!-- Allow string concatenation in tests -->
+    <rule ref="PSR12NeutronRuleset.Strings.ConcatenationUsage.NotAllowed">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
 </ruleset>

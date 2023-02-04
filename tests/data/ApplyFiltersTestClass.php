@@ -37,8 +37,10 @@ class ApplyFiltersTestClass
      * This is the method docblock, not the filter docblock.
      *
      * @param int $foo Hello, World.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    public function anotherMethodWithParams(int $foo) // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    public function anotherMethodWithParams(int $foo)
     {
         $bar = '';
 

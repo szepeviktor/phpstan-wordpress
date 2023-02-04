@@ -1,11 +1,11 @@
 <?php
 
-// phpcs:disable WordPress.WP.AlternativeFunctions.parse_url_parse_url
-
 /**
  * Set return type of wp_parse_url().
  *
  * Based on ParseUrlFunctionDynamicReturnTypeExtension in PHPStan itself.
+ *
+ * phpcs:disable WordPress.WP.AlternativeFunctions.parse_url_parse_url
  */
 
 declare(strict_types=1);
@@ -84,7 +84,7 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
 
         if ($urlType instanceof ConstantStringType) {
             try {
-                // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged,Generic.PHP.NoSilencedErrors.Discouraged
+                // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
                 $result = @parse_url($urlType->getValue(), $componentType->getValue());
             } catch (\ValueError $e) {
                 return new ConstantBooleanType(false);

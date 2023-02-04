@@ -32,6 +32,8 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     /**
      * @see https://developer.wordpress.org/reference/functions/get_permalink/
      * @see https://developer.wordpress.org/reference/functions/get_the_permalink/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {

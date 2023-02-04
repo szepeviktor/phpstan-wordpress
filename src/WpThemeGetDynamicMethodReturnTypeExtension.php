@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-
 /**
  * Set return type of WP_Theme::get().
  */
@@ -57,6 +55,8 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
 
     /**
      * @see https://developer.wordpress.org/reference/classes/wp_theme/get/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
     {

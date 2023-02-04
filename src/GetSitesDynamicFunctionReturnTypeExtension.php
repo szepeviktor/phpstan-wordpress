@@ -27,8 +27,9 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
     /**
      * @see https://developer.wordpress.org/reference/classes/wp_query/#return-fields-parameter
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $args = $functionCall->getArgs();
