@@ -11,7 +11,6 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
@@ -34,7 +33,7 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
      * @see https://developer.wordpress.org/reference/functions/get_permalink/
      * @see https://developer.wordpress.org/reference/functions/get_the_permalink/
      */
-    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
+    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
 
@@ -48,10 +47,6 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         }
 
         // When called without arguments or with a $type that isn't a WP_Post instance, return default return type
-        return ParametersAcceptorSelector::selectFromArgs(
-            $scope,
-            $args,
-            $functionReflection->getVariants()
-        )->getReturnType();
+        return null;
     }
 }
