@@ -24,6 +24,7 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             [
                 'get_permalink',
                 'get_the_permalink',
+                'get_post_permalink',
             ],
             true
         );
