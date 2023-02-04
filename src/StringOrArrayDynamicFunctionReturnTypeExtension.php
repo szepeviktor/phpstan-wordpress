@@ -11,7 +11,6 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\StringType;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
@@ -24,16 +23,13 @@ class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         return in_array($functionReflection->getName(), ['esc_sql', 'wp_slash', 'wp_unslash'], true);
     }
 
-    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
+    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
         $argsCount = count($args);
         if ($argsCount === 0) {
-            return ParametersAcceptorSelector::selectFromArgs(
-                $scope,
-                $args,
-                $functionReflection->getVariants()
-            )->getReturnType();
+            return null;
         }
         $dataArg = $args[0]->value;
         $dataArgType = $scope->getType($dataArg);
