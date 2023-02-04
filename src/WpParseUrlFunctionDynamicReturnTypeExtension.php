@@ -15,7 +15,6 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantIntegerType;
@@ -55,12 +54,11 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
         return $functionReflection->getName() === 'wp_parse_url';
     }
 
-    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
+    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         if (count($functionCall->getArgs()) < 1) {
-            return ParametersAcceptorSelector::selectSingle(
-                $functionReflection->getVariants()
-            )->getReturnType();
+            return null;
         }
 
         $this->cacheReturnTypes();

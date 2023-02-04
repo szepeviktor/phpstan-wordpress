@@ -7,6 +7,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use stdClass;
 
 use function get_permalink;
+use function get_post_permalink;
 use function get_the_permalink;
 use function PHPStan\Testing\assertType;
 
@@ -22,3 +23,8 @@ assertType('string', get_permalink($wpPostType));
 assertType('string|false', get_the_permalink());
 assertType('string|false', get_the_permalink($_GET['foo']));
 assertType('string', get_the_permalink($wpPostType));
+
+// get_post_permalink()
+assertType('string|false', get_post_permalink());
+assertType('string|false', get_post_permalink($_GET['foo']));
+assertType('string', get_post_permalink($wpPostType));
