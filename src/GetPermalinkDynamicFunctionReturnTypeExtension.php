@@ -38,7 +38,7 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     {
         $args = $functionCall->getArgs();
 
-        if (count($args) > 0) {
+        if (count($args) !== 0) {
             $type = $scope->getType($args[0]->value);
 
             // Called with a WP_Post instance
