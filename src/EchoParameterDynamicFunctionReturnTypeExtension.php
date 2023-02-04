@@ -23,13 +23,18 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
      * Function name and position of `$echo` parameter.
      */
     private const SUPPORTED_FUNCTIONS = [
+        'checked' => 2,
         'comment_class' => 3,
+        'disabled' => 2,
         'edit_term_link' => 4,
         'get_calendar' => 1,
+        'menu_page_url' => 1,
         'next_posts' => 1,
         'post_type_archive_title' => 1,
         'previous_posts' => 0,
+        'selected' => 2,
         'single_cat_title' => 1,
+        'single_month_title' => 1,
         'single_post_title' => 1,
         'single_tag_title' => 1,
         'single_term_title' => 1,
@@ -37,6 +42,10 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         'the_modified_date' => 3,
         'the_title' => 2,
         'wp_loginout' => 1,
+        'wp_nonce_field' => 3,
+        'wp_original_referer_field' => 0,
+        'wp_readonly' => 2,
+        'wp_referer_field' => 0,
         'wp_register' => 2,
         'wp_title' => 1,
     ];
