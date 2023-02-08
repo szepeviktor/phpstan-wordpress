@@ -88,7 +88,7 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         );
     }
 
-    protected static function getEchoTrueReturnType( string $name ): Type
+    protected static function getEchoTrueReturnType(string $name): Type
     {
         if ($name === 'single_month_title') {
             return TypeCombinator::union(
