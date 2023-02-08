@@ -78,13 +78,44 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
 
         if ($echoArgumentType instanceof ConstantBooleanType) {
             return ($echoArgumentType->getValue() === false)
-                ? new StringType()
-                : new VoidType();
+                ? self::getEchoFalseReturnType($name)
+                : self::getEchoTrueReturnType($name);
         }
 
         return TypeCombinator::union(
-            new StringType(),
-            new VoidType()
+            self::getEchoFalseReturnType($name),
+            self::getEchoTrueReturnType($name)
         );
+    }
+
+    protected static function getEchoTrueReturnType(string $name): Type
+    {
+        if ($name === 'single_month_title') {
+            return TypeCombinator::union(
+                new VoidType(),
+                new ConstantBooleanType(false)
+            );
+        }
+
+        return new VoidType();
+    }
+
+    protected static function getEchoFalseReturnType(string $name): Type
+    {
+        if ($name === 'single_month_title') {
+            return TypeCombinator::union(
+                new StringType(),
+                new ConstantBooleanType(false)
+            );
+        }
+
+        if ($name === 'the_title') {
+            return TypeCombinator::union(
+                new StringType(),
+                new VoidType()
+            );
+        }
+
+        return new StringType();
     }
 }
