@@ -100,7 +100,7 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         return new VoidType();
     }
 
-    protected static function getEchoFalseReturnType( string $name ): Type
+    protected static function getEchoFalseReturnType(string $name): Type
     {
         if ($name === 'single_month_title') {
             return TypeCombinator::union(
