@@ -60,6 +60,32 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         'wp_page_menu',
     ];
 
+    /**
+     * Functions that do not accept a query string.
+     */
+    private const STRICTLY_ARRAY = [
+        'get_search_form',
+        'wp_login_form',
+    ];
+
+    /** @var \PHPStan\Reflection\FunctionReflection */
+    private $reflection;
+
+    /** @var \PHPStan\Analyser\Scope */
+    private $scope;
+
+    /** @var array<\PhpParser\Node\Arg> */
+    private $args;
+
+    /** @var string */
+    private $name;
+
+    /** @var ?int */
+    private $paramPos;
+
+    /** @var \PHPStan\Type\Type */
+    private $defaultType;
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
         return array_key_exists($functionReflection->getName(), self::SUPPORTED_FUNCTIONS);
@@ -67,62 +93,80 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
 
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
-        $name = $functionReflection->getName();
-        $functionParameter = self::SUPPORTED_FUNCTIONS[$name] ?? null;
-        $args = $functionCall->getArgs();
+        $this->reflection = $functionReflection;
+        $this->scope = $scope;
+        $this->args = $functionCall->getArgs();
+        $this->name = $functionReflection->getName();
+        $this->paramPos = self::SUPPORTED_FUNCTIONS[$this->name] ?? null;
+        $this->defaultType = $this->getDefaultReturnType();
 
-        if ($functionParameter === null) {
-            throw new \PHPStan\ShouldNotHappenException(
-                sprintf(
-                    'Could not detect return types for function %s()',
-                    $name
-                )
-            );
+        if (!isset($this->args[$this->paramPos])) {
+            return self::getEchoTrueReturnType($this->name);
         }
 
-        if (!isset($args[$functionParameter])) {
-            return self::getEchoTrueReturnType($name);
-        }
-
-        $argumentType = $scope->getType($args[$functionParameter]->value);
-        $echoType = self::getEchoType($argumentType);
-        $defaultType = ParametersAcceptorSelector::selectFromArgs(
-            $scope,
-            $functionCall->getArgs(),
-            $functionReflection->getVariants()
-        )->getReturnType();
+        $echoType = $this->getEchoType();
 
         if ($echoType instanceof ConstantBooleanType) {
             return ($echoType->getValue() === false)
-                ? self::maybeRemoveVoid($name, $defaultType)
-                : self::getEchoTrueReturnType($name);
+                ? $this->getEchoFalseReturnType()
+                : $this->getEchoTrueReturnType();
         }
 
-        if (!in_array($name, self::STRICTLY_BOOL, true) && $echoType instanceof ConstantIntegerType) {
+        if (
+            !in_array($this->name, self::STRICTLY_BOOL, true) &&
+            $echoType instanceof ConstantIntegerType
+        ) {
             return ($echoType->getValue() === 0)
-                ? self::maybeRemoveVoid($name, $defaultType)
-                : self::getEchoTrueReturnType($name);
+                ? $this->getEchoFalseReturnType()
+                : $this->getEchoTrueReturnType();
         }
 
-        return TypeCombinator::union($defaultType, new VoidType());
+        return TypeCombinator::union($this->defaultType, new VoidType());
     }
 
-    protected static function getEchoType(Type $argumentType): Type
+    private function getEchoType(): Type
     {
-        $echoType = new ConstantBooleanType(true);
+        $argumentType = $this->scope->getType($this->args[$this->paramPos]->value);
 
         if ($argumentType instanceof ConstantArrayType) {
             foreach ($argumentType->getKeyTypes() as $index => $key) {
-                if (! $key instanceof ConstantStringType || $key->getValue() !== 'echo') {
+                if (
+                    !($key instanceof ConstantStringType) ||
+                    $key->getValue() !== 'echo'
+                ) {
                     continue;
                 }
-                $echoType = $argumentType->getValueTypes()[$index];
+                return $argumentType->getValueTypes()[$index];
             }
         }
-        return $echoType;
+
+        if (
+            !in_array($this->name, self::STRICTLY_ARRAY, true) &&
+            $argumentType instanceof ConstantStringType
+        ) {
+            if (strpos($argumentType->getValue(), 'echo=') === false) {
+                return new ConstantBooleanType(true);
+            }
+
+            parse_str($argumentType->getValue(), $parsedArgs);
+            if (!$parsedArgs['echo']) {
+                return new ConstantBooleanType(false);
+            }
+            if (is_numeric($parsedArgs['echo'])) {
+                return new ConstantIntegerType((int)$parsedArgs['echo']);
+            }
+            if ($parsedArgs['echo'] === 'false') {
+                return new ConstantBooleanType(false);
+            }
+            if ($parsedArgs['echo'] === 'true') {
+                return new ConstantBooleanType(true);
+            }
+        }
+
+        return new NullType();
     }
 
-    protected static function maybeRemoveVoid(string $name, Type $type): Type
+    private function getEchoFalseReturnType(): Type
     {
         // These function can return void even if echo is not true/truthy.
         $doNotRemove = [
@@ -132,21 +176,13 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             'wp_list_comments',
         ];
 
-        // Fix omitted void type in WP doc block.
-        $type = TypeCombinator::union($type, new VoidType());
-
-        if ($name === 'wp_list_users') {
-            // null instead of void in WP doc block.
-            $type = TypeCombinator::remove($type, new NullType());
+        if (!in_array($this->name, $doNotRemove, true)) {
+            return TypeCombinator::remove($this->defaultType, new VoidType());
         }
-
-        if (!in_array($name, $doNotRemove, true)) {
-            $type = TypeCombinator::remove($type, new VoidType());
-        }
-        return $type;
+        return $this->defaultType;
     }
 
-    protected static function getEchoTrueReturnType( string $name ): Type
+    private function getEchoTrueReturnType(): Type
     {
         $type = [
             'wp_list_categories' => TypeCombinator::union(
@@ -155,6 +191,25 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
             ),
         ];
 
-        return $type[$name] ?? new VoidType();
+        return $type[$this->name] ?? new VoidType();
+    }
+
+    private function getDefaultReturnType(): Type
+    {
+        $defaultType = ParametersAcceptorSelector::selectFromArgs(
+            $this->scope,
+            $this->args,
+            $this->reflection->getVariants()
+        )->getReturnType();
+
+        // Fix omitted void type in WP doc block.
+        $defaultType = TypeCombinator::union($defaultType, new VoidType());
+
+        if ($this->name === 'wp_list_users') {
+            // null instead of void in WP doc block.
+            $defaultType = TypeCombinator::remove($defaultType, new NullType());
+        }
+
+        return $defaultType;
     }
 }
