@@ -53,7 +53,7 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     ];
 
     /**
-     * Function that can return void if echo is not true/truthy.
+     * Function that can return void even if `$echo` is falsey.
      */
     private const ALWAYS_VOID = [
         'the_title_attribute',
