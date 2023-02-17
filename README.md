@@ -103,9 +103,9 @@ ensure that the type of the first `@param` tag in each of these such docblocks i
     - functions: `eval`, `extract`, `compact`, `list`
     - [type juggling](https://www.php.net/manual/en/language.types.type-juggling.php): `$a = '15'; if ($a) ...`
 - If you need robust code try avoiding all kinds of type juggling (e.g. `if` needs a boolean),
-  see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
+    see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
 - If you are not bound by PHP 5 consider following
-  [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
+    [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
 - Do not enable `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` to keep your code testable
 
 ### Dirty corner (FAQ)
