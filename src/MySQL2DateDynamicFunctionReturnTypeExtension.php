@@ -14,15 +14,15 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\Constant\ConstantStringType;
 
 class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['mysql2date'], true);
+        return $functionReflection->getName() === 'mysql2date';
     }
 
     /**
@@ -31,21 +31,26 @@ class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
-        $args = $functionCall->getArgs();
-        $argumentType = $scope->getType($args[0]->value);
+        $argumentType = $scope->getType($functionCall->getArgs()[0]->value);
 
         // When called with a $format that isn't a constant string, return default return type
-        if (! $argumentType instanceof ConstantStringType) {
+        if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }
 
         // Called with a constant string $format
-        switch ($argumentType->getValue()) {
-            case 'G':
-            case 'U':
-                return new UnionType([new ConstantBooleanType(false), new IntegerType()]);
-            default:
-                return new UnionType([new ConstantBooleanType(false), new StringType()]);
+        $returnType = [];
+        foreach ($argumentType->getConstantStrings() as $constantString) {
+            switch ($constantString->getValue()) {
+                case 'G':
+                case 'U':
+                    $returnType[] = new UnionType([new ConstantBooleanType(false), new IntegerType()]);
+                    break;
+                default:
+                    $returnType[] = new UnionType([new ConstantBooleanType(false), new StringType()]);
+            }
         }
+
+        return TypeCombinator::union(...$returnType);
     }
 }

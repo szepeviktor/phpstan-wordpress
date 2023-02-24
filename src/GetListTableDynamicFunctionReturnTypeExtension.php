@@ -15,7 +15,6 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\Constant\ConstantStringType;
 
 class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -37,13 +36,15 @@ class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         $argumentType = $scope->getType($args[0]->value);
 
         // When called with a $class that isn't a constant string, return default return type
-        if (! $argumentType instanceof ConstantStringType) {
+        if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }
 
-        return TypeCombinator::union(
-            new ObjectType($argumentType->getValue()),
-            new ConstantBooleanType(false)
-        );
+        $types = [new ConstantBooleanType(false)];
+        foreach ($argumentType->getConstantStrings() as $constantString) {
+            $types[] = new ObjectType($constantString->getValue());
+        }
+
+        return TypeCombinator::union(...$types);
     }
 }
