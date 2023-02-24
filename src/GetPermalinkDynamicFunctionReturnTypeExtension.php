@@ -14,6 +14,8 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use SebastianBergmann\Type\ObjectType as TypeObjectType;
+use WP_Post;
 
 class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -45,7 +47,7 @@ class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             $type = $scope->getType($args[0]->value);
 
             // Called with a WP_Post instance
-            if ($type instanceof ObjectType && $type->isInstanceOf('WP_Post')->yes()) {
+            if ((new ObjectType(WP_Post::class))->isSuperTypeOf($type)->yes()) {
                 return new StringType();
             }
         }
