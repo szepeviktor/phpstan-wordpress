@@ -16,7 +16,7 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\TypeCombinator;
 
 class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -43,17 +43,23 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
         $argumentType = $scope->getType($args[1]->value);
 
         // When called with an $output that isn't a constant string, return default return type
-        if (! $argumentType instanceof ConstantStringType) {
+        if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }
 
         // Called with a constant string $output
-        switch ($argumentType->getValue()) {
-            case 'objects':
-                return new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
-            case 'names':
-            default:
-                return new ArrayType(new IntegerType(), new StringType());
+        $returnType = [];
+        foreach ($argumentType->getConstantStrings() as $constantString) {
+            switch ($constantString->getValue()) {
+                case 'objects':
+                    $returnType[] = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+                    break;
+                case 'names':
+                default:
+                    $returnType[] = new ArrayType(new IntegerType(), new StringType());
+            }
         }
+
+        return TypeCombinator::union(...$returnType);
     }
 }
