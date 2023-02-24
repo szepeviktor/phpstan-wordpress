@@ -14,13 +14,13 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Type;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\TypeCombinator;
 
 class CurrentTimeDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['current_time'], true);
+        return $functionReflection->getName() === 'current_time';
     }
 
     /**
@@ -29,22 +29,27 @@ class CurrentTimeDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyn
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
-        $args = $functionCall->getArgs();
-        $argumentType = $scope->getType($args[0]->value);
+        $argumentType = $scope->getType($functionCall->getArgs()[0]->value);
 
         // When called with a $type that isn't a constant string, return default return type
-        if (! $argumentType instanceof ConstantStringType) {
+        if (count($argumentType->getConstantStrings()) === 0) {
             return null;
         }
 
         // Called with a constant string $type
-        switch ($argumentType->getValue()) {
-            case 'timestamp':
-            case 'U':
-                return new IntegerType();
-            case 'mysql':
-            default:
-                return new StringType();
+        $returnType = [];
+        foreach ($argumentType->getConstantStrings() as $constantString) {
+            switch ($constantString->getValue()) {
+                case 'timestamp':
+                case 'U':
+                    $returnType[] = new IntegerType();
+                    break;
+                case 'mysql':
+                default:
+                    $returnType[] = new StringType();
+            }
         }
+
+        return TypeCombinator::union(...$returnType);
     }
 }

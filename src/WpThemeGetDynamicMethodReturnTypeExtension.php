@@ -12,7 +12,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
@@ -62,7 +61,7 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         $argumentType = $scope->getType($methodCall->getArgs()[0]->value);
 
-        if (!$argumentType instanceof ConstantStringType) {
+        if (count($argumentType->getConstantStrings()) === 0) {
             return TypeCombinator::union(
                 new StringType(),
                 new ArrayType(new IntegerType(), new StringType()),
@@ -70,14 +69,17 @@ class WpThemeGetDynamicMethodReturnTypeExtension implements \PHPStan\Type\Dynami
             );
         }
 
-        if ($argumentType->getValue() === 'Tags') {
-            return new ArrayType(new IntegerType(), new StringType());
+        $returnType = [];
+        foreach ($argumentType->getConstantStrings() as $constantString) {
+            if ($constantString->getValue() === 'Tags') {
+                $returnType[] = new ArrayType(new IntegerType(), new StringType());
+            } elseif (in_array($constantString->getValue(), self::$headers, true)) {
+                $returnType[] = new StringType();
+            } else {
+                $returnType[] = new ConstantBooleanType(false);
+            }
         }
 
-        if (in_array($argumentType->getValue(), self::$headers, true)) {
-            return new StringType();
-        }
-
-        return new ConstantBooleanType(false);
+        return TypeCombinator::union(...$returnType);
     }
 }

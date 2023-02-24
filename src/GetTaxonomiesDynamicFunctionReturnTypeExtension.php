@@ -15,14 +15,13 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\TypeCombinator;
 
 class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['get_taxonomies'], true);
+        return $functionReflection->getName() === 'get_taxonomies';
     }
 
     /**
@@ -34,14 +33,10 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
     {
         $objectsReturnType = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
         $namesReturnType = new ArrayType(new StringType(), new StringType());
-        $indeterminateReturnType = TypeCombinator::union(
-            $objectsReturnType,
-            $namesReturnType
-        );
 
         $args = $functionCall->getArgs();
-        // Called without second $output arguments
 
+        // Called without second $output arguments
         if (count($args) <= 1) {
             return $namesReturnType;
         }
@@ -49,17 +44,26 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         $argumentType = $scope->getType($args[1]->value);
 
         // When called with a non-string $output, return default return type
-        if (! $argumentType instanceof ConstantStringType) {
-            return $indeterminateReturnType;
+        if (count($argumentType->getConstantStrings()) === 0) {
+            return TypeCombinator::union(
+                $objectsReturnType,
+                $namesReturnType
+            );
         }
 
         // Called with a string $output
-        switch ($argumentType->getValue()) {
-            case 'objects':
-                return $objectsReturnType;
-            case 'names':
-            default:
-                return $namesReturnType;
+        $returnType = [];
+        foreach ($argumentType->getConstantStrings() as $constantString) {
+            switch ($constantString->getValue()) {
+                case 'objects':
+                    $returnType[] = $objectsReturnType;
+                    break;
+                case 'names':
+                default:
+                    $returnType[] = $namesReturnType;
+            }
         }
+
+        return TypeCombinator::union(...$returnType);
     }
 }
