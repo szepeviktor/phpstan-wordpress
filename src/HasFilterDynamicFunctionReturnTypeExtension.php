@@ -15,7 +15,6 @@ use PHPStan\Type\Type;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\IntegerType;
-use PHPStan\Type\MixedType;
 use PHPStan\Type\TypeCombinator;
 
 class HasFilterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -35,20 +34,15 @@ class HasFilterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynam
             $callbackArgumentType = $scope->getType($args[1]->value);
         }
 
-        if (($callbackArgumentType instanceof ConstantBooleanType) && ($callbackArgumentType->getValue() === false)) {
+        if ($callbackArgumentType->isFalse()->yes()) {
             return new BooleanType();
         }
 
-        if ($callbackArgumentType instanceof MixedType) {
-            return TypeCombinator::union(
-                new BooleanType(),
-                new IntegerType()
-            );
+        $returnType = [new ConstantBooleanType(false), new IntegerType()];
+        if ($callbackArgumentType->isFalse()->maybe()) {
+            $returnType[] = new BooleanType();
         }
 
-        return TypeCombinator::union(
-            new ConstantBooleanType(false),
-            new IntegerType()
-        );
+        return TypeCombinator::union(...$returnType);
     }
 }
