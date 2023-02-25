@@ -14,7 +14,6 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
-use SebastianBergmann\Type\ObjectType as TypeObjectType;
 use WP_Post;
 
 class GetPermalinkDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
