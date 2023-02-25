@@ -33,19 +33,24 @@ final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\
 
         $type = $scope->getType($args[0]->value);
 
-        if ($type instanceof ConstantArrayType) {
+        if (count($type->getConstantArrays()) === 0) {
+            return $type;
+        }
+
+        $returnType = [];
+        foreach ($type->getConstantArrays() as $constantArray) {
             // shortcode_atts values are coming from the defined defaults or from the actual string shortcode attributes
-            return new ConstantArrayType(
-                $type->getKeyTypes(),
+            $returnType[] = new ConstantArrayType(
+                $constantArray->getKeyTypes(),
                 array_map(
                     static function (Type $valueType): Type {
                         return TypeCombinator::union($valueType, new StringType());
                     },
-                    $type->getValueTypes()
+                    $constantArray->getValueTypes()
                 )
             );
         }
 
-        return $type;
+        return TypeCombinator::union(...$returnType);
     }
 }
