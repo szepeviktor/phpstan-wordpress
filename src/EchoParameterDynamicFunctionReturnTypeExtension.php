@@ -76,10 +76,11 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
             $echoArgumentType = $scope->getType($args[$functionParameter]->value);
         }
 
-        if ($echoArgumentType instanceof ConstantBooleanType) {
-            return ($echoArgumentType->getValue() === false)
-                ? self::getEchoFalseReturnType($name)
-                : self::getEchoTrueReturnType($name);
+        if ($echoArgumentType->isTrue()->yes()) {
+            return self::getEchoTrueReturnType($name);
+        }
+        if ($echoArgumentType->isFalse()->yes()) {
+            return self::getEchoFalseReturnType($name);
         }
 
         return TypeCombinator::union(
