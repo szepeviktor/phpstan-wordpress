@@ -12,15 +12,16 @@ $taxo = $_GET['taxo'] ?? 'category';
 // Empty taxonomy
 assertType('string|null', term_exists(123));
 assertType('string|null', term_exists(123, ''));
-assertType('string|null', term_exists($term));
-assertType('string|null', term_exists($term, ''));
+assertType('0|string|null', term_exists($term));
+assertType('0|string|null', term_exists($term, ''));
 
 // Fixed taxonomy string
 assertType('array{term_id: string, term_taxonomy_id: string}|null', term_exists(123, 'category'));
-assertType('array{term_id: string, term_taxonomy_id: string}|null', term_exists($term, 'category'));
+assertType('0|array{term_id: string, term_taxonomy_id: string}|null', term_exists($term, 'category'));
 
 // Unknown taxonomy type
 assertType('array{term_id: string, term_taxonomy_id: string}|string|null', term_exists(123, $taxo));
+assertType('0|array{term_id: string, term_taxonomy_id: string}|string|null', term_exists($term, $taxo));
 
 // Term 0
 assertType('0', term_exists(0));
