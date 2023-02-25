@@ -51,12 +51,18 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         $termType = $scope->getType($args[0]->value);
         $taxonomyType = isset($args[1]) ? $scope->getType($args[1]->value) : new ConstantStringType('');
 
-        if ($termType instanceof NullType) {
+        $returnType = [new NullType()];
+
+        if ($termType->isNull()->yes()) {
             return new NullType();
         }
 
-        if (($termType instanceof ConstantIntegerType) && $termType->getValue() === 0) {
-            return new ConstantIntegerType(0);
+        if (($termType instanceof ConstantIntegerType)) {
+            if ($termType->getValue() === 0) {
+                return new ConstantIntegerType(0);
+            }
+        } elseif ($termType->isInteger()->no() === false) {
+            $returnType[] = new ConstantIntegerType(0);
         }
 
         $withTaxonomy = new ConstantArrayType(
@@ -71,24 +77,17 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         );
         $withoutTaxonomy = new StringType();
 
-        if (($taxonomyType instanceof ConstantStringType) && $taxonomyType->getValue() !== '') {
-            return TypeCombinator::union(
-                $withTaxonomy,
-                new NullType()
-            );
+        if (count($taxonomyType->getConstantStrings()) === 0) {
+            $returnType[] = $withTaxonomy;
+            $returnType[] = $withoutTaxonomy;
+            return TypeCombinator::union(...$returnType);
         }
 
-        if (($taxonomyType instanceof ConstantStringType) && $taxonomyType->getValue() === '') {
-            return TypeCombinator::union(
-                $withoutTaxonomy,
-                new NullType()
-            );
+        foreach ($taxonomyType->getConstantStrings() as $constantString) {
+            $returnType[] = $constantString->getValue() === ''
+                ? $withoutTaxonomy
+                : $withTaxonomy;
         }
-
-        return TypeCombinator::union(
-            $withTaxonomy,
-            $withoutTaxonomy,
-            new NullType()
-        );
+        return TypeCombinator::union(...$returnType);
     }
 }
