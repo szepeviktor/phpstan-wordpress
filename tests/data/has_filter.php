@@ -18,6 +18,12 @@ assertType('bool', has_action('', false));
 assertType('int|false', has_filter('', 'intval'));
 assertType('int|false', has_action('', 'intval'));
 
+// Maybe false callback
+/** @var callable|string|array|false $callback */
+$callback = $_GET['callback'];
+assertType('bool|int', has_filter('', $callback));
+assertType('bool|int', has_action('', $callback));
+
 // Unknown callback
 $callback = $_GET['callback'] ?? 'foo';
 assertType('bool|int', has_filter('', $callback));
