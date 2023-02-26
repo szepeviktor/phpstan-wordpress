@@ -14,6 +14,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\Type;
@@ -112,27 +113,25 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     {
         $argType = $this->scope->getType($this->args[$this->paramPos]->value);
 
-        if (count($argType->getConstantArrays()) !== 0) {
-            $argType = $argType->getConstantArrays()[0];
-            foreach ($argType->getKeyTypes() as $index => $key) {
-                if (
-                    count($key->getConstantStrings()) === 0 ||
-                    $key->getConstantStrings()[0]->getValue() !== 'echo'
-                ) {
-                    continue;
-                }
-                return $argType->getValueTypes()[$index]->toBoolean();
-            }
+        if ($argType->isArray()->yes()) {
+            return $argType->getOffsetValueType(new ConstantStringType('echo'))->toBoolean();
         }
 
         if (
             !in_array($this->name, self::STRICTLY_ARRAY, true) &&
             count($argType->getConstantStrings()) !== 0
         ) {
-            parse_str($argType->getConstantStrings()[0]->getValue(), $parsed);
-            return !isset($parsed['echo'])
-                ? new ConstantBooleanType(true)
-                : new ConstantBooleanType((bool)$parsed['echo']);
+            return TypeCombinator::union(
+                ...array_map(
+                    static function (ConstantStringType $constantStringType): ConstantBooleanType {
+                        parse_str($constantStringType->getValue(), $parsed);
+                        return !isset($parsed['echo'])
+                            ? new ConstantBooleanType(true)
+                            : new ConstantBooleanType((bool)$parsed['echo']);
+                    },
+                    $argType->getConstantStrings()
+                )
+            );
         }
 
         return new MixedType();
