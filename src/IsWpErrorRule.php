@@ -16,7 +16,6 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\VerbosityLevel;
-use WP_Error;
 
 use function sprintf;
 
@@ -65,7 +64,7 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
         $argumentType = $scope->getType($args[0]->value);
         $accepted = $this->ruleLevelHelper->accepts(
             $argumentType,
-            new ObjectType(WP_Error::class),
+            new ObjectType(\WP_Error::class),
             $scope->isDeclareStrictTypes()
         );
 
@@ -80,7 +79,7 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
             ];
         }
 
-        if ((new ObjectType(WP_Error::class))->isSuperTypeOf($argumentType)->yes()) {
+        if ((new ObjectType(\WP_Error::class))->isSuperTypeOf($argumentType)->yes()) {
             return [
                 RuleErrorBuilder::message(
                     'is_wp_error(WP_Error) will always evaluate to true.'
