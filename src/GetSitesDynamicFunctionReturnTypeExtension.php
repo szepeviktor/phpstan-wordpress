@@ -115,7 +115,10 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             $returnType[] = new ArrayType(new IntegerType(), new IntegerType());
         }
 
-        if (!in_array('ids', $fields, true)) {
+        if (
+            in_array('ids', $fields, true) && count($fields) > 1 ||
+            !in_array('ids', $fields, true) && count($fields) > 0
+        ) {
             $returnType[] = new ArrayType(new IntegerType(), new ObjectType(WP_Site::class));
         }
 
