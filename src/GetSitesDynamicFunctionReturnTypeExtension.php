@@ -22,10 +22,10 @@ use WP_Site;
 
 class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
-    /** @var list<mixed> $fields */
+    /** @var array<int,mixed> $fields */
     private $fields;
 
-    /** @var list<mixed> $count */
+    /** @var array<int,mixed> $count */
     private $count;
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
@@ -82,6 +82,9 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
      */
     private function getReturnTypeFromArgs(): array
     {
+        $this->fields = array_unique($this->fields);
+        $this->count = array_unique($this->count);
+
         if (in_array(true, $this->count, true) && count($this->count) === 1) {
             return [new IntegerType()];
         }
