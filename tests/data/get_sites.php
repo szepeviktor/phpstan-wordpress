@@ -9,13 +9,18 @@ use function PHPStan\Testing\assertType;
 // Default parameter
 assertType('array<int, WP_Site>', get_sites());
 
-// Unknown array parameter
+// Non constant array parameter
 /** @var array<int|string,mixed> $value */
 $value = $_GET['foo'];
 assertType('array<int, int|WP_Site>|int', get_sites($value));
 
-// Unknown string parameter
+// Non constant string parameter
 /** @var string $value */
+$value = $_GET['foo'];
+assertType('array<int, int|WP_Site>|int', get_sites($value));
+
+// Unknown parameter
+/** @var mixed $value */
 $value = $_GET['foo'];
 assertType('array<int, int|WP_Site>|int', get_sites($value));
 
