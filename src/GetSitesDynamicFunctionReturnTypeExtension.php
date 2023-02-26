@@ -22,6 +22,12 @@ use WP_Site;
 
 class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    /** @var list<mixed> $fields */
+    private $fields;
+
+    /** @var list<mixed> $count */
+    private $count;
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
         return $functionReflection->getName() === 'get_sites';
@@ -43,6 +49,9 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         $argumentType = $scope->getType($args[0]->value);
 
+        $this->fields = [];
+        $this->count = [];
+
         // Called with a non constant argument
         if (
             count($argumentType->getConstantArrays()) === 0 &&
@@ -51,50 +60,45 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             return self::getIndeterminedType();
         }
 
-        $fields = [];
-        $count = [];
-
         // Called with a constant array argument
         if (count($argumentType->getConstantArrays()) !== 0) {
             foreach ($argumentType->getConstantArrays() as $constantArray) {
-                self::getValuesFromArray($constantArray, $fields, $count);
+                $this->getValuesFromArray($constantArray);
             }
         }
 
         // Called with a constant string argument
         if (count($argumentType->getConstantStrings()) !== 0) {
             foreach ($argumentType->getConstantStrings() as $constantString) {
-                self::getValuesFromString($constantString, $fields, $count);
+                $this->getValuesFromString($constantString);
             }
         }
 
-        return TypeCombinator::union(...self::getReturnTypeFromArgs($fields, $count));
+        return TypeCombinator::union(...$this->getReturnTypeFromArgs());
     }
 
     /**
-     * @param list<mixed> $fields
-     * @param list<mixed> $count
      * @return list<\PHPStan\Type\IntegerType|\PHPStan\Type\ArrayType>
      */
-    private static function getReturnTypeFromArgs(array $fields, array $count): array
+    private function getReturnTypeFromArgs(): array
     {
-        if (in_array(true, $count, true) && count($count) === 1) {
+        if (in_array(true, $this->count, true) && count($this->count) === 1) {
             return [new IntegerType()];
         }
 
         $returnType = [];
 
-        if (in_array(true, $count, true)) {
+        if (in_array(true, $this->count, true)) {
             $returnType[] = new IntegerType();
         }
 
-        if (in_array('ids', $fields, true)) {
+        if (in_array('ids', $this->fields, true)) {
             $returnType[] = new ArrayType(new IntegerType(), new IntegerType());
         }
 
         if (
-            (in_array('ids', $fields, true) && count($fields) > 1) ||
-            (!in_array('ids', $fields, true) && count($fields) > 0)
+            (in_array('ids', $this->fields, true) && count($this->fields) > 1) ||
+            (!in_array('ids', $this->fields, true) && count($this->fields) > 0)
         ) {
             $returnType[] = self::getDefaultType();
         }
@@ -102,11 +106,7 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         return $returnType;
     }
 
-    /**
-     * @param list<mixed> $fields
-     * @param list<mixed> $count
-     */
-    private static function getValuesFromArray(ConstantArrayType $constantArray, array &$fields, array &$count): void
+    private function getValuesFromArray(ConstantArrayType $constantArray): void
     {
         foreach ($constantArray->getKeyTypes() as $index => $key) {
             if (count($key->getConstantStrings()) === 0) {
@@ -123,37 +123,31 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
                 foreach ($fieldsType->getConstantScalarTypes() as $constantField) {
                     if ($constantKey->getValue() === 'fields') {
-                        $fields[] = $constantField->getValue();
+                        $this->fields[] = $constantField->getValue();
                     }
                     if ($constantKey->getValue() !== 'count') {
                         continue;
                     }
 
-                    $count[] = (bool)$constantField->getValue();
+                    $this->count[] = (bool)$constantField->getValue();
                 }
             }
         }
 
         // If fields and count are not set, add their default value.
-        if ($fields === []) {
-            $fields = [''];
+        if ($this->fields === []) {
+            $this->fields[] = '';
         }
-        if ($count !== []) {
-            return;
+        if ($this->count === []) { // phpcs:ignore SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed
+            $this->count[] = false;
         }
-
-        $count = [false];
     }
 
-    /**
-     * @param list<mixed> $fields
-     * @param list<mixed> $count
-     */
-    private static function getValuesFromString(ConstantStringType $constantString, array &$fields, array &$count): void
+    private function getValuesFromString(ConstantStringType $constantString): void
     {
         parse_str($constantString->getValue(), $variables);
-        $fields[] = $variables['fields'] ?? '';
-        $count[] = isset($variables['count']) ? (bool)$variables['count'] : false;
+        $this->fields[] = $variables['fields'] ?? '';
+        $this->count[] = isset($variables['count']) ? (bool)$variables['count'] : false;
     }
 
     private static function getIndeterminedType(): Type
