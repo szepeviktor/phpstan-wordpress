@@ -74,7 +74,7 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     /**
      * @param list<mixed> $fields
      * @param list<mixed> $count
-     * @return list<IntegerType|ArrayType>
+     * @return list<\PHPStan\Type\IntegerType|\PHPStan\Type\ArrayType>
      */
     private static function getReturnTypeFromArgs(array $fields, array $count): array
     {
