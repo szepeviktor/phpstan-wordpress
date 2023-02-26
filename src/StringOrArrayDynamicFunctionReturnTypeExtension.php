@@ -35,7 +35,7 @@ class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         $dataArgType = $scope->getType($dataArg);
         if ($dataArgType->isArray()->yes()) {
             $keyType = $dataArgType->getIterableKeyType();
-            if ($keyType instanceof StringType) {
+            if ($keyType->isString()->yes()) {
                 return new ArrayType(new StringType(), new StringType());
             }
             return new ArrayType(new IntegerType(), new StringType());
