@@ -206,3 +206,23 @@ assertType('string|void', wp_list_pages($args));
 assertType('string|void', wp_list_users($args));
 assertType('string|void', wp_login_form($args));
 assertType('string|void', wp_page_menu($args));
+
+// Explicit query string value of 0 or 1 is the same as unknown
+/** @var 'echo=0&akey=avalue'|'echo=1&akey=avalue' $args */
+$args = '';
+assertType('string|void', get_search_form($args));
+assertType('string|void', the_title_attribute($args));
+assertType('string|void', wp_dropdown_categories($args));
+assertType('string|void', wp_dropdown_languages($args));
+assertType('string|void', wp_dropdown_pages($args));
+assertType('string|void', wp_dropdown_users($args));
+assertType('string|void', wp_get_archives($args));
+assertType('string|void', wp_link_pages($args));
+assertType('string|void', wp_list_authors($args));
+assertType('string|void', wp_list_bookmarks($args));
+assertType('string|void|false', wp_list_categories($args));
+assertType('string|void', wp_list_comments($args));
+assertType('string|void', wp_list_pages($args));
+assertType('string|void', wp_list_users($args));
+assertType('string|void', wp_login_form($args));
+assertType('string|void', wp_page_menu($args));
