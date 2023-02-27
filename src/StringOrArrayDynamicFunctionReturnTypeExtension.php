@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Set return type of esc_sql(), wp_slash() and wp_unslash().
+ * Set return type of esc_sql().
  */
 
 declare(strict_types=1);
@@ -20,9 +20,12 @@ class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['esc_sql', 'wp_slash', 'wp_unslash'], true);
+        return $functionReflection->getName() === 'esc_sql';
     }
 
+    /**
+     * @see https://developer.wordpress.org/reference/functions/esc_sql/
+     */
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
