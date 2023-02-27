@@ -19,7 +19,7 @@ use PHPStan\Type\ObjectType;
 class IsWpErrorFunctionTypeSpecifyingExtension implements \PHPStan\Type\FunctionTypeSpecifyingExtension, \PHPStan\Analyser\TypeSpecifierAwareExtension
 {
     /** @var \PHPStan\Analyser\TypeSpecifier */
-    private $typeSpecifier; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    private $typeSpecifier;
 
     public function isFunctionSupported(FunctionReflection $functionReflection, FuncCall $node, TypeSpecifierContext $context): bool
     {

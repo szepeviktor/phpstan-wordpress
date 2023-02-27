@@ -20,7 +20,7 @@ use PHPStan\Type\TypeCombinator;
 class AssertNotWpErrorTypeSpecifyingExtension implements \PHPStan\Type\MethodTypeSpecifyingExtension, \PHPStan\Analyser\TypeSpecifierAwareExtension
 {
     /** @var \PHPStan\Analyser\TypeSpecifier */
-    private $typeSpecifier; // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+    private $typeSpecifier;
 
     public function getClass(): string
     {

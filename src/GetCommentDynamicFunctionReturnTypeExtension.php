@@ -29,7 +29,6 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         return $functionReflection->getName() === 'get_comment';
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
