@@ -19,7 +19,7 @@ assertType('mixed', $value);
 $value = apply_filters('filter', $foo);
 assertType('mixed', $value);
 
-/** @var int $value */ // phpcs:ignore SlevomatCodingStandard.PHP.RequireExplicitAssertion
+/** @var int $value */
 $value = apply_filters('filter', $foo);
 assertType('int', $value);
 
