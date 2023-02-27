@@ -22,6 +22,7 @@ assertType("''", esc_sql(new stdClass()));
 assertType("''", esc_sql(null));
 assertType("array{''}", esc_sql([null]));
 
+assertType('string', esc_sql(true));
 assertType('array{string}', esc_sql([true]));
 assertType('string', esc_sql(1));
 assertType('array{array{string}}', esc_sql([[1]]));
