@@ -42,3 +42,7 @@ assertType('array{foo?: string}|string', esc_sql($union2));
 $union3 = null;
 assertType("''|array{foo?: string}", esc_sql($union3));
 
+/** @var mixed $mixed */
+$mixed = null;
+assertType('array|string', esc_sql($mixed));
+
