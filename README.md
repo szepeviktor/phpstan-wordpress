@@ -31,6 +31,14 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 ```
 
+### Support my work
+
+Please consider supporting my work.
+
+[![Sponsor](https://github.com/szepeviktor/.github/raw/master/.github/assets/github-like-sponsor-button.svg)](https://github.com/sponsors/szepeviktor)
+
+Thank you!
+
 ### Configuration
 
 Needs no extra configuration. :smiley: Simply configure PHPStan - for example - this way.
