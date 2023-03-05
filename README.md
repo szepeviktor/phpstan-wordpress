@@ -31,14 +31,6 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 ```
 
-### Support my work
-
-Please consider supporting my work.
-
-[![Sponsor](https://github.com/szepeviktor/.github/raw/master/.github/assets/github-like-sponsor-button.svg)](https://github.com/sponsors/szepeviktor)
-
-Thank you!
-
 ### Configuration
 
 Needs no extra configuration. :smiley: Simply configure PHPStan - for example - this way.
@@ -55,6 +47,14 @@ Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
 
 :bulb: Use Composer autoloader or a
 [custom autoloader](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wp-install/wordpress-autoloader.php)!
+
+### Support my work
+
+Please consider supporting my work.
+
+[![Sponsor](https://github.com/szepeviktor/.github/raw/master/.github/assets/github-like-sponsor-button.svg)](https://github.com/sponsors/szepeviktor)
+
+Thank you!
 
 ### Usage
 
