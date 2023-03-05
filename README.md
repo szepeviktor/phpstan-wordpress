@@ -97,7 +97,7 @@ ensure that the type of the first `@param` tag in each of these such docblocks i
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
 - Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
 - Add proper PHPDoc blocks to classes, properties, methods, functions, and calls to `apply_filters()`
-- Choose your [main plugin file parts](https://github.com/szepeviktor/small-project/blob/master/MAIN-FILE-PARTS.md).
+- Choose your [main plugin file parts](https://github.com/szepeviktor/starter-plugin).
 - Avoid using core constants, use core functions
 - Avoid bad parts of PHP
     - functions: `eval`, `extract`, `compact`, `list`
