@@ -2,6 +2,7 @@
 
 [![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress/stats)
 [![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
+[![Tweet](https://img.shields.io/badge/Tweet-share-d5d5d5?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=Static%20analysis%20for%20WordPress&url=https%3A%2F%2Fgithub.com%2Fszepeviktor%2Fphpstan-wordpress)
 [![Build Status](https://travis-ci.com/szepeviktor/phpstan-wordpress.svg?branch=master)](https://travis-ci.com/github/szepeviktor/phpstan-wordpress)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
 
