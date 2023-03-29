@@ -120,6 +120,8 @@ parameters:
         - WP_DEBUG_LOG
         - EMPTY_TRASH_DAYS
         - WP_CLI
+        - COOKIE_DOMAIN
+        - SAVEQUERIES
     earlyTerminatingFunctionCalls:
         - wp_die
         - wp_send_json
