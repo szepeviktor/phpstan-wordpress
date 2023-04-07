@@ -137,16 +137,16 @@ parameters:
         - wp_ajax_heartbeat
         - wp_ajax_nopriv_heartbeat
     earlyTerminatingMethodCalls:
-        \Custom_Background:
-            - Custom_Background::wp_set_background_image
-        \IXR_Server:
-            - IXR_Server::output
-        \WP_Ajax_Response:
-            - WP_Ajax_Response::send
-        \WP_CLI:
-            - WP_CLI::error
-            - WP_CLI::halt
-        \WP_Recovery_Mode:
-            - WP_Recovery_Mode::redirect_protected
-        \WP_Sitemaps_Stylesheet:
-            - WP_Sitemaps_Stylesheet::render_stylesheet
+        Custom_Background:
+            - wp_set_background_image
+        IXR_Server:
+            - output
+        WP_Ajax_Response:
+            - send
+        WP_CLI:
+            - error
+            - halt
+        WP_Recovery_Mode:
+            - redirect_protected
+        WP_Sitemaps_Stylesheet:
+            - render_stylesheet
