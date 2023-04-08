@@ -10,6 +10,7 @@ define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
 define('WPMU_PLUGIN_DIR', './');
 define('EMPTY_TRASH_DAYS', 30 * 86400);
+define('SCRIPT_DEBUG', false);
 
 // Constants for expressing human-readable intervals.
 define('MINUTE_IN_SECONDS', 60);
