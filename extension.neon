@@ -122,6 +122,7 @@ parameters:
         - WP_CLI
         - COOKIE_DOMAIN
         - SAVEQUERIES
+        - SCRIPT_DEBUG
     earlyTerminatingFunctionCalls:
         - wp_die
         - wp_send_json
