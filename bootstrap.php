@@ -57,6 +57,8 @@ define('EP_ALL_ARCHIVES', EP_DATE | EP_YEAR | EP_MONTH | EP_DAY | EP_CATEGORIES 
 define('EP_ALL', EP_PERMALINK | EP_ATTACHMENT | EP_ROOT | EP_COMMENTS | EP_SEARCH | EP_PAGES | EP_ALL_ARCHIVES);
 
 // Templating-related WordPress constants.
-define( 'STYLESHEETPATH', '/app/wp-content/themes/child/' );
-define( 'TEMPLATEPATH', '/app/wp-content/themes/parent/' );
-define( 'WP_DEFAULT_THEME', 'twentytwentythree' );
+// phpcs:ignore WordPress.WP.DiscouragedConstants.STYLESHEETPATHDeclarationFound
+define('STYLESHEETPATH', '/app/wp-content/themes/child/');
+// phpcs:ignore WordPress.WP.DiscouragedConstants.TEMPLATEPATHDeclarationFound
+define('TEMPLATEPATH', '/app/wp-content/themes/parent/');
+define('WP_DEFAULT_THEME', 'twentytwentythree');
