@@ -49,13 +49,11 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         }
 
         $termType = $scope->getType($args[0]->value);
-        $taxonomyType = isset($args[1]) ? $scope->getType($args[1]->value) : new ConstantStringType('');
+        if ($termType->isNull()->yes()) {
+            return $termType;
+        }
 
         $returnType = [new NullType()];
-
-        if ($termType->isNull()->yes()) {
-            return new NullType();
-        }
 
         if (($termType instanceof ConstantIntegerType)) {
             if ($termType->getValue() === 0) {
@@ -76,6 +74,8 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
             ]
         );
         $withoutTaxonomy = new StringType();
+
+        $taxonomyType = isset($args[1]) ? $scope->getType($args[1]->value) : new ConstantStringType('');
 
         if (count($taxonomyType->getConstantStrings()) === 0) {
             $returnType[] = $withTaxonomy;
