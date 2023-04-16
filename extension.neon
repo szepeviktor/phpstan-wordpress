@@ -64,10 +64,6 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\MySQL2DateDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
