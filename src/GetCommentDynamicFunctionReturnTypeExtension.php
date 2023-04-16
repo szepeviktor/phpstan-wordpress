@@ -42,6 +42,6 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
             );
         }
 
-       return null;
+        return null;
     }
 }
