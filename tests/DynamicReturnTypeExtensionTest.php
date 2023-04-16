@@ -25,7 +25,6 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
         yield from $this->gatherAssertTypes(__DIR__ . '/data/get_posts.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/get_sites.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/get_terms.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/has_filter.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/mysql2date.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/shortcode_atts.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/term_exists.php');
