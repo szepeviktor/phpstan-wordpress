@@ -68,10 +68,6 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\CurrentTimeDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
