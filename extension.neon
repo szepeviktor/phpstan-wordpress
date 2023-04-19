@@ -1,9 +1,5 @@
 services:
     -
-        class: SzepeViktor\PHPStan\WordPress\WpThemeGetDynamicMethodReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\IsWpErrorFunctionTypeSpecifyingExtension
         tags:
             - phpstan.typeSpecifier.functionTypeSpecifyingExtension
