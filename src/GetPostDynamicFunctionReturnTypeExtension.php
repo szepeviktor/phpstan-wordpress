@@ -27,7 +27,7 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     /**
      * @see https://developer.wordpress.org/reference/functions/get_post/
      */
-    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
+    public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
 
