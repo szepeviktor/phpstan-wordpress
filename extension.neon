@@ -40,10 +40,6 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\GetCommentDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension

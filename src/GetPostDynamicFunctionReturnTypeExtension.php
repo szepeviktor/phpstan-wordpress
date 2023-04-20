@@ -16,12 +16,16 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use WP_Post;
+use WP_Comment;
 
 class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    /** @var string */
+    private $fullyQualifiedName = WP_Post::class;
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return $functionReflection->getName() === 'get_post';
+        return in_array($functionReflection->getName(), ['get_post', 'get_comment'], true);
     }
 
     /**
@@ -31,10 +35,14 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
     {
         $args = $functionCall->getArgs();
 
+        if ($functionReflection->getName() === 'get_comment') {
+            $this->fullyQualifiedName = WP_Comment::class;
+        }
+
         // When called with an instance of WP_Post
         if (
             count($args) > 0 &&
-            (new ObjectType(WP_Post::class))->isSuperTypeOf($scope->getType($args[0]->value))->yes()
+            (new ObjectType($this->fullyQualifiedName))->isSuperTypeOf($scope->getType($args[0]->value))->yes()
         ) {
             return TypeCombinator::removeNull(
                 ParametersAcceptorSelector::selectFromArgs(
