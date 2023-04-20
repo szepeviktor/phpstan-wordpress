@@ -18,89 +18,11 @@ use PHPStan\Type\Type;
 class WPErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     private const SUPPORTED_FUNCTIONS = [
-        'wp_insert_link' => [
-            'arg' => 1,
-            'false' => '0|positive-int',
-            'true' => 'positive-int|WP_Error',
-            'maybe' => '0|positive-int|WP_Error',
-        ],
-        'wp_insert_category' => [
-            'arg' => 1,
-            'false' => '0|positive-int',
-            'true' => 'positive-int|WP_Error',
-            'maybe' => '0|positive-int|WP_Error',
-        ],
-        'wp_set_comment_status' => [
-            'arg' => 2,
-            'false' => 'bool',
-            'true' => 'true|WP_Error',
-            'maybe' => 'bool|WP_Error',
-        ],
-        'wp_update_comment' => [
-            'arg' => 1,
-            'false' => '0|1|false',
-            'true' => '0|1|WP_Error',
-            'maybe' => '0|1|false|WP_Error',
-        ],
-        'wp_schedule_single_event' => [
-            'arg' => 3,
-            'false' => 'bool',
-            'true' => 'true|WP_Error',
-            'maybe' => 'bool|WP_Error',
-        ],
-        'wp_schedule_event' => [
-            'arg' => 4,
-            'false' => 'bool',
-            'true' => 'true|WP_Error',
-            'maybe' => 'bool|WP_Error',
-        ],
-        'wp_reschedule_event' => [
-            'arg' => 4,
-            'false' => 'bool',
-            'true' => 'true|WP_Error',
-            'maybe' => 'bool|WP_Error',
-        ],
-        'wp_unschedule_event' => [
-            'arg' => 3,
-            'false' => 'bool',
-            'true' => 'true|WP_Error',
-            'maybe' => 'bool|WP_Error',
-        ],
-        'wp_clear_scheduled_hook' => [
-            'arg' => 2,
-            'false' => '0|positive-int|false',
-            'true' => '0|positive-int|WP_Error',
-            'maybe' => '0|positive-int|false|WP_Error',
-        ],
-        'wp_unschedule_hook' => [
-            'arg' => 1,
-            'false' => '0|positive-int|false',
-            'true' => '0|positive-int|WP_Error',
-            'maybe' => '0|positive-int|false|WP_Error',
-        ],
         '_set_cron_array' => [
             'arg' => 1,
             'false' => 'bool',
             'true' => 'true|WP_Error',
             'maybe' => 'bool|WP_Error',
-        ],
-        'wp_insert_post' => [
-            'arg' => 1,
-            'false' => '0|positive-int',
-            'true' => 'positive-int|WP_Error',
-            'maybe' => '0|positive-int|WP_Error',
-        ],
-        'wp_update_post' => [
-            'arg' => 1,
-            'false' => '0|positive-int',
-            'true' => 'positive-int|WP_Error',
-            'maybe' => '0|positive-int|WP_Error',
-        ],
-        'wp_insert_attachment' => [
-            'arg' => 3,
-            'false' => '0|positive-int',
-            'true' => 'positive-int|WP_Error',
-            'maybe' => '0|positive-int|WP_Error',
         ],
     ];
 
