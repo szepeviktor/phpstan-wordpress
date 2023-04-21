@@ -19,7 +19,6 @@ use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\Constant\ConstantStringType;
-use PHPStan\Type\ConstantType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
@@ -63,32 +62,28 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
 
         $this->cacheReturnTypes();
 
-        $urlType = $scope->getType($functionCall->getArgs()[0]->value);
+        $componentType = new ConstantIntegerType(-1);
         if (count($functionCall->getArgs()) > 1) {
             $componentType = $scope->getType($functionCall->getArgs()[1]->value);
 
-            if (!$componentType instanceof ConstantType) {
+            if (!$componentType instanceof ConstantIntegerType) {
                 return $this->createAllComponentsReturnType();
             }
-
-            $componentType = $componentType->toInteger();
-
-            if (!$componentType instanceof ConstantIntegerType) {
-                throw new \PHPStan\ShouldNotHappenException();
-            }
-        } else {
-            $componentType = new ConstantIntegerType(-1);
         }
 
-        if ($urlType instanceof ConstantStringType) {
-            try {
-                // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
-                $result = @parse_url($urlType->getValue(), $componentType->getValue());
-            } catch (\ValueError $e) {
-                return new ConstantBooleanType(false);
+        $urlType = $scope->getType($functionCall->getArgs()[0]->value);
+        if (count($urlType->getConstantStrings()) !== 0) {
+            $returnTypes = [];
+            foreach ($urlType->getConstantStrings() as $constantString) {
+                try {
+                    // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+                    $result = @parse_url($constantString->getValue(), $componentType->getValue());
+                    $returnTypes[] = $scope->getTypeFromValue($result);
+                } catch (\ValueError $e) {
+                    $returnTypes[] = new ConstantBooleanType(false);
+                }
             }
-
-            return $scope->getTypeFromValue($result);
+            return TypeCombinator::union(...$returnTypes);
         }
 
         if ($componentType->getValue() === -1) {
