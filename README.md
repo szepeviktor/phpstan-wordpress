@@ -73,9 +73,8 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 
 - Makes it possible to run PHPStan on WordPress plugins and themes
 - Loads [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs) package
-- Provides dynamic return type extensions for many core functions
+- Provides dynamic return type extensions for functions that are not covered in [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs)
 - Defines some core constants
-- Handles special functions and classes e.g. `is_wp_error()`
 - Validates the optional docblock that precedes a call to `apply_filters()` and treats the type of its first `@param` as certain
 
 ### Usage of an `apply_filters()` docblock

@@ -1,9 +1,5 @@
 services:
     -
-        class: SzepeViktor\PHPStan\WordPress\IsWpErrorFunctionTypeSpecifyingExtension
-        tags:
-            - phpstan.typeSpecifier.functionTypeSpecifyingExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
@@ -70,7 +66,6 @@ services:
 rules:
     - SzepeViktor\PHPStan\WordPress\HookCallbackRule
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
-    - SzepeViktor\PHPStan\WordPress\IsWpErrorRule
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php

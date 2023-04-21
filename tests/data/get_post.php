@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
+use WP_Error;
 
+use function is_wp_error;
 use function PHPStan\Testing\assertType;
 
 /** @var \WP_Post $wpPostType */
