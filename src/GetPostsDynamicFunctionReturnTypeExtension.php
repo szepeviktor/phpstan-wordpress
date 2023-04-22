@@ -46,11 +46,15 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         $argumentType = $scope->getType($args[0]->value);
         $returnTypes = [];
 
-        foreach ($argumentType->getArrays() as $array) {
-            if (!$array->isConstantArray()->yes()) {
-                $returnTypes[] = self::getIndeterminedType();
-                continue;
-            }
+        if ($argumentType->isConstantArray()->no()) {
+            return self::getIndeterminedType();
+        }
+
+        if ($argumentType->isConstantArray()->maybe()) {
+            $returnTypes[] = self::getIndeterminedType();
+        }
+
+        foreach ($argumentType->getConstantArrays() as $array) {
 
             if ($array->hasOffsetValueType(new ConstantStringType('fields'))->no()) {
                 $returnTypes[] = self::getObjectType();
