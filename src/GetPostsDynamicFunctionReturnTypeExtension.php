@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress;
 
+use WP_Post;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
@@ -15,8 +16,11 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\Constant\ConstantArrayType;
+use PHPStan\Type\UnionType;
+use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\Constant\ConstantStringType;
+
+use function count;
 
 class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -36,43 +40,64 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         // Called without arguments
         if (count($args) === 0) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
+            return self::getObjectType();
         }
 
         $argumentType = $scope->getType($args[0]->value);
+        $returnTypes = [];
 
-        // Called with an array argument
-        if ($argumentType instanceof ConstantArrayType) {
-            foreach ($argumentType->getKeyTypes() as $index => $key) {
-                if (! $key instanceof ConstantStringType || $key->getValue() !== 'fields') {
-                    continue;
-                }
+        foreach ($argumentType->getArrays() as $array) {
+            if (!$array->isConstantArray()->yes()) {
+                $returnTypes[] = self::getIndeterminedType();
+                continue;
+            }
 
-                $fieldsType = $argumentType->getValueTypes()[$index];
-                if ($fieldsType instanceof ConstantStringType) {
-                    $fields = $fieldsType->getValue();
+            if ($array->hasOffsetValueType(new ConstantStringType('fields'))->no()) {
+                $returnTypes[] = self::getObjectType();
+                continue;
+            }
+
+            if ($array->hasOffsetValueType(new ConstantStringType('fields'))->maybe()) {
+                $returnTypes[] = self::getIndeterminedType();
+                continue;
+            }
+
+            $fieldsValueType = $array->getOffsetValueType(new ConstantStringType('fields'));
+            $constantFieldsValueTypes = $fieldsValueType->getConstantStrings();
+
+            if ($fieldsValueType instanceof UnionType && count($fieldsValueType->getTypes()) !== count($constantFieldsValueTypes)) {
+                $returnTypes[] = self::getIndeterminedType();
+            }
+
+            foreach ($constantFieldsValueTypes as $constantFieldsValueType) {
+                switch ($constantFieldsValueType->getValue()) {
+                    case 'id=>parent':
+                    case 'ids':
+                        $returnTypes[] = self::getIntType();
+                        break;
+                    default:
+                        $returnTypes[] = self::getObjectType();
                 }
-                break;
             }
         }
-        // Called with a string argument
-        if ($argumentType instanceof ConstantStringType) {
-            parse_str($argumentType->getValue(), $variables);
-            $fields = $variables['fields'] ?? 'all';
-        }
+        return TypeCombinator::union(...$returnTypes);
+    }
 
-        // Without constant argument return default return type
-        if (! isset($fields)) {
-            return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
-        }
+    private static function getIntType(): Type
+    {
+        return new ArrayType(new IntegerType(), new IntegerType());
+    }
 
-        switch ($fields) {
-            case 'id=>parent':
-            case 'ids':
-                return new ArrayType(new IntegerType(), new IntegerType());
-            case 'all':
-            default:
-                return new ArrayType(new IntegerType(), new ObjectType('WP_Post'));
-        }
+    private static function getObjectType(): Type
+    {
+        return new ArrayType(new IntegerType(), new ObjectType(WP_Post::class));
+    }
+
+    private static function getIndeterminedType(): Type
+    {
+        return TypeCombinator::union(
+            new ArrayType(new IntegerType(), new ObjectType(WP_Post::class)),
+            new ArrayType(new IntegerType(), new IntegerType()),
+        );
     }
 }
