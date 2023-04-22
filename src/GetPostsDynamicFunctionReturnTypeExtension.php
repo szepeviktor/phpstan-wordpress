@@ -16,7 +16,6 @@ use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\UnionType;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\Constant\ConstantStringType;
 
@@ -55,7 +54,6 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         }
 
         foreach ($argumentType->getConstantArrays() as $array) {
-
             if ($array->hasOffsetValueType(new ConstantStringType('fields'))->no()) {
                 $returnTypes[] = self::getObjectType();
                 continue;
@@ -66,15 +64,15 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
                 continue;
             }
 
-            $fieldsValueType = $array->getOffsetValueType(new ConstantStringType('fields'));
-            $constantFieldsValueTypes = $fieldsValueType->getConstantStrings();
+            $fieldsValueTypes = $array->getOffsetValueType(new ConstantStringType('fields'))->getConstantStrings();
 
-            if ($fieldsValueType instanceof UnionType && count($fieldsValueType->getTypes()) !== count($constantFieldsValueTypes)) {
+            if (count($fieldsValueTypes) === 0) {
                 $returnTypes[] = self::getIndeterminedType();
+                continue;
             }
 
-            foreach ($constantFieldsValueTypes as $constantFieldsValueType) {
-                switch ($constantFieldsValueType->getValue()) {
+            foreach ($fieldsValueTypes as $fieldsValueType) {
+                switch ($fieldsValueType->getValue()) {
                     case 'id=>parent':
                     case 'ids':
                         $returnTypes[] = self::getIntType();

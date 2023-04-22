@@ -46,3 +46,12 @@ assertType('array<int, int|WP_Post>', get_posts($union));
 
 $union = $_GET['foo'] ? (array)$_GET['array'] : ['fields' => 'id=>parent'];
 assertType('array<int, int|WP_Post>', get_posts($union));
+
+$union = $_GET['foo'] ? (string)$_GET['string'] : '';
+assertType('array<int, int|WP_Post>', get_posts(['fields' => $union]));
+
+$union = $_GET['foo'] ? (string)$_GET['string'] : 'ids';
+assertType('array<int, int|WP_Post>', get_posts(['fields' => $union]));
+
+$union = $_GET['foo'] ? (string)$_GET['string'] : 'id=>parent';
+assertType('array<int, int|WP_Post>', get_posts(['fields' => $union]));
