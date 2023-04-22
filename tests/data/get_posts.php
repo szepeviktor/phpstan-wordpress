@@ -13,7 +13,7 @@ assertType('array<int, int>', get_posts(['fields' => 'ids']));
 assertType('array<int, int>', get_posts(['fields' => 'id=>parent']));
 assertType('array<int, WP_Post>', get_posts(['fields' => 'Hello']));
 
-// Non constant array
+// Nonconstant array
 assertType('array<int, int|WP_Post>', get_posts((array)$_GET['array']));
 
 // Unions
