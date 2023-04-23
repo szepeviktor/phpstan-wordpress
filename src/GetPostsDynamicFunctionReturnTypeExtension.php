@@ -99,7 +99,7 @@ class GetPostsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new ObjectType(WP_Post::class)),
-            new ArrayType(new IntegerType(), new IntegerType()),
+            new ArrayType(new IntegerType(), new IntegerType())
         );
     }
 }
