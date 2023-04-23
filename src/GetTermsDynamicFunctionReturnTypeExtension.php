@@ -16,10 +16,10 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\Constant\ConstantArrayType;
-use PHPStan\Type\Constant\ConstantStringType;
-use PHPStan\Type\ConstantScalarType;
 use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\Accessory\AccessoryNumericStringType;
+use PHPStan\Type\Constant\ConstantStringType;
+
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -61,27 +61,35 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
         }
 
         $argument = $scope->getType($functionCall->getArgs()[$argsParameterPosition]->value);
+        $returnTypes = [];
 
-        if (!($argument instanceof ConstantArrayType)) {
-            // Without constant array argument return default return type
+        if ($argument->isConstantArray()->no()) {
             return self::defaultType();
         }
-
-        $args = self::getArgs($argument);
-
-        if ($args === null) {
-            return self::defaultType();
+        if ($argument->isConstantArray()->maybe()) {
+            $returnTypes[] = self::defaultType();
         }
 
-        if (isset($args['count']) && $args['count'] === true) {
-            return self::countType();
-        }
+        foreach ($argument->getConstantArrays() as $args) {
+            if ($args->hasOffsetValueType(new ConstantStringType('fields'))->no()) {
+                $returnTypes[] = self::termsType();
+                continue;
+            }
+            if ($args->hasOffsetValueType(new ConstantStringType('fields'))->maybe()) {
+                $returnTypes[] = self::defaultType();
+                continue;
+            }
 
-        if (! isset($args['fields'], $args['count']) || ! is_string($args['fields'])) {
-            return self::defaultType();
+            $fieldsValueTypes = $args->getOffsetValueType(new ConstantStringType('fields'))->getConstantStrings();
+            if (count($fieldsValueTypes) === 0) {
+                $returnTypes[] = self::defaultType();
+                continue;
+            }
+            foreach ($fieldsValueTypes as $fieldsValueType) {
+                $returnTypes[] = self::deduceTypeFromFields($fieldsValueType->getValue());
+            }
         }
-
-        return self::deduceTypeFromFields($args['fields']);
+        return TypeCombinator::union(...$returnTypes);
     }
 
     protected static function deduceTypeFromFields(string $fields): Type
@@ -104,33 +112,6 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
             default:
                 return self::termsType();
         }
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected static function getArgs(ConstantArrayType $argument): ?array
-    {
-        $args = [
-            'fields' => 'all',
-            'count' => false,
-        ];
-
-        foreach ($argument->getKeyTypes() as $index => $key) {
-            if (! $key instanceof ConstantStringType) {
-                return null;
-            }
-
-            unset($args[$key->getValue()]);
-            $fieldsType = $argument->getValueTypes()[$index];
-            if (!($fieldsType instanceof ConstantScalarType)) {
-                continue;
-            }
-
-            $args[$key->getValue()] = $fieldsType->getValue();
-        }
-
-        return $args;
     }
 
     protected static function countType(): Type
@@ -160,7 +141,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     protected static function parentsType(): Type
     {
         return TypeCombinator::union(
-            new ArrayType(new IntegerType(), new StringType()),
+            new ArrayType(new IntegerType(), new AccessoryNumericStringType()),
             new ObjectType('WP_Error')
         );
     }
