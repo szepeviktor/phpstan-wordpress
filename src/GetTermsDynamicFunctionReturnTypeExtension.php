@@ -20,7 +20,6 @@ use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\Accessory\AccessoryNumericStringType;
 use PHPStan\Type\Constant\ConstantStringType;
 
-
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     private const SUPPORTED_FUNCTIONS = [
@@ -40,6 +39,8 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     /**
      * @see https://developer.wordpress.org/reference/functions/get_terms/
      * @see https://developer.wordpress.org/reference/classes/wp_term_query/__construct/
+     *
+     * phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
@@ -48,10 +49,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         if ($argsParameterPosition === null) {
             throw new \PHPStan\ShouldNotHappenException(
-                sprintf(
-                    'Could not detect parameter position for function %s()',
-                    $name
-                )
+                sprintf('Could not detect parameter position for function %s()', $name)
             );
         }
 
