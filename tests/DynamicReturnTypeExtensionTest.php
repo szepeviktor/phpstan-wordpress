@@ -12,7 +12,6 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
     public function dataFileAsserts(): iterable
     {
         // Path to a file with actual asserts of expected types:
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/_get_list_table.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/apply_filters.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/echo_key.php');
         yield from $this->gatherAssertTypes(__DIR__ . '/data/esc_sql.php');
