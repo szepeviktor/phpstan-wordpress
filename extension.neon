@@ -84,7 +84,7 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\WPErrorParameterDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\WpErrorParameterDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
