@@ -24,15 +24,18 @@
         "phpunit/phpunit": "^8.0 || ^9.0",
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.8"
     },
-    "autoload-dev": {
-        "classmap": [
-            "tests/"
-        ]
+    "suggest": {
+        "swissspidy/phpstan-no-private": "Detect usage of internal core functions, classes and methods"
     },
     "autoload": {
         "psr-4": {
             "SzepeViktor\\PHPStan\\WordPress\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
     },
     "config": {
         "allow-plugins": {
