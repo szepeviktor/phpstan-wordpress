@@ -18,6 +18,26 @@ use PHPStan\Type\TypeCombinator;
 
 class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    private const CORE_CLASSES = [
+        'WP_Posts_List_Table',
+        'WP_Media_List_Table',
+        'WP_Terms_List_Table',
+        'WP_Users_List_Table',
+        'WP_Comments_List_Table',
+        'WP_Post_Comments_List_Table',
+        'WP_Links_List_Table',
+        'WP_Plugin_Install_List_Table',
+        'WP_Themes_List_Table',
+        'WP_Theme_Install_List_Table',
+        'WP_Plugins_List_Table',
+        'WP_Application_Passwords_List_Table',
+        'WP_MS_Sites_List_Table',
+        'WP_MS_Users_List_Table',
+        'WP_MS_Themes_List_Table',
+        'WP_Privacy_Data_Export_Requests_List_Table',
+        'WP_Privacy_Data_Removal_Requests_List_Table',
+    ];
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
         return $functionReflection->getName() === '_get_list_table';
@@ -30,7 +50,7 @@ class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
 
         // Called without $class argument
         if (count($args) < 1) {
-            return new ConstantBooleanType(false);
+            return null;
         }
 
         $argumentType = $scope->getType($args[0]->value);
@@ -40,9 +60,11 @@ class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
             return null;
         }
 
-        $types = [new ConstantBooleanType(false)];
+        $types = [];
         foreach ($argumentType->getConstantStrings() as $constantString) {
-            $types[] = new ObjectType($constantString->getValue());
+            $types[] = in_array($constantString->getValue(), self::CORE_CLASSES, true)
+                ? new ObjectType($constantString->getValue())
+                : new ConstantBooleanType(false);
         }
 
         return TypeCombinator::union(...$types);
