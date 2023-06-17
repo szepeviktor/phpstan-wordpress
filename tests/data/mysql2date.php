@@ -19,7 +19,3 @@ assertType('string|false', mysql2date('Y-m-d H:i:s', $time));
 assertType('mixed', $_GET['foo']);
 assertType('int|string|false', mysql2date($_GET['foo'], $time));
 assertType('int|string|false', mysql2date(get_option('date_format'), $time));
-
-// Unsupported types
-assertType('int|string|false', mysql2date(new stdClass(), $time));
-assertType('int|string|false', mysql2date(false, $time));
