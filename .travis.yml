@@ -12,6 +12,9 @@ php:
   - "7.4"
   - "7.2"
 
+env:
+  - TYPOS_VERSION="1.15.0"
+
 jobs:
   include:
     - php: "8.1"
@@ -25,6 +28,17 @@ jobs:
       install:
         - "composer update --no-interaction --prefer-lowest"
         - "composer update --no-interaction --with-all-dependencies szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset 'php-stubs/wordpress-stubs:^6.1'"
+    - name: "Search for misspellings"
+      before_install: "skip"
+      install:
+        - |
+          mkdir -p "${HOME}/typos"
+          wget --progress=dot:mega --directory-prefix="${HOME}/typos" \
+            "https://github.com/crate-ci/typos/releases/download/v${TYPOS_VERSION}/typos-v${TYPOS_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+          tar -xzvf "${HOME}/typos/typos-v${TYPOS_VERSION}-x86_64-unknown-linux-musl.tar.gz" -C "${HOME}/typos" ./typos
+      script:
+        - |
+          "${HOME}/typos/typos"
     - name: "Check exported files"
       php: "7.4"
       before_install: "skip"
