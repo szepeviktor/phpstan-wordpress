@@ -13,7 +13,7 @@ php:
   - "7.2"
 
 env:
-  - TYPOS_VERSION="1.15.0"
+  - TYPOS_VERSION="1.16.1"
 
 jobs:
   include:
