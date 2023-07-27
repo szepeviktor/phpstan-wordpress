@@ -1,6 +1,6 @@
 # TravisCI configuration for szepeviktor/phpstan-wordpress
 
-if: "branch = master"
+if: "branch IN (master, 2.x)"
 
 language: "php"
 os:

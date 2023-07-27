@@ -1,22 +1,10 @@
 services:
     -
-        class: SzepeViktor\PHPStan\WordPress\WpThemeGetDynamicMethodReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\IsWpErrorFunctionTypeSpecifyingExtension
-        tags:
-            - phpstan.typeSpecifier.functionTypeSpecifyingExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
     -
         class: SzepeViktor\PHPStan\WordPress\EchoKeyDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\GetPermalinkDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
@@ -48,47 +36,11 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\GetTaxonomiesDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\GetObjectTaxonomiesDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\GetCommentDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\HasFilterDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\MySQL2DateDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\CurrentTimeDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\EchoParameterDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\WPErrorParameterDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\TermExistsDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
@@ -110,7 +62,6 @@ services:
 rules:
     - SzepeViktor\PHPStan\WordPress\HookCallbackRule
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
-    - SzepeViktor\PHPStan\WordPress\IsWpErrorRule
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
@@ -138,16 +89,16 @@ parameters:
         - wp_ajax_heartbeat
         - wp_ajax_nopriv_heartbeat
     earlyTerminatingMethodCalls:
-        \Custom_Background:
-            - Custom_Background::wp_set_background_image
-        \IXR_Server:
-            - IXR_Server::output
-        \WP_Ajax_Response:
-            - WP_Ajax_Response::send
-        \WP_CLI:
-            - WP_CLI::error
-            - WP_CLI::halt
-        \WP_Recovery_Mode:
-            - WP_Recovery_Mode::redirect_protected
-        \WP_Sitemaps_Stylesheet:
-            - WP_Sitemaps_Stylesheet::render_stylesheet
+        Custom_Background:
+            - wp_set_background_image
+        IXR_Server:
+            - output
+        WP_Ajax_Response:
+            - send
+        WP_CLI:
+            - error
+            - halt
+        WP_Recovery_Mode:
+            - redirect_protected
+        WP_Sitemaps_Stylesheet:
+            - render_stylesheet
