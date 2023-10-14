@@ -9,10 +9,7 @@ use function PHPStan\Testing\assertType;
 /** @var array $array */
 $array = null;
 
-$true = ['exit' => true];
-$false = ['exit' => false];
-
 assertType('*NEVER*', wp_die('', ''));
-assertType('*NEVER*', wp_die('', '', $true));
-assertType('void', wp_die('', '', $false));
+assertType('*NEVER*', wp_die('', '', ['exit' => true]));
+assertType('void', wp_die('', '', ['exit' => false]));
 assertType('void', wp_die('', '', $array));
