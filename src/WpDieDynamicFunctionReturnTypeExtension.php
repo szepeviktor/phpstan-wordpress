@@ -14,7 +14,7 @@ use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VoidType;
-use PHPStan\Type\NeverType;
+use PHPStan\Type\NonAcceptingNeverType;
 
 class WpDieDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -30,7 +30,7 @@ class WpDieDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFu
 
         // Called without $args parameter
         if (count($args) < 3) {
-            return new NeverType();
+            return new NonAcceptingNeverType();
         }
 
         $argType = $scope->getType($args[2]->value);
@@ -42,12 +42,12 @@ class WpDieDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFu
 
         // Return never if the key 'exit' is not set.
         if (! $argType->hasOffsetValueType(new ConstantStringType('exit'))->yes()) {
-            return new NeverType();
+            return new NonAcceptingNeverType();
         }
 
         // Note WP's wp_die handlers do lazy comparison
         return $argType->getOffsetValueType(new ConstantStringType('exit'))->toBoolean()->isTrue()->yes()
-            ? new NeverType()
+            ? new NonAcceptingNeverType()
             : new VoidType();
     }
 }
