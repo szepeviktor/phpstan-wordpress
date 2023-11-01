@@ -6,7 +6,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension;
 
-class WpThemeMagicPropertiesClassReflectionExtensionTest extends PHPStanTestCase
+class WpThemeMagicPropertiesClassReflectionExtensionTest extends \PHPStan\Testing\PHPStanTestCase
 {
     /** @var \PHPStan\Broker\Broker */
     private $broker;
