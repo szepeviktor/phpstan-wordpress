@@ -12,8 +12,8 @@ class AssertMethodTypeSpecifyingExtensionTest extends \PHPStan\Testing\TypeInfer
     public function dataFileAsserts(): iterable
     {
         // Path to a file with actual asserts of expected types:
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/assert_wp_error.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/assert_not_wp_error.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/assert_wp_error.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/assert_not_wp_error.php');
     }
 
     /**
