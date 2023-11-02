@@ -57,7 +57,7 @@ class WpTagCloudDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
                 : $this->getReturnType('indetermined');
         }
 
-        // Now constanst arrays are left.
+        // Now constants arrays are left.
 
         $this->setIsEchoTrue();
 
