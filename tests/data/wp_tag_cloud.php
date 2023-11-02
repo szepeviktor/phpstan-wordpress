@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use function wp_tag_cloud;
 use function PHPStan\Testing\assertType;
 
 // Default
@@ -18,14 +19,14 @@ assertType('string|void', wp_tag_cloud(['echo' => false]));
 assertType('string|void', wp_tag_cloud(['echo' => $_GET['foo']]));
 
 // Vary $args['format'] with default $args['echo']
-assertType('void', wp_tag_cloud(['format' => 'array']));
+assertType('array<int, string>|void', wp_tag_cloud(['format' => 'array']));
 assertType('void', wp_tag_cloud(['format' => 'flat']));
-assertType('void', wp_tag_cloud(['format' => $_GET['foo']]));
+assertType('array<int, string>|void', wp_tag_cloud(['format' => $_GET['foo']]));
 
 // Vary $args['format'] with $args['echo'] = true
-assertType('void', wp_tag_cloud(['echo' => true, 'format' => 'array']));
+assertType('array<int, string>|void', wp_tag_cloud(['echo' => true, 'format' => 'array']));
 assertType('void', wp_tag_cloud(['echo' => true, 'format' => 'flat']));
-assertType('void', wp_tag_cloud(['echo' => true, 'format' => $_GET['foo']]));
+assertType('array<int, string>|void', wp_tag_cloud(['echo' => true, 'format' => $_GET['foo']]));
 
 // Vary $args['format'] with $args['echo'] = false
 assertType('array<int, string>|void', wp_tag_cloud(['echo' => false, 'format' => 'array']));

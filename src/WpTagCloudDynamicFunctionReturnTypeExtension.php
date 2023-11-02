@@ -12,11 +12,8 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\Constant\ConstantArrayType;
-use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\IntegerType;
-use PHPStan\Type\MixedType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -26,6 +23,9 @@ class WpTagCloudDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
 {
     /** @var \PHPStan\Type\Type */
     private $argType;
+
+    /** @var bool $isEchoTrue */
+    private $isEchoTrue;
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
@@ -40,86 +40,99 @@ class WpTagCloudDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
-
         if (count($args) === 0) {
             return new VoidType();
         }
 
         $this->argType = $scope->getType($args[0]->value);
 
-        $echoType = $this->getEchoType();
-        $formatType = $this->getFormatType();
-
-        if (
-            $echoType instanceof ConstantBooleanType &&
-            $echoType->getValue() === true
-        ) {
-            return new VoidType();
+        if (!$this->hasAnyConstantStringsArrays()) {
+            return $this->getReturnType('indetermined');
         }
 
-        if ($formatType instanceof ConstantStringType) {
-            $returnType = $formatType->getValue() === 'array'
-                ? new ArrayType(new IntegerType(), new StringType())
-                : new StringType();
-            return TypeCombinator::union($returnType, new VoidType());
+        // We don't check strings, but if it's empty strings only, default values apply.
+        if (count($this->argType->getConstantStrings()) !== 0) {
+            return !$this->argType->isNonEmptyString()->no()
+                ? new VoidType()
+                : $this->getReturnType('indetermined');
         }
 
-        return TypeCombinator::union(
-            new ArrayType(new IntegerType(), new StringType()),
-            new StringType(),
-            new VoidType()
-        );
-    }
+        // Now constanst arrays are left.
 
-    private function getEchoType(): Type
-    {
-        if ($this->argType instanceof ConstantArrayType) {
-            $type = self::getTypeFromKey($this->argType, 'echo');
-            return $type ?? new ConstantBooleanType(true);
-        }
-        if ($this->argType instanceof ConstantStringType) {
-            $type = self::getTypeFromString($this->argType, 'echo');
-            return $type ?? new ConstantBooleanType(true);
-        }
-        return new MixedType();
-    }
+        $this->setIsEchoTrue();
 
-    private function getFormatType(): Type
-    {
-        if ($this->argType instanceof ConstantArrayType) {
-            $type = self::getTypeFromKey($this->argType, 'format');
-            return $type ?? new ConstantStringType('flat');
+        $formatStr = new ConstantStringType('format');
+        if ($this->argType->hasOffsetValueType($formatStr)->no()) {
+            return $this->isEchoTrue
+                ? new VoidType()
+                : $this->getReturnType('formatFlat');
         }
-        if ($this->argType instanceof ConstantStringType) {
-            $type = self::getTypeFromString($this->argType, 'format');
-            return $type ?? new ConstantStringType('flat');
-        }
-        return new MixedType();
-    }
 
-    private static function getTypeFromKey(ConstantArrayType $type, string $key): ?Type
-    {
-        foreach ($type->getKeyTypes() as $index => $keyType) {
-            if (
-                !($keyType instanceof ConstantStringType) ||
-                $keyType->getValue() !== $key
-            ) {
+        if ($this->argType->hasOffsetValueType($formatStr)->maybe()) {
+            return $this->isEchoTrue
+                ? $this->getReturnType('formatArray')
+                : $this->getReturnType('indetermined');
+        }
+
+        $formats = $this->argType->getOffsetValueType($formatStr)->getConstantStrings();
+        if (count($formats) === 0) {
+            return $this->isEchoTrue
+                ? $this->getReturnType('formatArray')
+                : $this->getReturnType('indetermined');
+        }
+
+        $returnTypes = [];
+        foreach ($formats as $format) {
+            if ($format->getValue() === 'array') {
+                $returnTypes[] = $this->getReturnType('formatArray');
                 continue;
             }
-            return $type->getValueTypes()[$index];
+            if (!$this->isEchoTrue) {
+                $returnTypes[] = $this->getReturnType('formatFlat');
+            }
+            $returnTypes[] = new VoidType();
         }
-        return null;
+        return TypeCombinator::union(...$returnTypes);
     }
 
-    private static function getTypeFromString(ConstantStringType $type, string $key): ?Type
+    private function setIsEchoTrue(): void
     {
-        if (strpos($type->getValue(), "{$key}=") === false) {
-            return null;
+        $echo = new ConstantStringType('echo');
+        if ($this->argType->hasOffsetValueType($echo)->no()) {
+            $this->isEchoTrue = true;
+            return;
         }
+        $this->isEchoTrue = $this->argType->getOffsetValueType($echo)->isTrue()->yes();
+    }
 
-        parse_str($type->getValue(), $parsed);
-        return isset($parsed[$key])
-            ? new ConstantStringType($parsed[$key])
-            : null;
+    private function hasAnyConstantStringsArrays(): bool
+    {
+        if (count($this->argType->getConstantStrings()) !== 0) {
+            return true;
+        }
+        return count($this->argType->getConstantArrays()) !== 0;
+    }
+
+    /**
+     * @param 'formatFlat'|'formatArray'|'indetermined' $type
+     */
+    private function getReturnType(string $type): Type
+    {
+        switch ($type) {
+            case 'formatFlat':
+                return TypeCombinator::union(new StringType(), new VoidType());
+            case 'formatArray':
+                return TypeCombinator::union(
+                    new ArrayType(new IntegerType(), new StringType()),
+                    new VoidType()
+                );
+            case 'indetermined':
+                return TypeCombinator::union(
+                    $this->getReturnType('formatArray'),
+                    $this->getReturnType('formatFlat')
+                );
+            default:
+                throw new \PHPStan\ShouldNotHappenException();
+        }
     }
 }
