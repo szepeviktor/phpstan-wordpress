@@ -116,8 +116,9 @@ rules:
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
     - SzepeViktor\PHPStan\WordPress\IsWpErrorRule
 parameters:
-    bootstrapFiles:
+    stubFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
+    bootstrapFiles:
         - bootstrap.php
     dynamicConstantNames:
         - WP_DEBUG
