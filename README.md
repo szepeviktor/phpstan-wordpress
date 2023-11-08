@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Hello everyone! This is Viktor who runs the php-stubs organization. I am planning to stop contributing to the WordPress ecosystem because it is extremely difficult and I do not earn (min) €100/month.
+> Hello everyone! This is Viktor who runs this PHPStan extension. I am planning to stop contributing to the WordPress ecosystem because it is extremely difficult and I do not earn (min) €100/month.
 
 Please support my work to avoid abandoning this package.
 
