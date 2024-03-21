@@ -58,11 +58,11 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $name = $node->name;
         $this->currentScope = $scope;
 
-        if (!($name instanceof \PhpParser\Node\Name)) {
+        if (! ($name instanceof \PhpParser\Node\Name)) {
             return [];
         }
 
-        if (!in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
+        if (! in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
             return [];
         }
 

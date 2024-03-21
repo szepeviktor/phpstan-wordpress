@@ -25,7 +25,7 @@ class IsWpErrorFunctionTypeSpecifyingExtension implements \PHPStan\Type\Function
     {
         return strtolower($functionReflection->getName()) === 'is_wp_error'
             && isset($node->args[0])
-            && !$context->null();
+            && ! $context->null();
     }
 
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter

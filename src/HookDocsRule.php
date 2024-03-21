@@ -70,11 +70,11 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         $this->currentNode = $node;
         $this->currentScope = $scope;
 
-        if (!($name instanceof Name)) {
+        if (! ($name instanceof Name)) {
             return [];
         }
 
-        if (!in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
+        if (! in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
             return [];
         }
 

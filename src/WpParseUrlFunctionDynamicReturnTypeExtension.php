@@ -66,7 +66,7 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
         if (count($functionCall->getArgs()) > 1) {
             $componentType = $scope->getType($functionCall->getArgs()[1]->value);
 
-            if (!$componentType instanceof ConstantIntegerType) {
+            if (! $componentType instanceof ConstantIntegerType) {
                 return $this->createAllComponentsReturnType();
             }
         }
@@ -124,13 +124,13 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
             return;
         }
 
-        $string = new StringType();
-        $integer = new IntegerType();
-        $false = new ConstantBooleanType(false);
-        $null = new NullType();
+        $stringType = new StringType();
+        $integerType = new IntegerType();
+        $falseType = new ConstantBooleanType(false);
+        $nullType = new NullType();
 
-        $stringOrFalseOrNull = TypeCombinator::union($string, $false, $null);
-        $integerOrFalseOrNull = TypeCombinator::union($integer, $false, $null);
+        $stringOrFalseOrNull = TypeCombinator::union($stringType, $falseType, $nullType);
+        $integerOrFalseOrNull = TypeCombinator::union($integerType, $falseType, $nullType);
 
         $this->componentTypesPairedConstants = [
             PHP_URL_SCHEME => $stringOrFalseOrNull,
@@ -144,14 +144,14 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
         ];
 
         $this->componentTypesPairedStrings = [
-            'scheme' => $string,
-            'host' => $string,
-            'port' => $integer,
-            'user' => $string,
-            'pass' => $string,
-            'path' => $string,
-            'query' => $string,
-            'fragment' => $string,
+            'scheme' => $stringType,
+            'host' => $stringType,
+            'port' => $integerType,
+            'user' => $stringType,
+            'pass' => $stringType,
+            'path' => $stringType,
+            'query' => $stringType,
+            'fragment' => $stringType,
         ];
     }
 }
