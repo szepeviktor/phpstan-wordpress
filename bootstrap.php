@@ -13,6 +13,7 @@ define('WPMU_PLUGIN_DIR', './');
 define('EMPTY_TRASH_DAYS', 30 * 86400);
 define('SCRIPT_DEBUG', false);
 define('WP_LANG_DIR', './');
+define('WP_CONTENT_DIR', './');
 
 // Constants for expressing human-readable intervals.
 define('MINUTE_IN_SECONDS', 60);
