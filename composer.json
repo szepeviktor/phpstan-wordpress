@@ -22,7 +22,7 @@
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^1.2",
         "phpunit/phpunit": "^8.0 || ^9.0",
-        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.8"
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.11"
     },
     "suggest": {
         "swissspidy/phpstan-no-private": "Detect usage of internal core functions, classes and methods"

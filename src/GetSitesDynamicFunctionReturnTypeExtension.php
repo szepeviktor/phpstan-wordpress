@@ -101,7 +101,7 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
         if (
             (in_array('ids', $this->fields, true) && count($this->fields) > 1) ||
-            (!in_array('ids', $this->fields, true) && count($this->fields) > 0)
+            (! in_array('ids', $this->fields, true) && count($this->fields) > 0)
         ) {
             $returnType[] = self::getDefaultType();
         }
@@ -111,12 +111,12 @@ class GetSitesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
 
     private function getValuesFromArray(ConstantArrayType $constantArray): void
     {
-        foreach ($constantArray->getKeyTypes() as $index => $key) {
-            if (count($key->getConstantStrings()) === 0) {
+        foreach ($constantArray->getKeyTypes() as $index => $keyType) {
+            if (count($keyType->getConstantStrings()) === 0) {
                 continue;
             }
-            foreach ($key->getConstantStrings() as $constantKey) {
-                if (!in_array($constantKey->getValue(), ['fields', 'count'], true)) {
+            foreach ($keyType->getConstantStrings() as $constantKey) {
+                if (! in_array($constantKey->getValue(), ['fields', 'count'], true)) {
                     continue;
                 }
                 $fieldsType = $constantArray->getValueTypes()[$index];

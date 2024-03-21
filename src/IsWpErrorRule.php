@@ -68,7 +68,7 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
             $scope->isDeclareStrictTypes()
         );
 
-        if (!$accepted) {
+        if (! $accepted) {
             return [
                 RuleErrorBuilder::message(
                     sprintf(
