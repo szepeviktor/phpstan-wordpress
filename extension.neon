@@ -126,6 +126,7 @@ parameters:
     dynamicConstantNames:
         - WP_DEBUG
         - WP_DEBUG_LOG
+        - WP_DEBUG_DISPLAY
         - EMPTY_TRASH_DAYS
         - WP_CLI
         - COOKIE_DOMAIN
