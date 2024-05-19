@@ -214,8 +214,12 @@ add_action('action', function($result) {
 });
 
 // Various callback types
+add_filter('filter', '__return_true');
 add_filter('filter', '__return_false');
+add_filter('filter', '__return_zero');
 add_filter('filter', '__return_null');
+add_filter('filter', '__return_empty_array');
+add_filter('filter', '__return_empty_string');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed');
 add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed_union');
