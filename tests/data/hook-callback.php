@@ -221,7 +221,6 @@ add_filter('filter', '__return_null');
 add_filter('filter', '__return_empty_array');
 add_filter('filter', '__return_empty_string');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed');
-add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
 add_filter('filter', __NAMESPACE__ . '\\return_value_mixed_union');
 add_filter('filter', __NAMESPACE__ . '\\return_value_documented');
 add_filter('filter', __NAMESPACE__ . '\\return_value_untyped');
