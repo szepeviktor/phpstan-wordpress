@@ -116,6 +116,10 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                     'Action callback returns mixed but should not return anything.',
                     99,
                 ],
+                [
+                    'Action callback returns null but should not return anything.',
+                    102,
+                ],
             ]
         );
     }
