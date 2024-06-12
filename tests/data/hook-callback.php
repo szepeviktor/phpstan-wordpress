@@ -16,8 +16,8 @@ use function add_action;
 // Filter callback return statement is missing.
 add_filter('filter', function() {});
 
-// Filter callback return statement is missing.
-add_filter('filter', function() {});
+// Filter callback returns void.
+add_filter('filter', function() { return; });
 
 // Filter callback return statement is missing.
 add_filter('filter', function(array $classes) {});
@@ -153,6 +153,10 @@ add_filter('filter', __NAMESPACE__ . '\\no_return_value_untyped');
 
 add_filter('filter', function() {
     return 123;
+}, 10, 0);
+add_filter('filter', function() {
+    // null can be a valid return value, unfortunately.
+    return null;
 }, 10, 0);
 add_filter('filter', function() {
     // We're allowing 0 parameters when `$accepted_args` is default value of 1.

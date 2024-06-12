@@ -212,7 +212,7 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     {
         $returnType = $callbackAcceptor->getReturnType();
 
-        if ($returnType instanceof MixedType) {
+        if ($returnType instanceof MixedType || $returnType->isNull()->yes()) {
             return;
         }
 
