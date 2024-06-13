@@ -15,11 +15,11 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\Rules\RuleLevelHelper;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\MixedType;
+use PHPStan\Type\NeverType;
+use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
-use PHPStan\Type\VoidType;
 
 /**
  * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\FuncCall>
@@ -31,17 +31,8 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         'add_action',
     ];
 
-    /** @var \PHPStan\Rules\RuleLevelHelper */
-    protected $ruleLevelHelper;
-
     /** @var \PHPStan\Analyser\Scope */
     protected $currentScope;
-
-    public function __construct(
-        RuleLevelHelper $ruleLevelHelper
-    ) {
-        $this->ruleLevelHelper = $ruleLevelHelper;
-    }
 
     public function getNodeType(): string
     {
@@ -55,14 +46,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
      */
     public function processNode(Node $node, Scope $scope): array
     {
-        $name = $node->name;
         $this->currentScope = $scope;
 
-        if (! ($name instanceof \PhpParser\Node\Name)) {
+        if (! ($node->name instanceof \PhpParser\Node\Name)) {
             return [];
         }
 
-        if (! in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
+        if (! in_array($node->name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
             return [];
         }
 
@@ -80,11 +70,14 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        $parametersAcceptors = $callbackType->getCallableParametersAcceptors($scope);
-        $callbackAcceptor = ParametersAcceptorSelector::selectFromArgs($scope, $args, $parametersAcceptors);
+        $callbackAcceptor = ParametersAcceptorSelector::selectFromArgs(
+            $scope,
+            $args,
+            $callbackType->getCallableParametersAcceptors($scope)
+        );
 
         try {
-            if ($name->toString() === 'add_action') {
+            if ($node->name->toString() === 'add_action') {
                 $this->validateActionReturnType($callbackAcceptor);
             } else {
                 $this->validateFilterReturnType($callbackAcceptor);
@@ -186,26 +179,22 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     protected function validateActionReturnType(ParametersAcceptor $callbackAcceptor): void
     {
         $acceptedType = $callbackAcceptor->getReturnType();
-        $exception = new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
+
+        // Will be handled by PHPStan.
+        if ($acceptedType instanceof MixedType && ! $acceptedType->isExplicitMixed()) {
+            return;
+        }
+
+        if ($acceptedType->isVoid()->yes() || $this->isNever($acceptedType)) {
+            return;
+        }
+
+        throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
             sprintf(
                 'Action callback returns %s but should not return anything.',
                 $acceptedType->describe(VerbosityLevel::getRecommendedLevelByType($acceptedType))
             )
         );
-
-        if ($acceptedType instanceof MixedType && $acceptedType->isExplicitMixed()) {
-            throw $exception;
-        }
-
-        $accepted = $this->ruleLevelHelper->accepts(
-            new VoidType(),
-            $acceptedType,
-            true
-        );
-
-        if (! $accepted) {
-            throw $exception;
-        }
     }
 
     protected function validateFilterReturnType(ParametersAcceptor $callbackAcceptor): void
@@ -216,18 +205,17 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return;
         }
 
-        $accepted = $this->ruleLevelHelper->accepts(
-            new VoidType(),
-            $returnType,
-            true
-        );
-
-        if (! $accepted) {
+        if (($returnType->isVoid()->no()) && ! $this->isNever($returnType)) {
             return;
         }
 
         throw new \SzepeViktor\PHPStan\WordPress\HookCallbackException(
             'Filter callback return statement is missing.'
         );
+    }
+
+    protected function isNever(Type $type): bool
+    {
+        return $type instanceof NeverType && $type->isExplicit();
     }
 }
