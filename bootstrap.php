@@ -8,9 +8,13 @@ declare(strict_types=1);
 define('ABSPATH', './');
 define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', true);
+define('WP_PLUGIN_DIR', './');
 define('WPMU_PLUGIN_DIR', './');
 define('EMPTY_TRASH_DAYS', 30 * 86400);
 define('SCRIPT_DEBUG', false);
+define('WP_LANG_DIR', './');
+define('WP_CONTENT_DIR', './');
 
 // Constants for expressing human-readable intervals.
 define('MINUTE_IN_SECONDS', 60);
