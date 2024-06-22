@@ -1,2 +1,8 @@
+[files]
+extend-exclude = [
+    ".git/",
+]
+ignore-hidden = false
+
 [default.extend-words]
-invokable = "invokable"
+"invokable" = "invokable"

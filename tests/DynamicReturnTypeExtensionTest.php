@@ -12,16 +12,18 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
     public function dataFileAsserts(): iterable
     {
         // Path to a file with actual asserts of expected types:
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/_get_list_table.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/apply_filters.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/echo_key.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/esc_sql.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/get_post.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/get_posts.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/get_sites.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/get_terms.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/shortcode_atts.php');
-        yield from $this->gatherAssertTypes(__DIR__ . '/data/wp_parse_url.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/_get_list_table.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/apply_filters.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/echo_key.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/get_approved_comments.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/esc_sql.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/get_post.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/get_posts.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/get_sites.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/get_terms.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/shortcode_atts.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/wp_die.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/wp_parse_url.php');
     }
 
     /**

@@ -48,6 +48,10 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
+        class: SzepeViktor\PHPStan\WordPress\WpDieDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
         class: SzepeViktor\PHPStan\WordPress\HookDocsVisitor
         tags:
             - phpstan.parser.richParserNodeVisitor
@@ -69,13 +73,13 @@ parameters:
     dynamicConstantNames:
         - WP_DEBUG
         - WP_DEBUG_LOG
+        - WP_DEBUG_DISPLAY
         - EMPTY_TRASH_DAYS
         - WP_CLI
         - COOKIE_DOMAIN
         - SAVEQUERIES
         - SCRIPT_DEBUG
     earlyTerminatingFunctionCalls:
-        - wp_die
         - wp_send_json
         - wp_send_json_success
         - wp_send_json_error

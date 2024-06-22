@@ -1,3 +1,12 @@
+> [!IMPORTANT]
+> Hello everyone! This is Viktor who runs this PHPStan extension. I am planning to stop contributing to the WordPress ecosystem because it is extremely difficult and no one asks me **to join his team** as I am a thinker, a devops person, a tool maker (not a builder).
+
+Please support my work to avoid abandoning this package.
+
+[![Sponsor](https://github.com/szepeviktor/.github/raw/master/.github/assets/github-like-sponsor-button.svg)](https://github.com/sponsors/szepeviktor)
+
+Thank you!
+
 # WordPress extensions for PHPStan
 
 [![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress/stats)
@@ -48,14 +57,6 @@ Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
 
 :bulb: Use Composer autoloader or a
 [custom autoloader](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wp-install/wordpress-autoloader.php)!
-
-### Support my work
-
-Please consider supporting my work.
-
-[![Sponsor](https://github.com/szepeviktor/.github/raw/master/.github/assets/github-like-sponsor-button.svg)](https://github.com/sponsors/szepeviktor)
-
-Thank you!
 
 ### Usage
 

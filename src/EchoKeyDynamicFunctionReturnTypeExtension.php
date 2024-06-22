@@ -95,7 +95,7 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         $this->paramPos = self::FUNCTIONS[$this->name] ?? null;
         $this->defaultType = $this->getDefaultReturnType();
 
-        if (!isset($this->args[$this->paramPos])) {
+        if (! isset($this->args[$this->paramPos])) {
             return $this->getEchoTrueReturnType();
         }
 
@@ -118,14 +118,14 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         }
 
         if (
-            !in_array($this->name, self::STRICTLY_ARRAY, true) &&
+            ! in_array($this->name, self::STRICTLY_ARRAY, true) &&
             count($argType->getConstantStrings()) !== 0
         ) {
             return TypeCombinator::union(
                 ...array_map(
                     static function (ConstantStringType $constantStringType): ConstantBooleanType {
                         parse_str($constantStringType->getValue(), $parsed);
-                        return !isset($parsed['echo'])
+                        return ! isset($parsed['echo'])
                             ? new ConstantBooleanType(true)
                             : new ConstantBooleanType((bool)$parsed['echo']);
                     },
@@ -139,7 +139,7 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
 
     private function getEchoFalseReturnType(): Type
     {
-        if (!in_array($this->name, self::ALWAYS_VOID, true)) {
+        if (! in_array($this->name, self::ALWAYS_VOID, true)) {
             return TypeCombinator::remove($this->defaultType, new VoidType());
         }
 

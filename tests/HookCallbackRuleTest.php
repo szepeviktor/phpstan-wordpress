@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
-use PHPStan\Rules\RuleLevelHelper;
 use SzepeViktor\PHPStan\WordPress\HookCallbackRule;
 
 /**
@@ -14,11 +13,8 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
 {
     protected function getRule(): \PHPStan\Rules\Rule
     {
-        /** @var \PHPStan\Rules\RuleLevelHelper */
-        $ruleLevelHelper = self::getContainer()->getByType(RuleLevelHelper::class);
-
         // getRule() method needs to return an instance of the tested rule
-        return new HookCallbackRule($ruleLevelHelper);
+        return new HookCallbackRule();
     }
 
     // phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
@@ -115,6 +111,10 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
                 [
                     'Action callback returns mixed but should not return anything.',
                     99,
+                ],
+                [
+                    'Action callback returns null but should not return anything.',
+                    102,
                 ],
             ]
         );
