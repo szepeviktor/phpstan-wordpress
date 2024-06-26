@@ -30,7 +30,6 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
