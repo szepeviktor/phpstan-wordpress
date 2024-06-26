@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress;
 
-use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node;
+use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -38,30 +38,24 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
         return FuncCall::class;
     }
 
-    /**
-     * @param \PhpParser\Node\Expr\FuncCall $node
-     * @param \PHPStan\Analyser\Scope       $scope
-     * @return array<int, \PHPStan\Rules\RuleError>
-     */
     public function processNode(Node $node, Scope $scope): array
     {
-        $name = $node->name;
-
-        if (! ($name instanceof Name)) {
+        if (! ($node->name instanceof Name)) {
             return [];
         }
 
-        if ($name->toString() !== 'is_wp_error') {
+        if ($node->name->toString() !== 'is_wp_error') {
             return [];
         }
 
         $args = $node->getArgs();
 
-        if (! isset($args[0])) {
+        if (count($args) === 0) {
             return [];
         }
 
         $argumentType = $scope->getType($args[0]->value);
+
         $accepted = $this->ruleLevelHelper->accepts(
             $argumentType,
             new ObjectType(\WP_Error::class),
@@ -75,7 +69,7 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
                         'is_wp_error(%s) will always evaluate to false.',
                         $argumentType->describe(VerbosityLevel::typeOnly())
                     )
-                )->build(),
+                )->identifier('function.impossibleType')->build(),
             ];
         }
 
@@ -83,7 +77,7 @@ class IsWpErrorRule implements \PHPStan\Rules\Rule
             return [
                 RuleErrorBuilder::message(
                     'is_wp_error(WP_Error) will always evaluate to true.'
-                )->build(),
+                )->identifier('function.alreadyNarrowedType')->build(),
             ];
         }
 
