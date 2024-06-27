@@ -21,7 +21,14 @@ class HasFilterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynam
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['has_filter', 'has_action'], true);
+        return in_array(
+            $functionReflection->getName(),
+            [
+                'has_filter',
+                'has_action',
+            ],
+            true
+        );
     }
 
     /**
