@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress;
 
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Reflection\Dummy\DummyPropertyReflection;
+use PHPStan\Reflection\PropertyReflection;
 
 class WpThemeMagicPropertiesClassReflectionExtension implements \PHPStan\Reflection\PropertiesClassReflectionExtension
 {
