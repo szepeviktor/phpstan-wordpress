@@ -23,7 +23,11 @@ class WpDieDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFu
         return $functionReflection->getName() === 'wp_die';
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/wp_die/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $args = $functionCall->getArgs();

@@ -23,7 +23,11 @@ final class ShortcodeAttsDynamicFunctionReturnTypeExtension implements \PHPStan\
         return $functionReflection->getName() === 'shortcode_atts';
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/shortcode_atts/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
