@@ -20,14 +20,9 @@ use PHPStan\Type\TypeCombinator;
 
 class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
-    /** @var array<string> */
-    protected static $supported = [
-        'get_approved_comments',
-    ];
-
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return \in_array($functionReflection->getName(), static::$supported, true);
+        return $functionReflection->getName() === 'get_approved_comments';
     }
 
     /**

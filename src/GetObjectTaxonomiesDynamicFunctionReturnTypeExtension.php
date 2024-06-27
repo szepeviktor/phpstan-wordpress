@@ -22,7 +22,7 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['get_object_taxonomies'], true);
+        return $functionReflection->getName() === 'get_object_taxonomies';
     }
 
     /**
