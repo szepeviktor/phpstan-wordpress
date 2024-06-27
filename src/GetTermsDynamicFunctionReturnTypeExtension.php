@@ -19,6 +19,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Term;
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -120,7 +121,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new StringType(),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
@@ -128,7 +129,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new StringType()),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
@@ -136,7 +137,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new IntegerType()),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
@@ -144,15 +145,15 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new AccessoryNumericStringType()),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
     protected static function termsType(): Type
     {
         return TypeCombinator::union(
-            new ArrayType(new IntegerType(), new ObjectType('WP_Term')),
-            new ObjectType('WP_Error')
+            new ArrayType(new IntegerType(), new ObjectType(WP_Term::class)),
+            new ObjectType(\WP_Error::class)
         );
     }
 
