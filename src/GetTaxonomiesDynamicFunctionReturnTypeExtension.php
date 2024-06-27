@@ -16,6 +16,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Taxonomy;
 
 class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -31,7 +32,7 @@ class GetTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
-        $objectsReturnType = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+        $objectsReturnType = new ArrayType(new StringType(), new ObjectType(WP_Taxonomy::class));
         $namesReturnType = new ArrayType(new StringType(), new StringType());
 
         $args = $functionCall->getArgs();

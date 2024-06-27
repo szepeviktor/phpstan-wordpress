@@ -17,6 +17,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Taxonomy;
 
 class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -51,7 +52,7 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
         foreach ($argumentType->getConstantStrings() as $constantString) {
             switch ($constantString->getValue()) {
                 case 'objects':
-                    $returnType[] = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+                    $returnType[] = new ArrayType(new StringType(), new ObjectType(WP_Taxonomy::class));
                     break;
                 case 'names':
                 default:

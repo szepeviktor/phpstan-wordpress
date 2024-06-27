@@ -17,6 +17,7 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Comment;
 
 class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -72,7 +73,7 @@ class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\
 
     protected static function defaultType(): Type
     {
-        return new ArrayType(new IntegerType(), new ObjectType('WP_Comment'));
+        return new ArrayType(new IntegerType(), new ObjectType(WP_Comment::class));
     }
 
     /**
@@ -83,7 +84,7 @@ class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\
     protected static function getIndeterminedType(): Type
     {
         return TypeCombinator::union(
-            new ArrayType(new IntegerType(), new ObjectType('WP_Comment')),
+            new ArrayType(new IntegerType(), new ObjectType(WP_Comment::class)),
             new ArrayType(new IntegerType(), new IntegerType()),
             new IntegerType()
         );
