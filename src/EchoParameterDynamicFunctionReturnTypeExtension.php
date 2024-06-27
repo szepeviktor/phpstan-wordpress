@@ -55,6 +55,33 @@ class EchoParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\D
         return array_key_exists($functionReflection->getName(), self::SUPPORTED_FUNCTIONS);
     }
 
+    /**
+     * @see https://developer.wordpress.org/reference/functions/checked/
+     * @see https://developer.wordpress.org/reference/functions/comment_class/
+     * @see https://developer.wordpress.org/reference/functions/disabled/
+     * @see https://developer.wordpress.org/reference/functions/edit_term_link/
+     * @see https://developer.wordpress.org/reference/functions/get_calendar/
+     * @see https://developer.wordpress.org/reference/functions/menu_page_url/
+     * @see https://developer.wordpress.org/reference/functions/next_posts/
+     * @see https://developer.wordpress.org/reference/functions/post_type_archive_title/
+     * @see https://developer.wordpress.org/reference/functions/previous_posts/
+     * @see https://developer.wordpress.org/reference/functions/selected/
+     * @see https://developer.wordpress.org/reference/functions/single_cat_title/
+     * @see https://developer.wordpress.org/reference/functions/single_month_title/
+     * @see https://developer.wordpress.org/reference/functions/single_post_title/
+     * @see https://developer.wordpress.org/reference/functions/single_tag_title/
+     * @see https://developer.wordpress.org/reference/functions/single_term_title/
+     * @see https://developer.wordpress.org/reference/functions/the_date/
+     * @see https://developer.wordpress.org/reference/functions/the_modified_date/
+     * @see https://developer.wordpress.org/reference/functions/the_title/
+     * @see https://developer.wordpress.org/reference/functions/wp_loginout/
+     * @see https://developer.wordpress.org/reference/functions/wp_nonce_field/
+     * @see https://developer.wordpress.org/reference/functions/wp_original_referer_field/
+     * @see https://developer.wordpress.org/reference/functions/wp_readonly/
+     * @see https://developer.wordpress.org/reference/functions/wp_referer_field/
+     * @see https://developer.wordpress.org/reference/functions/wp_register/
+     * @see https://developer.wordpress.org/reference/functions/wp_title/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $name = $functionReflection->getName();

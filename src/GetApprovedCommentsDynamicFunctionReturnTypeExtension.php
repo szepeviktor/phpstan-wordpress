@@ -31,11 +31,11 @@ class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\
     }
 
     /**
-     * - Return 'WP_Comment[]' by default.
+     * - Return `WP_Comment[]` by default.
      * - Return `int[]` if `$fields = 'ids'`.
      * - Return `int` if `$count = true`.
      *
-     * @link https://developer.wordpress.org/reference/functions/get_approved_comments/#parameters
+     * @see https://developer.wordpress.org/reference/functions/get_approved_comments/#parameters
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */

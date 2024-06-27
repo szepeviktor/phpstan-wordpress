@@ -29,6 +29,9 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         return $functionReflection->getName() === 'get_comment';
     }
 
+    /**
+     * @see https://developer.wordpress.org/reference/functions/get_comment/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();

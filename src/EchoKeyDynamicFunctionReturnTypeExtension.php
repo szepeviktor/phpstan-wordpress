@@ -86,6 +86,24 @@ class EchoKeyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
         return array_key_exists($functionReflection->getName(), self::FUNCTIONS);
     }
 
+    /**
+     * @see https://developer.wordpress.org/reference/functions/get_search_form/
+     * @see https://developer.wordpress.org/reference/functions/the_title_attribute/
+     * @see https://developer.wordpress.org/reference/functions/wp_dropdown_categories/
+     * @see https://developer.wordpress.org/reference/functions/wp_dropdown_languages/
+     * @see https://developer.wordpress.org/reference/functions/wp_dropdown_pages/
+     * @see https://developer.wordpress.org/reference/functions/wp_dropdown_users/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_archives/
+     * @see https://developer.wordpress.org/reference/functions/wp_link_pages/
+     * @see https://developer.wordpress.org/reference/functions/wp_list_authors/
+     * @see https://developer.wordpress.org/reference/functions/wp_list_bookmarks/
+     * @see https://developer.wordpress.org/reference/functions/wp_list_categories/
+     * @see https://developer.wordpress.org/reference/functions/wp_list_comments/
+     * @see https://developer.wordpress.org/reference/functions/wp_list_pages/
+     * @see https://developer.wordpress.org/reference/functions/wp_list_users/
+     * @see https://developer.wordpress.org/reference/functions/wp_login_form/
+     * @see https://developer.wordpress.org/reference/functions/wp_page_menu/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $this->reflection = $functionReflection;

@@ -37,8 +37,12 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     }
 
     /**
+     * @see https://developer.wordpress.org/reference/functions/get_tags/
      * @see https://developer.wordpress.org/reference/functions/get_terms/
-     * @see https://developer.wordpress.org/reference/classes/wp_term_query/__construct/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_object_terms/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_post_categories/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_post_tags/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_post_terms/
      *
      * phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
      */

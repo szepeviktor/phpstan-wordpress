@@ -38,7 +38,13 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         );
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/apply_filters/
+     * @see https://developer.wordpress.org/reference/functions/apply_filters_deprecated/
+     * @see https://developer.wordpress.org/reference/functions/apply_filters_ref_array/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $default = new MixedType();

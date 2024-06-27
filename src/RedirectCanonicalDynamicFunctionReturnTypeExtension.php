@@ -23,7 +23,11 @@ class RedirectCanonicalDynamicFunctionReturnTypeExtension implements \PHPStan\Ty
         return $functionReflection->getName() === 'redirect_canonical';
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/redirect_canonical/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         return TypeCombinator::union(new StringType(), new NullType());

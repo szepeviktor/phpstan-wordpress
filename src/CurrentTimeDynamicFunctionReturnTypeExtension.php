@@ -25,8 +25,9 @@ class CurrentTimeDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyn
 
     /**
      * @see https://developer.wordpress.org/reference/functions/current_time/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $argumentType = $scope->getType($functionCall->getArgs()[0]->value);

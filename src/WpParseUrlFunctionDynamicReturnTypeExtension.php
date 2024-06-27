@@ -53,7 +53,11 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
         return $functionReflection->getName() === 'wp_parse_url';
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/wp_parse_url/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         if (count($functionCall->getArgs()) < 1) {

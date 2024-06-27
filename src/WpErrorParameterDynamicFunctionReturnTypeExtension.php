@@ -117,6 +117,22 @@ class WpErrorParameterDynamicFunctionReturnTypeExtension implements \PHPStan\Typ
         return array_key_exists($functionReflection->getName(), self::SUPPORTED_FUNCTIONS);
     }
 
+    /**
+     * @see https://developer.wordpress.org/reference/functions/wp_insert_link/
+     * @see https://developer.wordpress.org/reference/functions/wp_insert_category/
+     * @see https://developer.wordpress.org/reference/functions/wp_set_comment_status/
+     * @see https://developer.wordpress.org/reference/functions/wp_update_comment/
+     * @see https://developer.wordpress.org/reference/functions/wp_schedule_single_event/
+     * @see https://developer.wordpress.org/reference/functions/wp_schedule_event/
+     * @see https://developer.wordpress.org/reference/functions/wp_reschedule_event/
+     * @see https://developer.wordpress.org/reference/functions/wp_unschedule_event/
+     * @see https://developer.wordpress.org/reference/functions/wp_clear_scheduled_hook/
+     * @see https://developer.wordpress.org/reference/functions/wp_unschedule_hook/
+     * @see https://developer.wordpress.org/reference/functions/_set_cron_array/
+     * @see https://developer.wordpress.org/reference/functions/wp_insert_post/
+     * @see https://developer.wordpress.org/reference/functions/wp_update_post/
+     * @see https://developer.wordpress.org/reference/functions/wp_insert_attachment/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $name = $functionReflection->getName();

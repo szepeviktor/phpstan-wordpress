@@ -36,6 +36,8 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     }
 
     /**
+     * @see https://developer.wordpress.org/reference/functions/is_term/
+     * @see https://developer.wordpress.org/reference/functions/tag_exists/
      * @see https://developer.wordpress.org/reference/functions/term_exists/
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
