@@ -12,8 +12,8 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\FileTypeMapper;
-use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
+use PHPStan\Type\Type;
 
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {

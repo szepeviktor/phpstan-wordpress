@@ -11,9 +11,9 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
 class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
