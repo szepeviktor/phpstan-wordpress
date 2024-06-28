@@ -66,6 +66,8 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
 
         $this->cacheReturnTypes();
 
+        $componentType = new ConstantIntegerType(-1);
+
         if (count($functionCall->getArgs()) > 1) {
             $componentType = $scope->getType($functionCall->getArgs()[1]->value);
 
@@ -78,8 +80,6 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
             if (! $componentType instanceof ConstantIntegerType) {
                 return $this->createAllComponentsReturnType();
             }
-        } else {
-            $componentType = new ConstantIntegerType(-1);
         }
 
         $urlType = $scope->getType($functionCall->getArgs()[0]->value);
