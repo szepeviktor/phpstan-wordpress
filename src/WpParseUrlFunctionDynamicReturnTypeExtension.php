@@ -145,13 +145,13 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
             return;
         }
 
-        $string = new StringType();
+        $stringType = new StringType();
         $port = IntegerRangeType::fromInterval(0, 65535);
-        $false = new ConstantBooleanType(false);
-        $null = new NullType();
+        $falseType = new ConstantBooleanType(false);
+        $nullType = new NullType();
 
-        $stringOrFalseOrNull = TypeCombinator::union($string, $false, $null);
-        $portOrFalseOrNull = TypeCombinator::union($port, $false, $null);
+        $stringOrFalseOrNull = TypeCombinator::union($stringType, $falseType, $nullType);
+        $portOrFalseOrNull = TypeCombinator::union($port, $falseType, $nullType);
 
         $this->componentTypesPairedConstants = [
             PHP_URL_SCHEME => $stringOrFalseOrNull,
@@ -165,14 +165,14 @@ final class WpParseUrlFunctionDynamicReturnTypeExtension implements \PHPStan\Typ
         ];
 
         $this->componentTypesPairedStrings = [
-            'scheme' => $string,
-            'host' => $string,
+            'scheme' => $stringType,
+            'host' => $stringType,
             'port' => $port,
-            'user' => $string,
-            'pass' => $string,
-            'path' => $string,
-            'query' => $string,
-            'fragment' => $string,
+            'user' => $stringType,
+            'pass' => $stringType,
+            'path' => $stringType,
+            'query' => $stringType,
+            'fragment' => $stringType,
         ];
     }
 }
