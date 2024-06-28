@@ -11,7 +11,6 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\Type;
 
@@ -20,9 +19,9 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
     /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
     protected $hookDocBlock;
 
-    public function __construct(FileTypeMapper $fileTypeMapper)
+    public function __construct(HookDocBlock $hookDocBlock)
     {
-        $this->hookDocBlock = new HookDocBlock($fileTypeMapper);
+        $this->hookDocBlock = $hookDocBlock;
     }
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool

@@ -1,5 +1,7 @@
 services:
     -
+        class: SzepeViktor\PHPStan\WordPress\HookDocBlock
+    -
         class: SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
