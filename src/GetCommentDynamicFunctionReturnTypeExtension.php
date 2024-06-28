@@ -12,13 +12,13 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\StringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\NullType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use WP_Comment;
 
@@ -29,6 +29,9 @@ class GetCommentDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
         return $functionReflection->getName() === 'get_comment';
     }
 
+    /**
+     * @see https://developer.wordpress.org/reference/functions/get_comment/
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();

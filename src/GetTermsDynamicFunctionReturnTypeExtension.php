@@ -11,14 +11,15 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
+use PHPStan\Type\Accessory\AccessoryNumericStringType;
 use PHPStan\Type\ArrayType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\Accessory\AccessoryNumericStringType;
-use PHPStan\Type\Constant\ConstantStringType;
+use WP_Term;
 
 class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -37,8 +38,12 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     }
 
     /**
+     * @see https://developer.wordpress.org/reference/functions/get_tags/
      * @see https://developer.wordpress.org/reference/functions/get_terms/
-     * @see https://developer.wordpress.org/reference/classes/wp_term_query/__construct/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_object_terms/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_post_categories/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_post_tags/
+     * @see https://developer.wordpress.org/reference/functions/wp_get_post_terms/
      *
      * phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
      */
@@ -116,7 +121,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new StringType(),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
@@ -124,7 +129,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new StringType()),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
@@ -132,7 +137,7 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new IntegerType()),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
@@ -140,15 +145,15 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
     {
         return TypeCombinator::union(
             new ArrayType(new IntegerType(), new AccessoryNumericStringType()),
-            new ObjectType('WP_Error')
+            new ObjectType(\WP_Error::class)
         );
     }
 
     protected static function termsType(): Type
     {
         return TypeCombinator::union(
-            new ArrayType(new IntegerType(), new ObjectType('WP_Term')),
-            new ObjectType('WP_Error')
+            new ArrayType(new IntegerType(), new ObjectType(WP_Term::class)),
+            new ObjectType(\WP_Error::class)
         );
     }
 

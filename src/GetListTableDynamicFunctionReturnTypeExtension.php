@@ -11,9 +11,9 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
 class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -43,7 +43,11 @@ class GetListTableDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         return $functionReflection->getName() === '_get_list_table';
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/_get_list_table/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();

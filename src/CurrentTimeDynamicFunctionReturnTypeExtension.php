@@ -11,9 +11,9 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
 class CurrentTimeDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -25,8 +25,9 @@ class CurrentTimeDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyn
 
     /**
      * @see https://developer.wordpress.org/reference/functions/current_time/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $argumentType = $scope->getType($functionCall->getArgs()[0]->value);

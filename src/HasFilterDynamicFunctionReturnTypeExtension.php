@@ -11,20 +11,32 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
 class HasFilterDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['has_filter', 'has_action'], true);
+        return in_array(
+            $functionReflection->getName(),
+            [
+                'has_filter',
+                'has_action',
+            ],
+            true
+        );
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/has_action/
+     * @see https://developer.wordpress.org/reference/functions/has_filter/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $args = $functionCall->getArgs();

@@ -17,25 +17,21 @@ use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Comment;
 
 class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
-    /** @var array<string> */
-    protected static $supported = [
-        'get_approved_comments',
-    ];
-
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return \in_array($functionReflection->getName(), static::$supported, true);
+        return $functionReflection->getName() === 'get_approved_comments';
     }
 
     /**
-     * - Return 'WP_Comment[]' by default.
+     * - Return `WP_Comment[]` by default.
      * - Return `int[]` if `$fields = 'ids'`.
      * - Return `int` if `$count = true`.
      *
-     * @link https://developer.wordpress.org/reference/functions/get_approved_comments/#parameters
+     * @see https://developer.wordpress.org/reference/functions/get_approved_comments/#parameters
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
@@ -77,7 +73,7 @@ class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\
 
     protected static function defaultType(): Type
     {
-        return new ArrayType(new IntegerType(), new ObjectType('WP_Comment'));
+        return new ArrayType(new IntegerType(), new ObjectType(WP_Comment::class));
     }
 
     /**
@@ -88,7 +84,7 @@ class GetApprovedCommentsDynamicFunctionReturnTypeExtension implements \PHPStan\
     protected static function getIndeterminedType(): Type
     {
         return TypeCombinator::union(
-            new ArrayType(new IntegerType(), new ObjectType('WP_Comment')),
+            new ArrayType(new IntegerType(), new ObjectType(WP_Comment::class)),
             new ArrayType(new IntegerType(), new IntegerType()),
             new IntegerType()
         );

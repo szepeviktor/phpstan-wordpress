@@ -11,13 +11,13 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantIntegerType;
-use PHPStan\Type\StringType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
+use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 
 class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
@@ -36,6 +36,8 @@ class TermExistsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
     }
 
     /**
+     * @see https://developer.wordpress.org/reference/functions/is_term/
+     * @see https://developer.wordpress.org/reference/functions/tag_exists/
      * @see https://developer.wordpress.org/reference/functions/term_exists/
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter

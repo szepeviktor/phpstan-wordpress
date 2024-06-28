@@ -11,12 +11,12 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
+use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
-use PHPStan\Type\Constant\ConstantBooleanType;
 
 class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
@@ -27,8 +27,9 @@ class MySQL2DateDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dyna
 
     /**
      * @see https://developer.wordpress.org/reference/functions/mysql2date/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $argumentType = $scope->getType($functionCall->getArgs()[0]->value);

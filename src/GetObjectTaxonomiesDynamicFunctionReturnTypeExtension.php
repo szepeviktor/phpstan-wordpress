@@ -11,18 +11,19 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\Type;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
+use WP_Taxonomy;
 
 class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['get_object_taxonomies'], true);
+        return $functionReflection->getName() === 'get_object_taxonomies';
     }
 
     /**
@@ -30,7 +31,6 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
         $args = $functionCall->getArgs();
@@ -52,7 +52,7 @@ class GetObjectTaxonomiesDynamicFunctionReturnTypeExtension implements \PHPStan\
         foreach ($argumentType->getConstantStrings() as $constantString) {
             switch ($constantString->getValue()) {
                 case 'objects':
-                    $returnType[] = new ArrayType(new StringType(), new ObjectType('WP_Taxonomy'));
+                    $returnType[] = new ArrayType(new StringType(), new ObjectType(WP_Taxonomy::class));
                     break;
                 case 'names':
                 default:
