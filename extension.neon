@@ -1,5 +1,7 @@
 services:
     -
+        class: SzepeViktor\PHPStan\WordPress\HookDocBlock
+    -
         class: SzepeViktor\PHPStan\WordPress\WpThemeGetDynamicMethodReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
