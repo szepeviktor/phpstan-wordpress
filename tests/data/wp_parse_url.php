@@ -30,7 +30,7 @@ $value = wp_parse_url('http://def.abc', -1);
 assertType("array{scheme: 'http', host: 'def.abc'}", $value);
 
 $value = wp_parse_url('http://def.abc', $integer);
-assertType('array{scheme?: string, host?: string, port?: int, user?: string, pass?: string, path?: string, query?: string, fragment?: string}|false', $value);
+assertType('array{scheme?: string, host?: string, port?: int<0, 65535>, user?: string, pass?: string, path?: string, query?: string, fragment?: string}|int<0, 65535>|string|false|null', $value);
 
 $value = wp_parse_url('http://def.abc', PHP_URL_FRAGMENT);
 assertType('null', $value);
@@ -45,10 +45,10 @@ $value = wp_parse_url($string, 9999);
 assertType('false', $value);
 
 $value = wp_parse_url($string, PHP_URL_PORT);
-assertType('int|false|null', $value);
+assertType('int<0, 65535>|false|null', $value);
 
 $value = wp_parse_url($string);
-assertType('array{scheme?: string, host?: string, port?: int, user?: string, pass?: string, path?: string, query?: string, fragment?: string}|false', $value);
+assertType('array{scheme?: string, host?: string, port?: int<0, 65535>, user?: string, pass?: string, path?: string, query?: string, fragment?: string}|false', $value);
 
 /** @var 'http://def.abc'|'https://example.com' $union */
 $union = $union;
