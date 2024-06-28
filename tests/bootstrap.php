@@ -10,6 +10,7 @@ error_reporting(E_ALL);
 // extension.neon contains relative links.
 $helperDirectory = dirname(__DIR__) . '/vendor/szepeviktor/phpstan-wordpress';
 if (! is_dir($helperDirectory)) {
+    // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_mkdir
     mkdir($helperDirectory, 0777, true);
 }
 copy(dirname(__DIR__) . '/extension.neon', $helperDirectory . '/extension.neon');
