@@ -25,7 +25,14 @@ class GetPostDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynamic
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
-        return in_array($functionReflection->getName(), ['get_post', 'get_comment'], true);
+        return in_array(
+            $functionReflection->getName(),
+            [
+                'get_post',
+                'get_comment',
+            ],
+            true
+        );
     }
 
     /**
