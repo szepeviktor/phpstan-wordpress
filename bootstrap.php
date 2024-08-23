@@ -11,6 +11,7 @@ define('WP_DEBUG_LOG', true);
 define('WP_DEBUG_DISPLAY', true);
 define('WP_PLUGIN_DIR', './');
 define('WPMU_PLUGIN_DIR', './');
+define('WPINC', 'wp-includes');
 define('EMPTY_TRASH_DAYS', 30 * 86400);
 define('SCRIPT_DEBUG', false);
 define('WP_LANG_DIR', './');
