@@ -26,10 +26,6 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\WpDieDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\HookDocsVisitor
         tags:
             - phpstan.parser.richParserNodeVisitor
