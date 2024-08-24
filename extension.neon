@@ -6,10 +6,6 @@ services:
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\EchoKeyDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\GetListTableDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
