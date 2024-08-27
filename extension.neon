@@ -85,20 +85,8 @@ parameters:
         - SCRIPT_DEBUG
     earlyTerminatingFunctionCalls:
         - wp_send_json
-        - wp_send_json_success
-        - wp_send_json_error
         - wp_nonce_ays
-        - comment_footer_die
-        - dead_db
-        - do_favicon
-        - install_theme_information
-        - media_send_to_editor
-        - redirect_post
-        - wp_ajax_heartbeat
-        - wp_ajax_nopriv_heartbeat
     earlyTerminatingMethodCalls:
-        Custom_Background:
-            - wp_set_background_image
         IXR_Server:
             - output
         WP_Ajax_Response:
@@ -106,7 +94,3 @@ parameters:
         WP_CLI:
             - error
             - halt
-        WP_Recovery_Mode:
-            - redirect_protected
-        WP_Sitemaps_Stylesheet:
-            - render_stylesheet
