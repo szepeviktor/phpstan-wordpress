@@ -20,7 +20,7 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\StringOrArrayDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\EscSqlDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
