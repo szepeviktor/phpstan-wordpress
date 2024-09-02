@@ -2,10 +2,6 @@ services:
     -
         class: SzepeViktor\PHPStan\WordPress\HookDocBlock
     -
-        class: SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
-        tags:
-            - phpstan.broker.propertiesClassReflectionExtension
-    -
         class: SzepeViktor\PHPStan\WordPress\StringOrArrayDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
