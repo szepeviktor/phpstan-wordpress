@@ -20,7 +20,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeTraverser;
 use PHPStan\Type\UnionType;
 
-class StringOrArrayDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
+class EscSqlDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
