@@ -216,7 +216,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             $this->currentScope->isDeclareStrictTypes()
         );
 
-        if (! $accepted) {
+        if ($accepted->result) {
             $paramTagVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramTagType);
             $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
 
