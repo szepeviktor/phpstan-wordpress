@@ -10,7 +10,6 @@ dist: "bionic"
 php:
 - "8.0"
 - "7.4"
-- "7.2"
 
 env:
 - TYPOS_VERSION="1.16.22"
