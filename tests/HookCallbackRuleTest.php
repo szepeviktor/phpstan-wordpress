@@ -17,7 +17,7 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
         return new HookCallbackRule();
     }
 
-    // phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
+    // phpcs:ignore SlevomatCodingStandard.Functions.FunctionLength.FunctionLength
     public function testRule(): void
     {
         // first argument: path to the example file that contains some errors that should be reported by HookCallbackRule
