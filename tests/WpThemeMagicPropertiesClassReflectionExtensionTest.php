@@ -8,12 +8,12 @@ use SzepeViktor\PHPStan\WordPress\WpThemeMagicPropertiesClassReflectionExtension
 
 class WpThemeMagicPropertiesClassReflectionExtensionTest extends \PHPStan\Testing\PHPStanTestCase
 {
-    /** @var \PHPStan\Broker\Broker */
-    private $broker;
+    /** @var \PHPStan\Reflection\ReflectionProvider */
+    private $reflectionProvider;
 
     protected function setUp(): void
     {
-        $this->broker = $this->createBroker();
+        $this->reflectionProvider = $this->createReflectionProvider();
     }
 
     /**
@@ -45,7 +45,7 @@ class WpThemeMagicPropertiesClassReflectionExtensionTest extends \PHPStan\Testin
      */
     public function testHasProperty(string $className, string $property, bool $expected): void
     {
-        $classReflection = $this->broker->getClass($className);
+        $classReflection = $this->reflectionProvider->getClass($className);
         $extension = new WpThemeMagicPropertiesClassReflectionExtension();
         self::assertSame($expected, $extension->hasProperty($classReflection, $property));
     }
