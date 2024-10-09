@@ -41,7 +41,7 @@ class AssertNotWpErrorTypeSpecifyingExtension implements \PHPStan\Type\MethodTyp
         $typeBefore = $scope->getType($expr);
         $type = TypeCombinator::remove($typeBefore, new ObjectType('WP_Error'));
 
-        return $this->typeSpecifier->create($expr, $type, TypeSpecifierContext::createTruthy());
+        return $this->typeSpecifier->create($expr, $type, TypeSpecifierContext::createTruthy(), $scope);
     }
 
     public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void
