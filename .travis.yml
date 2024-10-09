@@ -8,22 +8,17 @@ os:
 dist: "bionic"
 
 php:
+- "8.3"
+- "8.2"
+- "8.1"
 - "8.0"
 - "7.4"
-- "7.2"
 
 env:
-- TYPOS_VERSION="1.16.22"
+- TYPOS_VERSION="1.22.9"
 
 jobs:
     include:
-    -
-        php: "8.1"
-        script:
-        - "composer test:syntax -- --no-progress"
-        - "composer test:phpunit -- --verbose"
-        # - "composer test:cs -- -s"
-        - "composer test:phpstan -- --ansi --no-progress"
     -
         name: "With lowest deps"
         php: "7.4"
