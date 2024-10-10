@@ -199,7 +199,7 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             $this->currentScope->isDeclareStrictTypes()
         );
 
-        if ($accepted) {
+        if ($accepted->result) {
             return;
         }
 

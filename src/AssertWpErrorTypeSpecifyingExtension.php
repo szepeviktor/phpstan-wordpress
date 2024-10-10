@@ -41,7 +41,8 @@ class AssertWpErrorTypeSpecifyingExtension implements \PHPStan\Type\MethodTypeSp
         return $this->typeSpecifier->create(
             $args[0]->value,
             new ObjectType(\WP_Error::class),
-            TypeSpecifierContext::createTruthy()
+            TypeSpecifierContext::createTruthy(),
+            $scope
         );
     }
 
