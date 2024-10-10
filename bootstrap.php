@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// phpcs:disable Squiz.PHP.DiscouragedFunctions,NeutronStandard.Constants.DisallowDefine
+// phpcs:disable Generic.PHP.ForbiddenFunctions.Found
 
 // There are no core functions to read these constants.
 define('ABSPATH', './');
