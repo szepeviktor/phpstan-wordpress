@@ -12,4 +12,5 @@ assertType('WP_Posts_List_Table', _get_list_table('WP_Posts_List_Table'));
 assertType('false', _get_list_table('Unknown_Table'));
 
 // Unknown class name
-assertType('WP_List_Table|false', _get_list_table($_GET['foo']));
+/** @var class-string $classString */
+assertType('WP_List_Table|false', _get_list_table($classString));
