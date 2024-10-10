@@ -43,8 +43,8 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     /** @var \PHPStan\Analyser\Scope */
     protected $currentScope;
 
-    /** @var \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc */
-    protected $resolvedPhpDoc;
+    /** @var list<\PHPStan\Rules\IdentifierRuleError> */
+    private $errors;
 
     public function __construct(
         FileTypeMapper $fileTypeMapper,
@@ -59,22 +59,17 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         return FuncCall::class;
     }
 
-    /**
-     * @param \PhpParser\Node\Expr\FuncCall $node
-     * @param \PHPStan\Analyser\Scope       $scope
-     * @return array<int, \PHPStan\Rules\RuleError>
-     */
     public function processNode(Node $node, Scope $scope): array
     {
-        $name = $node->name;
         $this->currentNode = $node;
         $this->currentScope = $scope;
+        $this->errors = [];
 
-        if (! ($name instanceof Name)) {
+        if (! ($node->name instanceof Name)) {
             return [];
         }
 
-        if (! in_array($name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
+        if (! in_array($node->name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
             return [];
         }
 
@@ -85,90 +80,74 @@ class HookDocsRule implements \PHPStan\Rules\Rule
             return [];
         }
 
-        return $this->validateDocBlock($resolvedPhpDoc);
+        $this->validateDocBlock($resolvedPhpDoc);
+
+        return $this->errors;
     }
 
     /**
      * Validates the `@param` tags documented in the given docblock.
-     *
-     * @param \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
-     * @return array<int,\PHPStan\Rules\RuleError>
      */
-    public function validateDocBlock(ResolvedPhpDocBlock $resolvedPhpDoc): array
+    public function validateDocBlock(ResolvedPhpDocBlock $resolvedPhpDoc): void
     {
         // Count all documented `@param` tag strings in the docblock.
         $numberOfParamTagStrings = substr_count($resolvedPhpDoc->getPhpDocString(), '* @param ');
 
         // A docblock with no param tags is allowed and gets skipped.
         if ($numberOfParamTagStrings === 0) {
-            return [];
+            return;
         }
 
-        try {
-            $this->validateParamCount($numberOfParamTagStrings);
-        } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $e) {
-            return [RuleErrorBuilder::message($e->getMessage())->build()];
+        $this->validateParamCount($numberOfParamTagStrings);
+
+        // If the number of param tags doesn't match the number of
+        // parameters, bail out early. There's no point trying to
+        // reconcile param tags in this situation.
+        if ($this->errors !== []) {
+            return;
         }
 
         // Fetch the parsed `@param` tags from the docblock.
         $paramTags = $resolvedPhpDoc->getParamTags();
 
-        try {
-            $this->validateParamDocumentation(count($paramTags), $resolvedPhpDoc);
-        } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $e) {
-            return [RuleErrorBuilder::message($e->getMessage())->build()];
+        $this->validateParamDocumentation(count($paramTags), $resolvedPhpDoc);
+        if ($this->errors !== []) {
+            return;
         }
 
         $nodeArgs = $this->currentNode->getArgs();
-        $errors = [];
         $paramIndex = 1;
 
         foreach ($paramTags as $paramName => $paramTag) {
-            try {
-                $this->validateSingleParamTag($paramName, $paramTag, $nodeArgs[$paramIndex]);
-            } catch (\SzepeViktor\PHPStan\WordPress\HookDocsParamException $exception) {
-                $errors[] = RuleErrorBuilder::message($exception->getMessage())->build();
-            }
-
+            $this->validateSingleParamTag($paramName, $paramTag, $nodeArgs[$paramIndex]);
             $paramIndex += 1;
         }
-
-        return $errors;
     }
 
     /**
      * Validates the number of documented `@param` tags in the docblock.
-     *
-     * @param int $numberOfParamTagStrings
-     *
-     * @throws \SzepeViktor\PHPStan\WordPress\HookDocsParamException When the number of documented tags is incorrect.
      */
     public function validateParamCount(int $numberOfParamTagStrings): void
     {
+        // The first parameter is the hook name, so we subtract 1.
         $numberOfParams = count($this->currentNode->getArgs()) - 1;
 
-        // Incorrect number of `@param` tags.
-        if ($numberOfParams !== $numberOfParamTagStrings) {
-            $message = sprintf(
+        // Correct number of `@param` tags.
+        if ($numberOfParams === $numberOfParamTagStrings) {
+            return;
+        }
+
+        $this->errors[] = RuleErrorBuilder::message(
+            sprintf(
                 'Expected %1$d @param tags, found %2$d.',
                 $numberOfParams,
                 $numberOfParamTagStrings
-            );
-
-            // If the number of param tags doesn't match the number of
-            // parameters, bail out early with an error. There's no point
-            // trying to reconcile param tags in this situation.
-            throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException($message);
-        }
+            )
+        )->identifier('paramTag.count')->build();
     }
 
     /**
      * Validates the number of parsed and valid `@param` tags in the docblock.
-     *
-     * @param int $numberOfParamTags
-     * @param \PHPStan\PhpDoc\ResolvedPhpDocBlock $resolvedPhpDoc
-     *
-     * @throws \SzepeViktor\PHPStan\WordPress\HookDocsParamException When the number of parsed and valid tags is incorrect.
      */
     public function validateParamDocumentation(
         int $numberOfParamTags,
@@ -183,18 +162,24 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         }
 
         // We might have an invalid `@param` tag because it's named `$this`.
+        // PHPStan does not detect param tags named `$this`, it skips the tag.
+        // We can indirectly detect this by checking the actual parameter name,
+        // and if one of them is `$this` assume that's the problem.
+        $namedThis = false;
         if (strpos($resolvedPhpDoc->getPhpDocString(), ' $this') !== false) {
             foreach ($nodeArgs as $param) {
                 if (($param->value instanceof Variable) && $param->value->name === 'this') {
-                    // PHPStan does not detect param tags named `$this`, it skips the tag.
-                    // We can indirectly detect this by checking the actual parameter name,
-                    // and if one of them is `$this` assume that's the problem.
-                    throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException('@param tag must not be named $this. Choose a descriptive alias, for example $instance.');
+                    $namedThis = true;
+                    break;
                 }
             }
         }
 
-        throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException('One or more @param tags has an invalid name or invalid syntax.');
+        $this->errors[] = RuleErrorBuilder::message(
+            $namedThis === true
+                ? '@param tag must not be named $this. Choose a descriptive alias, for example $instance.'
+                : 'One or more @param tags has an invalid name or invalid syntax.'
+        )->identifier('phpDoc.parseError')->build();
     }
 
     /**
@@ -203,8 +188,6 @@ class HookDocsRule implements \PHPStan\Rules\Rule
      * @param string                       $paramName The param tag name.
      * @param \PHPStan\PhpDoc\Tag\ParamTag $paramTag  The param tag instance.
      * @param \PhpParser\Node\Arg          $arg       The actual parameter instance.
-     *
-     * @throws \SzepeViktor\PHPStan\WordPress\HookDocsParamException When the tag is not valid.
      */
     protected function validateSingleParamTag(string $paramName, ParamTag $paramTag, Arg $arg): void
     {
@@ -217,17 +200,19 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         );
 
         if ($accepted->result) {
-            $paramTagVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramTagType);
-            $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
+            return;
+        }
 
-            $message = sprintf(
+        $paramTagVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramTagType);
+        $paramVerbosityLevel = VerbosityLevel::getRecommendedLevelByType($paramType);
+
+        $this->errors[] = RuleErrorBuilder::message(
+            sprintf(
                 '@param %1$s $%2$s does not accept actual type of parameter: %3$s.',
                 $paramTagType->describe($paramTagVerbosityLevel),
                 $paramName,
                 $paramType->describe($paramVerbosityLevel)
-            );
-
-            throw new \SzepeViktor\PHPStan\WordPress\HookDocsParamException($message);
-        }
+            )
+        )->identifier('parameter.phpDocType')->build();
     }
 }

@@ -11,18 +11,17 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
-use PHPStan\Type\FileTypeMapper;
-use PHPStan\Type\Type;
 use PHPStan\Type\MixedType;
+use PHPStan\Type\Type;
 
 class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
     /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
     protected $hookDocBlock;
 
-    public function __construct(FileTypeMapper $fileTypeMapper)
+    public function __construct(HookDocBlock $hookDocBlock)
     {
-        $this->hookDocBlock = new HookDocBlock($fileTypeMapper);
+        $this->hookDocBlock = $hookDocBlock;
     }
 
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
@@ -38,7 +37,13 @@ class ApplyFiltersDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dy
         );
     }
 
-    // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
+    /**
+     * @see https://developer.wordpress.org/reference/functions/apply_filters/
+     * @see https://developer.wordpress.org/reference/functions/apply_filters_deprecated/
+     * @see https://developer.wordpress.org/reference/functions/apply_filters_ref_array/
+     *
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+     */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
         $default = new MixedType();
