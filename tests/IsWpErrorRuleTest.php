@@ -22,7 +22,6 @@ class IsWpErrorRuleTest extends \PHPStan\Testing\RuleTestCase
         return new IsWpErrorRule($ruleLevelHelper);
     }
 
-    // phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
     public function testRule(): void
     {
         // first argument: path to the example file that contains some errors that should be reported by IsWpErrorRule

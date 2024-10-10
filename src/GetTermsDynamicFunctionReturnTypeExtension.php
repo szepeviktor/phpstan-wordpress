@@ -44,8 +44,6 @@ class GetTermsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\Dynami
      * @see https://developer.wordpress.org/reference/functions/wp_get_post_categories/
      * @see https://developer.wordpress.org/reference/functions/wp_get_post_tags/
      * @see https://developer.wordpress.org/reference/functions/wp_get_post_terms/
-     *
-     * phpcs:ignore NeutronStandard.Functions.LongFunction.LongFunction
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): Type
     {
