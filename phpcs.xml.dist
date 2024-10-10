@@ -24,4 +24,10 @@
     <rule ref="PSR12NeutronRuleset.Strings.ConcatenationUsage.NotAllowed">
         <exclude-pattern>tests/*</exclude-pattern>
     </rule>
+
+    <!-- Allow long functions in test cases -->
+    <rule ref="SlevomatCodingStandard.Functions.FunctionLength.FunctionLength">
+        <exclude-pattern>tests/HookDocsRuleTest.php</exclude-pattern>
+        <exclude-pattern>tests/HookCallbackRuleTest.php</exclude-pattern>
+    </rule>
 </ruleset>
