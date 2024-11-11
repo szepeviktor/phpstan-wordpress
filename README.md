@@ -20,7 +20,7 @@ Static analysis for the WordPress ecosystem.
 - [PHPStan](https://phpstan.org/)
 - [WordPress](https://wordpress.org/)
 
-### Installation
+## Installation
 
 Add this package to your project.
 
@@ -41,7 +41,7 @@ includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
 ```
 
-### Configuration
+## Configuration
 
 Needs no extra configuration. :smiley: Simply configure PHPStan - for example - this way.
 
@@ -58,7 +58,7 @@ Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
 :bulb: Use Composer autoloader or a
 [custom autoloader](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wp-install/wordpress-autoloader.php)!
 
-### Usage
+## Usage
 
 Just start the analysis: `vendor/bin/phpstan analyze`
 then fix an error and `GOTO 10`!
@@ -66,11 +66,11 @@ then fix an error and `GOTO 10`!
 You find further information in the `examples` directory
 e.g. [`examples/phpstan.neon.dist`](/examples/phpstan.neon.dist)
 
-### Usage in WooCommerce webshops
+## Usage in WooCommerce webshops
 
 Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 
-### What this extension does
+## What this extension does
 
 - Makes it possible to run PHPStan on WordPress plugins and themes
 - Loads [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs) package
@@ -79,7 +79,7 @@ Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
 - Handles special functions and classes e.g. `is_wp_error()`
 - Validates the optional docblock that precedes a call to `apply_filters()` and treats the type of its first `@param` as certain
 
-### Usage of an `apply_filters()` docblock
+## Usage of an `apply_filters()` docblock
 
 WordPress core - and the wider WordPress ecosystem - uses PHPDoc docblocks
 in a non-standard manner to document the parameters passed to `apply_filters()`.
@@ -102,7 +102,7 @@ according to the first `@param` tag. In the example above this means PHPStan tre
 To make the best use of this feature,
 ensure that the type of the first `@param` tag in each of these such docblocks is accurate and correct.
 
-### Make your code testable
+## Make your code testable
 
 - Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
 - Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
@@ -118,7 +118,7 @@ ensure that the type of the first `@param` tag in each of these such docblocks i
     [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
 - Do not enable `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` to keep your code testable
 
-### Dirty corner (FAQ)
+## Dirty corner (FAQ)
 
 WordPress uses conditional function and class definition for override purposes.
 Use `sed` command to exclude function stubs when they are previously defined.
