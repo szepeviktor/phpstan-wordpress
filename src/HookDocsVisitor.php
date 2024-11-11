@@ -8,15 +8,14 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress;
 
+use PhpParser\Comment\Doc;
 use PhpParser\Node;
 
 final class HookDocsVisitor extends \PhpParser\NodeVisitorAbstract
 {
-    /** @var int|null */
-    protected $latestStartLine = null;
+    protected ?int $latestStartLine;
 
-    /** @var \PhpParser\Comment\Doc|null */
-    protected $latestDocComment = null;
+    protected ?Doc $latestDocComment;
 
     // phpcs:ignore SlevomatCodingStandard.Functions.UnusedParameter
     public function beforeTraverse(array $nodes): ?array

@@ -19,8 +19,7 @@ use PHPStan\Type\TypeCombinator;
 
 class AssertNotWpErrorTypeSpecifyingExtension implements \PHPStan\Type\MethodTypeSpecifyingExtension, \PHPStan\Analyser\TypeSpecifierAwareExtension
 {
-    /** @var \PHPStan\Analyser\TypeSpecifier */
-    private $typeSpecifier;
+    private TypeSpecifier $typeSpecifier;
 
     public function getClass(): string
     {

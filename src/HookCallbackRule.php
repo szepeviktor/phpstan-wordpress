@@ -38,10 +38,9 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
     private const ACCEPTED_ARGS_DEFAULT = 1;
 
     /** @var list<\PHPStan\Rules\IdentifierRuleError> */
-    private $errors;
+    private array $errors;
 
-    /** @var \PHPStan\Analyser\Scope */
-    protected $currentScope;
+    protected Scope $currentScope;
 
     public function getNodeType(): string
     {

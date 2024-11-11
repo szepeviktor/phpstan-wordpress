@@ -31,20 +31,16 @@ class HookDocsRule implements \PHPStan\Rules\Rule
         'do_action',
     ];
 
-    /** @var \SzepeViktor\PHPStan\WordPress\HookDocBlock */
-    protected $hookDocBlock;
+    protected HookDocBlock $hookDocBlock;
 
-    /** @var \PHPStan\Rules\RuleLevelHelper */
-    protected $ruleLevelHelper;
+    protected RuleLevelHelper $ruleLevelHelper;
 
-    /** @var \PhpParser\Node\Expr\FuncCall */
-    protected $currentNode;
+    protected FuncCall $currentNode;
 
-    /** @var \PHPStan\Analyser\Scope */
-    protected $currentScope;
+    protected Scope $currentScope;
 
     /** @var list<\PHPStan\Rules\IdentifierRuleError> */
-    private $errors;
+    private array $errors;
 
     public function __construct(
         FileTypeMapper $fileTypeMapper,
