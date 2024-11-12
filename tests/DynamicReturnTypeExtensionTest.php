@@ -14,6 +14,7 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
         // Path to a file with actual asserts of expected types:
         yield from self::gatherAssertTypes(__DIR__ . '/data/_get_list_table.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/apply_filters.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/ApplyFiltersTestClass.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/current_time.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/echo_key.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/echo_parameter.php');
