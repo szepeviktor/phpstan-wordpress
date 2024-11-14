@@ -12,13 +12,20 @@ php:
 - "8.2"
 - "8.1"
 - "8.0"
-- "7.4"
 
 env:
-- TYPOS_VERSION="1.22.9"
+- TYPOS_VERSION="1.27.3"
 
 jobs:
     include:
+    -
+        name: "PHP 7.4"
+        php: "7.4"
+        script:
+        - "composer test:syntax -- --no-progress --exclude tests/data/hook-callback-named-args.php"
+        - "composer test:phpunit -- --verbose"
+        - "composer test:cs -- -s"
+        - "composer test:phpstan -- --ansi --no-progress"
     -
         name: "With lowest deps"
         php: "7.4"
