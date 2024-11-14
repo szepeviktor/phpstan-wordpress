@@ -32,6 +32,9 @@ jobs:
         install:
         - "composer update --no-interaction --prefer-lowest"
         - "composer update --no-interaction --with-all-dependencies szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset 'php-stubs/wordpress-stubs:^6.1'"
+        script:
+        - "composer test:phpunit -- --verbose"
+        - "composer test:phpstan -- --ansi --no-progress"
     -
         name: "Search for misspellings"
         before_install: "skip"
