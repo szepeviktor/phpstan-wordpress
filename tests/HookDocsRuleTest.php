@@ -16,14 +16,11 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
 {
     protected function getRule(): Rule
     {
-        /** @var \PHPStan\Type\FileTypeMapper */
-        $fileTypeMapper = self::getContainer()->getByType(FileTypeMapper::class);
-
-        /** @var \PHPStan\Rules\RuleLevelHelper */
-        $ruleLevelHelper = self::getContainer()->getByType(RuleLevelHelper::class);
-
         // getRule() method needs to return an instance of the tested rule
-        return new HookDocsRule($fileTypeMapper, $ruleLevelHelper);
+        return new HookDocsRule(
+            self::getContainer()->getByType(FileTypeMapper::class),
+            self::getContainer()->getByType(RuleLevelHelper::class)
+        );
     }
 
     public function testRule(): void
