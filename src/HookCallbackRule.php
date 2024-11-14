@@ -14,6 +14,7 @@ use PhpParser\Node\Expr\FuncCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Reflection\ParametersAcceptorSelector;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\MixedType;
@@ -26,6 +27,8 @@ use PHPStan\Type\VerbosityLevel;
  */
 class HookCallbackRule implements \PHPStan\Rules\Rule
 {
+    use NormalizedArguments;
+
     private const SUPPORTED_FUNCTIONS = [
         'add_filter',
         'add_action',
@@ -42,6 +45,13 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
 
     protected Scope $currentScope;
 
+    private ReflectionProvider $reflectionProvider;
+
+    public function __construct(ReflectionProvider $reflectionProvider)
+    {
+        $this->reflectionProvider = $reflectionProvider;
+    }
+
     public function getNodeType(): string
     {
         return FuncCall::class;
@@ -52,18 +62,20 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
         $this->currentScope = $scope;
         $this->errors = [];
 
-        if (! ($node->name instanceof \PhpParser\Node\Name)) {
+        if (! ($node->name instanceof Node\Name)) {
             return [];
         }
 
-        if (! in_array($node->name->toString(), self::SUPPORTED_FUNCTIONS, true)) {
+        $functionReflection = $this->reflectionProvider->getFunction($node->name, $scope);
+
+        if (! in_array($functionReflection->getName(), self::SUPPORTED_FUNCTIONS, true)) {
             return [];
         }
 
-        $args = $node->getArgs();
+        $args = $this->getNormalizedFunctionArgs($functionReflection, $node, $scope);
 
         // If we don't have enough arguments, let PHPStan handle the error:
-        if (count($args) < self::CALLBACK_INDEX + 1) {
+        if ($args === null || count($args) < self::CALLBACK_INDEX + 1) {
             return [];
         }
 

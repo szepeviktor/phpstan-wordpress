@@ -4,17 +4,46 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use PHPStan\Reflection\ReflectionProvider;
 use SzepeViktor\PHPStan\WordPress\HookCallbackRule;
+
+use const PHP_VERSION_ID;
 
 /**
  * @extends \PHPStan\Testing\RuleTestCase<\SzepeViktor\PHPStan\WordPress\HookCallbackRule>
  */
 class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
 {
+    private const EXPECTED_ERRORS = [
+        ['Filter callback return statement is missing.', 17],
+        ['Filter callback return statement is missing.', 18],
+        ['Callback expects 1 parameter, $accepted_args is set to 0.', 21],
+        ['Callback expects 1 parameter, $accepted_args is set to 2.', 26],
+        ['Callback expects 0-1 parameters, $accepted_args is set to 2.', 31],
+        ['Callback expects 2 parameters, $accepted_args is set to 1.', 36],
+        ['Callback expects 2-4 parameters, $accepted_args is set to 1.', 41],
+        ['Callback expects 2-3 parameters, $accepted_args is set to 4.', 46],
+        ['Action callback returns true but should not return anything.', 51],
+        ['Action callback returns true but should not return anything.', 54],
+        ['Filter callback return statement is missing.', 61],
+        ['Action callback returns false but should not return anything.', 64],
+        ['Action callback returns int but should not return anything.', 67],
+        ['Callback expects at least 1 parameter, $accepted_args is set to 0.', 70],
+        ['Callback expects at least 1 parameter, $accepted_args is set to 0.', 73],
+        ['Callback expects 0-3 parameters, $accepted_args is set to 4.', 78],
+        ['Action callback returns int but should not return anything.', 83],
+        ['Callback expects 0 parameters, $accepted_args is set to 2.', 86],
+        ['Action callback returns false but should not return anything.', 89],
+        ['Action callback returns mixed but should not return anything.', 92],
+        ['Action callback returns null but should not return anything.', 95],
+    ];
+
     protected function getRule(): \PHPStan\Rules\Rule
     {
+        $reflectionProvider = self::getContainer()->getByType(ReflectionProvider::class);
+
         // getRule() method needs to return an instance of the tested rule
-        return new HookCallbackRule();
+        return new HookCallbackRule($reflectionProvider);
     }
 
     public function testRule(): void
@@ -26,96 +55,21 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
             [
                 __DIR__ . '/data/hook-callback.php',
             ],
+            self::EXPECTED_ERRORS
+        );
+    }
+
+    public function testRuleWithNamedArguments(): void
+    {
+        if (PHP_VERSION_ID < 80000) {
+            $this::markTestSkipped('Named arguments are only supported in PHP 8.0 and later.');
+        }
+
+        $this->analyse(
             [
-                [
-                    'Filter callback return statement is missing.',
-                    17,
-                ],
-                [
-                    'Filter callback return statement is missing.',
-                    20,
-                ],
-                [
-                    'Filter callback return statement is missing.',
-                    23,
-                ],
-                [
-                    'Callback expects 1 parameter, $accepted_args is set to 0.',
-                    26,
-                ],
-                [
-                    'Callback expects 1 parameter, $accepted_args is set to 2.',
-                    31,
-                ],
-                [
-                    'Callback expects 0-1 parameters, $accepted_args is set to 2.',
-                    36,
-                ],
-                [
-                    'Callback expects 2 parameters, $accepted_args is set to 1.',
-                    41,
-                ],
-                [
-                    'Callback expects 2-4 parameters, $accepted_args is set to 1.',
-                    46,
-                ],
-                [
-                    'Callback expects 2-3 parameters, $accepted_args is set to 4.',
-                    51,
-                ],
-                [
-                    'Action callback returns true but should not return anything.',
-                    56,
-                ],
-                [
-                    'Action callback returns true but should not return anything.',
-                    61,
-                ],
-                [
-                    'Filter callback return statement is missing.',
-                    68,
-                ],
-                [
-                    'Action callback returns false but should not return anything.',
-                    71,
-                ],
-                [
-                    'Action callback returns int but should not return anything.',
-                    74,
-                ],
-                [
-                    'Callback expects at least 1 parameter, $accepted_args is set to 0.',
-                    77,
-                ],
-                [
-                    'Callback expects at least 1 parameter, $accepted_args is set to 0.',
-                    80,
-                ],
-                [
-                    'Callback expects 0-3 parameters, $accepted_args is set to 4.',
-                    85,
-                ],
-                [
-                    'Action callback returns int but should not return anything.',
-                    90,
-                ],
-                [
-                    'Callback expects 0 parameters, $accepted_args is set to 2.',
-                    93,
-                ],
-                [
-                    'Action callback returns false but should not return anything.',
-                    96,
-                ],
-                [
-                    'Action callback returns mixed but should not return anything.',
-                    99,
-                ],
-                [
-                    'Action callback returns null but should not return anything.',
-                    102,
-                ],
-            ]
+                __DIR__ . '/data/hook-callback-named-args.php',
+            ],
+            self::EXPECTED_ERRORS
         );
     }
 
