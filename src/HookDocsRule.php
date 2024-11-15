@@ -18,7 +18,6 @@ use PHPStan\PhpDoc\ResolvedPhpDocBlock;
 use PHPStan\PhpDoc\Tag\ParamTag;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Rules\RuleLevelHelper;
-use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\VerbosityLevel;
 
 /**
@@ -43,10 +42,10 @@ class HookDocsRule implements \PHPStan\Rules\Rule
     private array $errors;
 
     public function __construct(
-        FileTypeMapper $fileTypeMapper,
+        HookDocBlock $hookDocBlock,
         RuleLevelHelper $ruleLevelHelper
     ) {
-        $this->hookDocBlock = new HookDocBlock($fileTypeMapper);
+        $this->hookDocBlock = $hookDocBlock;
         $this->ruleLevelHelper = $ruleLevelHelper;
     }
 

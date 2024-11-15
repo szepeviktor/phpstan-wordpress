@@ -6,7 +6,7 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleLevelHelper;
-use PHPStan\Type\FileTypeMapper;
+use SzepeViktor\PHPStan\WordPress\HookDocBlock;
 use SzepeViktor\PHPStan\WordPress\HookDocsRule;
 
 /**
@@ -18,7 +18,7 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
     {
         // getRule() method needs to return an instance of the tested rule
         return new HookDocsRule(
-            self::getContainer()->getByType(FileTypeMapper::class),
+            self::getContainer()->getByType(HookDocBlock::class),
             self::getContainer()->getByType(RuleLevelHelper::class)
         );
     }
