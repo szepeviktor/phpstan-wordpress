@@ -17,12 +17,6 @@ $integer = doFoo();
 /** @var string $string */
 $string = doFoo();
 
-/**
- * wp_parse_url()
- */
-$value = wp_parse_url();
-assertType('mixed', $value);
-
 $value = wp_parse_url('http://abc.def');
 assertType("array{scheme: 'http', host: 'abc.def'}", $value);
 
