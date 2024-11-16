@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use function shortcode_atts;
 use function PHPStan\Testing\assertType;
 
 /** @var array $pairs */
