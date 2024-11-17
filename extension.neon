@@ -1,37 +1,3 @@
-services:
-    -
-        class: SzepeViktor\PHPStan\WordPress\HookDocBlock
-    -
-        class: SzepeViktor\PHPStan\WordPress\EscSqlDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\WpParseUrlFunctionDynamicReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\HookDocsVisitor
-        tags:
-            - phpstan.parser.richParserNodeVisitor
-    -
-        class: SzepeViktor\PHPStan\WordPress\AssertWpErrorTypeSpecifyingExtension
-        tags:
-            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
-    -
-        class: SzepeViktor\PHPStan\WordPress\AssertNotWpErrorTypeSpecifyingExtension
-        tags:
-            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
-rules:
-    - SzepeViktor\PHPStan\WordPress\HookCallbackRule
-    - SzepeViktor\PHPStan\WordPress\HookDocsRule
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
@@ -56,3 +22,56 @@ parameters:
         WP_CLI:
             - error
             - halt
+    phpstanWP:
+        allRules: true
+        checkHookCallback: %phpstanWP.allRules%
+        checkHookDocBlock: %phpstanWP.allRules%
+
+parametersSchema:
+    phpstanWP: structure([
+        allRules: bool()
+        checkHookDocBlock: bool()
+        checkHookCallback: bool()
+    ])
+
+conditionalTags:
+    SzepeViktor\PHPStan\WordPress\HookCallbackRule:
+        phpstan.rules.rule: %phpstanWP.checkHookCallback%
+    SzepeViktor\PHPStan\WordPress\HookDocsRule:
+        phpstan.rules.rule: %phpstanWP.checkHookDocBlock%
+
+services:
+    -
+        class: SzepeViktor\PHPStan\WordPress\HookDocBlock
+    -
+        class: SzepeViktor\PHPStan\WordPress\HookCallbackRule
+    -
+        class: SzepeViktor\PHPStan\WordPress\HookDocsRule
+    -
+        class: SzepeViktor\PHPStan\WordPress\HookDocsVisitor
+        tags:
+            - phpstan.parser.richParserNodeVisitor
+    -
+        class: SzepeViktor\PHPStan\WordPress\EscSqlDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\ShortcodeAttsDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\WpParseUrlFunctionDynamicReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\AssertWpErrorTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension
+    -
+        class: SzepeViktor\PHPStan\WordPress\AssertNotWpErrorTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.methodTypeSpecifyingExtension

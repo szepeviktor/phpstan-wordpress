@@ -110,6 +110,40 @@ PHPStan interprets `$title` as `string`.
 
 For best results, ensure the first `@param` tag in these docblocks is accurate.
 
+## Disabling Rules
+
+You can disable rules using configuration parameters:
+
+```neon
+parameters:
+    phpstanWP:
+        checkHookCallback: false
+        checkHookDocBlock: false
+```
+
+## Enabling Rules One-by-one
+
+If you want to use a selective set of rules, you can!
+
+You can disable all rules with:
+
+```neon
+parameters:
+    phpstanWP:
+        allRules: false
+```
+
+Then you can re-enable individual rules:
+
+```neon
+parameters:
+    phpstanWP:
+        allRules: false
+        checkHookCallback: true
+```
+
+Even with `phpstanWP.allRules` set to `false`, part of this package is still in effect. That's because phpstan-wordpress also provides [dynamic return types](https://phpstan.org/developing-extensions/dynamic-return-type-extensions) and [type specifiers](https://phpstan.org/developing-extensions/type-specifying-extensions).
+
 ## Make Your Code Testable
 
 - Write clean OOP code: 1 class per file, and no additional code outside `class Name { ... }`.
