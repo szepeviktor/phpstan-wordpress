@@ -7,7 +7,7 @@ Please support my work to avoid abandoning this package.
 
 Thank you!
 
-# WordPress extensions for PHPStan
+# WordPress Extensions for PHPStan
 
 [![Packagist stats](https://img.shields.io/packagist/dt/szepeviktor/phpstan-wordpress.svg)](https://packagist.org/packages/szepeviktor/phpstan-wordpress/stats)
 [![Packagist](https://img.shields.io/packagist/v/szepeviktor/phpstan-wordpress.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/phpstan-wordpress)
@@ -20,21 +20,34 @@ Static analysis for the WordPress ecosystem.
 - [PHPStan](https://phpstan.org/)
 - [WordPress](https://wordpress.org/)
 
+## Features
+
+- Enables PHPStan to analyze WordPress plugins and themes.
+- Loads the [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs) package.
+- Provides dynamic return type extensions for functions that are not covered in
+    [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs/blob/master/functionMap.php)
+- Defines some WordPress core constants.
+- Validates optional docblocks before `apply_filters()` and `do_action()` calls,
+    treating the type of the first `@param` as definitive.
+
+## Requirements
+
+- PHPStan 2.0 or higher
+- PHP 7.4 or higher (tested up to PHP 8.3)
+
 ## Installation
 
-Add this package to your project.
+To use this extension, require it in [Composer](https://getcomposer.org/):
 
 ```bash
 composer require --dev szepeviktor/phpstan-wordpress
 ```
 
-Make PHPStan find it automatically using `phpstan/extension-installer`.
+If you also install [phpstan/extension-installer](https://github.com/phpstan/extension-installer) then you're all set!
 
-```bash
-composer require --dev phpstan/extension-installer
-```
+### Manual Installation
 
-Or manually include it in your `phpstan.neon`.
+If you don't want to use `phpstan/extension-installer`, include `extension.neon` in your project's PHPStan config:
 
 ```neon
 includes:
@@ -43,7 +56,8 @@ includes:
 
 ## Configuration
 
-Needs no extra configuration. :smiley: Simply configure PHPStan - for example - this way.
+No additional setup is needed. :smiley:
+Just configure PHPStan - for example - as shown below:
 
 ```neon
 parameters:
@@ -53,37 +67,32 @@ parameters:
         - inc/
 ```
 
-Please read [PHPStan Config Reference](https://phpstan.org/config-reference).
+For more details, visit the [PHPStan Config Reference](https://phpstan.org/config-reference).
 
-:bulb: Use Composer autoloader or a
-[custom autoloader](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wp-install/wordpress-autoloader.php)!
+:bulb: Use the Composer autoloader or a [custom autoloader](https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wp-install/wordpress-autoloader.php)!
 
 ## Usage
 
-Just start the analysis: `vendor/bin/phpstan analyze`
+Run the analysis with:
+
+```bash
+vendor/bin/phpstan analyze
+```
+
 then fix an error and `GOTO 10`!
 
-You find further information in the `examples` directory
+You find further information in the `examples` directory,
 e.g. [`examples/phpstan.neon.dist`](/examples/phpstan.neon.dist)
 
-## Usage in WooCommerce webshops
+### Usage in WooCommerce Webshops
 
-Please see [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs)
+Refer to [WooCommerce Stubs](https://github.com/php-stubs/woocommerce-stubs) for specific guidance.
 
-## What this extension does
+### Usage of an `apply_filters()` Docblock
 
-- Makes it possible to run PHPStan on WordPress plugins and themes
-- Loads [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs) package
-- Provides dynamic return type extensions for functions
-    that are not covered in [`php-stubs/wordpress-stubs`](https://github.com/php-stubs/wordpress-stubs/blob/master/functionMap.php)
-- Defines some core constants
-- Validates the optional docblock that precedes a call to `apply_filters()` and treats the type of its first `@param` as certain
-
-## Usage of an `apply_filters()` docblock
-
-WordPress core - and the wider WordPress ecosystem - uses PHPDoc docblocks
-in a non-standard manner to document the parameters passed to `apply_filters()`.
-Example:
+The WordPress ecosystem often uses PHPDoc docblocks in a non-standard way to
+document parameters passed to `apply_filters()`.
+Here’s an example:
 
 ```php
 /**
@@ -95,32 +104,30 @@ Example:
 $title = apply_filters( 'list_pages', $title, $page );
 ```
 
-This extension understands these docblocks when they're present in your code
-and uses them to instruct PHPStan to treat the return type of the filter as certain,
-according to the first `@param` tag. In the example above this means PHPStan treats the type of `$title` as `string`.
+This extension reads these docblocks and instructs PHPStan to treat the filter’s
+return type as certain, based on the first `@param` tag. In this example,
+PHPStan interprets `$title` as `string`.
 
-To make the best use of this feature,
-ensure that the type of the first `@param` tag in each of these such docblocks is accurate and correct.
+For best results, ensure the first `@param` tag in these docblocks is accurate.
 
-## Make your code testable
+## Make Your Code Testable
 
-- Write clean OOP code: 1 class per file, no other code in class files outside `class Name { ... }`
-- Structure your code: uniform class names (WPCS or PSR-4), keep classes in a separate directory `inc/`
-- Add proper PHPDoc blocks to classes, properties, methods, functions, and calls to `apply_filters()`
+- Write clean OOP code: 1 class per file, and no additional code outside `class Name { ... }`.
+- Use consistent class naming (WPCS or PSR-4) and store classes in a dedicated `inc/` directory.
+- Add precise PHPDoc blocks to classes, properties, methods, functions, and
+    `apply_filters()` calls.
 - Choose your [main plugin file parts](https://github.com/szepeviktor/starter-plugin).
-- Avoid using core constants, use core functions
-- Avoid bad parts of PHP
-    - functions: `eval`, `extract`, `compact`, `list`
-    - [type juggling](https://www.php.net/manual/en/language.types.type-juggling.php): `$a = '15'; if ($a) ...`
+- Avoid using core constants, use core functions.
+- Avoid bad PHP practices, such as:
+  - functions: `eval`, `extract`, `compact`, `list`
+  - [type juggling](https://www.php.net/manual/en/language.types.type-juggling.php): `$a = '15'; if ($a) ...`
 - If you need robust code try avoiding all kinds of type juggling (e.g. `if` needs a boolean),
     see [Variable handling functions](https://www.php.net/manual/en/ref.var.php)
-- If you are not bound by PHP 5 consider following
-    [Neutron Standard](https://github.com/Automattic/phpcs-neutron-standard)
-- Do not enable `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` to keep your code testable
+- Avoid enabling `exit_error` in `WP_CLI::launch` or `WP_CLI::runcommand` for improved testability.
 
-## Dirty corner (FAQ)
+## Dirty Corner (FAQ)
 
-WordPress uses conditional function and class definition for override purposes.
+WordPress uses conditional function and class definition to allow overrides.
 Use `sed` command to exclude function stubs when they are previously defined.
 
 ```bash
