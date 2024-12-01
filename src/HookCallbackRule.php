@@ -66,6 +66,10 @@ class HookCallbackRule implements \PHPStan\Rules\Rule
             return [];
         }
 
+        if (! $this->reflectionProvider->hasFunction($node->name, $scope)) {
+            return [];
+        }
+
         $functionReflection = $this->reflectionProvider->getFunction($node->name, $scope);
 
         if (! in_array($functionReflection->getName(), self::SUPPORTED_FUNCTIONS, true)) {
