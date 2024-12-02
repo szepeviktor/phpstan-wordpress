@@ -54,6 +54,7 @@ class HookCallbackRuleTest extends \PHPStan\Testing\RuleTestCase
         $this->analyse(
             [
                 __DIR__ . '/data/hook-callback.php',
+                __DIR__ . '/data/internal-error.php',
             ],
             self::EXPECTED_ERRORS
         );

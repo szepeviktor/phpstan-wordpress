@@ -31,6 +31,7 @@ class HookDocsRuleTest extends \PHPStan\Testing\RuleTestCase
         $this->analyse(
             [
                 __DIR__ . '/data/hook-docs.php',
+                __DIR__ . '/data/internal-error.php',
             ],
             [
                 [
