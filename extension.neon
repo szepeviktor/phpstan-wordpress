@@ -32,6 +32,7 @@ services:
 rules:
     - SzepeViktor\PHPStan\WordPress\HookCallbackRule
     - SzepeViktor\PHPStan\WordPress\HookDocsRule
+    - SzepeViktor\PHPStan\WordPress\WpConstantFetchRule
 parameters:
     bootstrapFiles:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
