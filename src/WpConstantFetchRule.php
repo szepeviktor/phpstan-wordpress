@@ -29,7 +29,7 @@ final class WpConstantFetchRule implements \PHPStan\Rules\Rule
         'FORCE_SSL_ADMIN' => 'force_ssl_admin()',
         'FORCE_SSL_LOGIN' => 'force_ssl_admin()',
         'FS_METHOD' => 'get_filesystem_method()',
-        'HEADER_IMAGE' => "get_theme_support('custom-header\)",
+        'HEADER_IMAGE' => "get_theme_support('custom-header')",
         'HEADER_IMAGE_WIDTH' => "get_theme_support('custom-header')",
         'HEADER_IMAGE_HEIGHT' => "get_theme_support('custom-header')",
         'HEADER_TEXTCOLOR' => "get_theme_support('custom-header')",
