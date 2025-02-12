@@ -2,10 +2,10 @@
     "name": "company/wordpress-project",
     "description": "WordPress project.",
     "require": {
-        "php": "^7.1"
+        "php": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "szepeviktor/phpstan-wordpress": "^0.6.0"
+        "szepeviktor/phpstan-wordpress": "^2.0"
     },
     "config": {
         "optimize-autoloader": true
