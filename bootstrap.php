@@ -5,16 +5,16 @@ declare(strict_types=1);
 // phpcs:disable Generic.PHP.ForbiddenFunctions.Found
 
 // There are no core functions to read these constants.
-define('ABSPATH', './');
+define('ABSPATH', './wordpress/');
 define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
 define('WP_DEBUG_DISPLAY', true);
-define('WP_PLUGIN_DIR', './');
-define('WPMU_PLUGIN_DIR', './');
+define('WP_PLUGIN_DIR', './wordpress/wp-content/plugins');
+define('WPMU_PLUGIN_DIR', './wordpress/wp-content/mu-plugins');
 define('EMPTY_TRASH_DAYS', 30 * 86400);
 define('SCRIPT_DEBUG', false);
-define('WP_LANG_DIR', './');
-define('WP_CONTENT_DIR', './');
+define('WP_LANG_DIR', './wordpress/wp-content/languages');
+define('WP_CONTENT_DIR', './wordpress/wp-content');
 
 // Constants for expressing human-readable intervals.
 define('MINUTE_IN_SECONDS', 60);
@@ -66,7 +66,7 @@ define('EP_ALL', EP_PERMALINK | EP_ATTACHMENT | EP_ROOT | EP_COMMENTS | EP_SEARC
 
 // Templating-related WordPress constants.
 // phpcs:ignore WordPress.WP.DiscouragedConstants.STYLESHEETPATHDeclarationFound
-define('STYLESHEETPATH', '/app/wp-content/themes/child/');
+define('STYLESHEETPATH', './wordpress/wp-content/themes/twentytwentythree-child');
 // phpcs:ignore WordPress.WP.DiscouragedConstants.TEMPLATEPATHDeclarationFound
-define('TEMPLATEPATH', '/app/wp-content/themes/parent/');
+define('TEMPLATEPATH', './wordpress/wp-content/themes/twentytwentythree');
 define('WP_DEFAULT_THEME', 'twentytwentythree');
