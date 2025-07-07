@@ -67,5 +67,3 @@ parameters:
             - output
         WP_Ajax_Response:
             - send
-        WP_CLI:
-            - halt
