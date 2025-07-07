@@ -38,14 +38,29 @@ parameters:
         - ../../php-stubs/wordpress-stubs/wordpress-stubs.php
         - bootstrap.php
     dynamicConstantNames:
+        # Debug constants
         - WP_DEBUG
         - WP_DEBUG_LOG
         - WP_DEBUG_DISPLAY
-        - EMPTY_TRASH_DAYS
-        - WP_CLI
+        # Directory constants
+        - ABSPATH
+        - WP_PLUGIN_DIR
+        - WP_LANG_DIR
+        - WP_CONTENT_DIR
+        - WPMU_PLUGIN_DIR
+        # Templating constants
+        - WP_DEFAULT_THEME
+        # Filesystem constants
+        - FS_CONNECT_TIMEOUT
+        - FS_TIMEOUT
+        - FS_CHMOD_DIR
+        - FS_CHMOD_FILE
+        # Other constants
         - COOKIE_DOMAIN
+        - EMPTY_TRASH_DAYS
         - SAVEQUERIES
         - SCRIPT_DEBUG
+        - WP_CLI
     earlyTerminatingFunctionCalls:
         - wp_send_json
         - wp_nonce_ays
