@@ -58,7 +58,6 @@ parameters:
         # Other constants
         - COOKIE_DOMAIN
         - EMPTY_TRASH_DAYS
-        - SAVEQUERIES
         - SCRIPT_DEBUG
         - WP_CLI
     earlyTerminatingFunctionCalls:
