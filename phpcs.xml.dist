@@ -5,6 +5,7 @@
     <file>tests/</file>
 
     <exclude-pattern>tests/data/*</exclude-pattern>
+    <exclude-pattern>tests/phpstan-data/*</exclude-pattern>
     <exclude-pattern>tests/functions.php</exclude-pattern>
     <exclude-pattern>tests/WP_UnitTestCase_Base.php</exclude-pattern>
 
@@ -19,6 +20,7 @@
     <rule ref="NeutronStandard.Functions.TypeHint.UnusedReturnType">
         <exclude-pattern>tests/AssertMethodTypeSpecifyingExtensionTest.php</exclude-pattern>
         <exclude-pattern>tests/DynamicReturnTypeExtensionTest.php</exclude-pattern>
+        <exclude-pattern>tests/DynamicConstantTypeTest.php</exclude-pattern>
     </rule>
 
     <!-- Allow string concatenation in tests -->

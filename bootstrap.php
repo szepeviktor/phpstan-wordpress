@@ -5,16 +5,17 @@ declare(strict_types=1);
 // phpcs:disable Generic.PHP.ForbiddenFunctions.Found
 
 // There are no core functions to read these constants.
-define('ABSPATH', './');
+define('ABSPATH', '/');
+define('WP_CONTENT_DIR', sprintf('%swp-content', ABSPATH));
+define('WP_PLUGIN_DIR', sprintf('%s/plugins', WP_CONTENT_DIR));
+define('WPMU_PLUGIN_DIR', sprintf('%s/mu-plugins', WP_CONTENT_DIR));
 define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', true);
-define('WP_PLUGIN_DIR', './');
-define('WPMU_PLUGIN_DIR', './');
-define('EMPTY_TRASH_DAYS', 30 * 86400);
+define('WP_DEBUG_DISPLAY', false);
+define('EMPTY_TRASH_DAYS', 30);
 define('SCRIPT_DEBUG', false);
-define('WP_LANG_DIR', './');
-define('WP_CONTENT_DIR', './');
+define('WP_LANG_DIR', sprintf('%s/languages', WP_CONTENT_DIR));
+define('COOKIE_DOMAIN', '');
 
 // Constants for expressing human-readable intervals.
 define('MINUTE_IN_SECONDS', 60);
