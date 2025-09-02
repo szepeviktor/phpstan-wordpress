@@ -2,6 +2,10 @@ services:
     -
         class: SzepeViktor\PHPStan\WordPress\HookDocBlock
     -
+        class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+    -
         class: SzepeViktor\PHPStan\WordPress\EscSqlDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
@@ -10,7 +14,7 @@ services:
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
-        class: SzepeViktor\PHPStan\WordPress\ApplyFiltersDynamicFunctionReturnTypeExtension
+        class: SzepeViktor\PHPStan\WordPress\StripslashesFromStringsOnlyDynamicFunctionReturnTypeExtension
         tags:
             - phpstan.broker.dynamicFunctionReturnTypeExtension
     -
