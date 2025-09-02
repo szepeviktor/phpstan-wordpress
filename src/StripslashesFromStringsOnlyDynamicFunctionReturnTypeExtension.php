@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\UnionType;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantStringType;
@@ -31,10 +32,15 @@ class StripslashesFromStringsOnlyDynamicFunctionReturnTypeExtension implements \
 
         return TypeTraverser::map(
             $argType,
-            static function (Type $type): Type {
+            static function (Type $type, callable $traverse): Type {
+                if ($type instanceof UnionType) {
+                    return $traverse($type);
+                }
+
                 if ($type instanceof ConstantStringType) {
                     return new ConstantStringType(stripslashes($type->getValue()));
                 }
+
                 return $type;
             }
         );
