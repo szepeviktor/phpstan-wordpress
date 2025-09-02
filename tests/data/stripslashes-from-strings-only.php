@@ -16,3 +16,5 @@ assertType('lowercase-string', stripslashes_from_strings_only($value));
 assertType('array{}', stripslashes_from_strings_only([]));
 assertType("array{'foo'}", stripslashes_from_strings_only(['foo']));
 assertType("array{'foo\\'s bar'}", stripslashes_from_strings_only(['foo\'s bar']));
+
+assertType("'foo\'s bar'|array{'foo\\'s bar'}", stripslashes_from_strings_only(rand(0, 1) === 1 ? ['foo\'s bar'] : 'foo\'s bar'));
