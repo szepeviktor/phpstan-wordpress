@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SzepeViktor\PHPStan\WordPress;
 
 use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\UnionType;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeTraverser;
+use PHPStan\Type\UnionType;
 
 class StripslashesFromStringsOnlyDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {

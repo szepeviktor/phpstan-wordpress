@@ -18,6 +18,7 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
         yield from self::gatherAssertTypes(__DIR__ . '/data/shortcode_atts.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/stripslashes-from-strings-only.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/wp_parse_url.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/wp-slash.php');
     }
 
     /**
