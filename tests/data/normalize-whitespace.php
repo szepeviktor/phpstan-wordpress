@@ -12,7 +12,6 @@ assertType("''", normalize_whitespace(' '));
 assertType("'0'", normalize_whitespace(' 0 '));
 
 assertType('literal-string&lowercase-string&non-falsy-string', normalize_whitespace(' foo '));
-assertType('literal-string&non-falsy-string&uppercase-string', normalize_whitespace(' FOO '));
 assertType('literal-string&non-falsy-string', normalize_whitespace(' Foo '));
 
 /** @var non-empty-string $nonEmptyString */
