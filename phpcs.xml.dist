@@ -25,6 +25,7 @@
 
     <!-- TypeTraverser uses callable $traverse -->
     <rule ref="NeutronStandard.Functions.VariableFunctions.VariableFunction">
+        <exclude-pattern>src/SlashitFunctionsDynamicFunctionReturnTypeExtension.php</exclude-pattern>
         <exclude-pattern>src/StripslashesFromStringsOnlyDynamicFunctionReturnTypeExtension.php</exclude-pattern>
         <exclude-pattern>src/WpSlashDynamicFunctionReturnTypeExtension.php</exclude-pattern>
     </rule>

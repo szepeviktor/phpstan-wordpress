@@ -12,13 +12,14 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
     public function dataFileAsserts(): iterable
     {
         // Path to a file with actual asserts of expected types:
-        yield from self::gatherAssertTypes(__DIR__ . '/data/apply_filters.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/apply-filters.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/ApplyFiltersTestClass.php');
-        yield from self::gatherAssertTypes(__DIR__ . '/data/esc_sql.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/esc-sql.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/normalize-whitespace.php');
-        yield from self::gatherAssertTypes(__DIR__ . '/data/shortcode_atts.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/shortcode-atts.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/slashit-functions.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/stripslashes-from-strings-only.php');
-        yield from self::gatherAssertTypes(__DIR__ . '/data/wp_parse_url.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-url.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/wp-slash.php');
     }
 
