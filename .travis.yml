@@ -14,7 +14,7 @@ php:
 - "8.0"
 
 env:
-- TYPOS_VERSION="1.27.3"
+- TYPOS_VERSION="1.36.2"
 
 jobs:
     include:
