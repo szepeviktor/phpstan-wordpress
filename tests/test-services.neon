@@ -1,0 +1,3 @@
+services:
+    -
+        class: SzepeViktor\PHPStan\WordPress\Tests\InstalledPhpStanVersion
