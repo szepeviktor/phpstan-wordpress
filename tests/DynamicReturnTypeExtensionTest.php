@@ -11,6 +11,14 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
      */
     public function dataFileAsserts(): iterable
     {
+        $phpstanVersion = self::getContainer()->getByType(InstalledPhpStanVersion::class);
+
+        if ($phpstanVersion->satisfies('^2.1.18')) {
+            // Improved rtrim handling in PHPStan 2.1.18 gives different results
+            yield from self::gatherAssertTypes(__DIR__ . '/data/slashit-functions.php');
+        }
+
+        // Include for all supported PHPStan versions
         yield from self::gatherAssertTypes(__DIR__ . '/data/apply-filters.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/ApplyFiltersTestClass.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/esc-sql.php');
@@ -19,13 +27,6 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
         yield from self::gatherAssertTypes(__DIR__ . '/data/stripslashes-from-strings-only.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-url.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/wp-slash.php');
-
-        $phpstanVersion = self::getContainer()->getByType(InstalledPhpStanVersion::class);
-
-        if ($phpstanVersion->satisfies('^2.1.18')) {
-            // Improved rtrim handling in PHPStan 2.1.18 gives different results
-            yield from self::gatherAssertTypes(__DIR__ . '/data/slashit-functions.php');
-        }
     }
 
     /**
