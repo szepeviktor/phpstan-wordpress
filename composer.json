@@ -13,10 +13,11 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "php-stubs/wordpress-stubs": "^6.6.2",
-        "phpstan/phpstan": "^2.1.18"
+        "phpstan/phpstan": "^2.0"
     },
     "require-dev": {
         "composer/composer": "^2.1.14",
+        "composer/semver": "^3.4",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpstan/phpstan-strict-rules": "^2.0",
@@ -42,7 +43,8 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+        },
+        "sort-packages": true
     },
     "extra": {
         "phpstan": {
