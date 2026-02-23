@@ -16,6 +16,7 @@ define('EMPTY_TRASH_DAYS', 30);
 define('SCRIPT_DEBUG', false);
 define('WP_LANG_DIR', sprintf('%s/languages', WP_CONTENT_DIR));
 define('COOKIE_DOMAIN', '');
+define('WP_START_TIMESTAMP', microtime(true));
 
 // Constants for expressing human-readable intervals.
 define('MINUTE_IN_SECONDS', 60);
