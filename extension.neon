@@ -71,6 +71,7 @@ parameters:
         - COOKIE_DOMAIN
         - EMPTY_TRASH_DAYS
         - SCRIPT_DEBUG
+        - WP_START_TIMESTAMP
     earlyTerminatingFunctionCalls:
         - wp_send_json
         - wp_nonce_ays
