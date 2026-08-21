@@ -1,0 +1,78 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SzepeViktor\PHPStan\WordPress\Tests;
+
+use function PHPStan\Testing\assertType;
+
+/**
+ * The whole point of wp_parse_args() is that every default key is present in the
+ * result, so optional keys of the given arguments become required ones.
+ *
+ * @param array{before?: string, after?: string, echo?: bool} $args
+ */
+function wpParseArgsWithShape(array $args): void
+{
+    assertType(
+        'array{before: string, after: string, echo: bool}',
+        wp_parse_args($args, ['before' => '', 'after' => '', 'echo' => true])
+    );
+}
+
+/**
+ * Arguments take precedence over the defaults they overwrite.
+ */
+function wpParseArgsWithConstantArrays(): void
+{
+    assertType("array{a: 1, b: 'y'}", wp_parse_args(['a' => 1], ['a' => 'x', 'b' => 'y']));
+}
+
+/**
+ * Empty defaults are skipped by wp_parse_args(), which returns the arguments unchanged.
+ *
+ * @param array{page?: int} $args
+ */
+function wpParseArgsWithoutDefaults(array $args): void
+{
+    assertType('array{page?: int}', wp_parse_args($args));
+    assertType('array{page?: int}', wp_parse_args($args, []));
+}
+
+/**
+ * Defaults that are not an array are ignored, just like an empty array.
+ *
+ * @param array{page?: int} $args
+ */
+function wpParseArgsWithNonArrayDefaults(array $args, string $defaults): void
+{
+    assertType('array{page?: int}', wp_parse_args($args, $defaults));
+}
+
+/**
+ * Defaults that may or may not be empty can only guarantee the keys of the arguments.
+ *
+ * @param array{page?: int} $args
+ */
+function wpParseArgsWithMaybeEmptyDefaults(array $args, bool $condition): void
+{
+    $defaults = $condition ? [] : ['page' => 1];
+
+    assertType('array{page?: int}', wp_parse_args($args, $defaults));
+}
+
+/**
+ * Objects are converted to an array of their properties before the defaults are merged in.
+ */
+function wpParseArgsWithObject(\WP_Post $post): void
+{
+    assertType('non-empty-array<string, mixed>', wp_parse_args($post, ['extra' => 1]));
+}
+
+/**
+ * A query string cannot be described, so the declared return type is kept.
+ */
+function wpParseArgsWithString(string $query): void
+{
+    assertType('array', wp_parse_args($query, ['page' => 1]));
+}
