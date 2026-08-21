@@ -70,6 +70,21 @@ function wpParseArgsWithObject(\WP_Post $post): void
 }
 
 /**
+ * Inside a class the caller can see more properties than the global wp_parse_args()
+ * can, so the object is not converted there and the declared return type is kept.
+ */
+class WpParseArgsInsideAClass
+{
+    /** @var int */
+    public $number = 1;
+
+    public function parse(): void
+    {
+        assertType('array', wp_parse_args($this, ['number' => 2]));
+    }
+}
+
+/**
  * A query string cannot be described, so the declared return type is kept.
  */
 function wpParseArgsWithString(string $query): void

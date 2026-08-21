@@ -94,7 +94,10 @@ final class WpParseArgsDynamicFunctionReturnTypeExtension implements \PHPStan\Ty
             return $argsExpr;
         }
 
-        if ($argsType->isObject()->yes()) {
+        // wp_parse_args() is a global function, so the get_object_vars() inside it only ever
+        // sees public properties. The synthetic call below is resolved in the caller's scope,
+        // which inside a class can see more than that, so it is only safe out of class scope.
+        if ($argsType->isObject()->yes() && ! $scope->isInClass()) {
             return new FuncCall(new Name('get_object_vars'), [new Arg($argsExpr)]);
         }
 
