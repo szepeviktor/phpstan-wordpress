@@ -11,7 +11,7 @@ namespace SzepeViktor\PHPStan\WordPress;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\FuncCall;
-use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Type\Type;
@@ -19,6 +19,8 @@ use PHPStan\Type\TypeCombinator;
 
 final class WpParseArgsDynamicFunctionReturnTypeExtension implements \PHPStan\Type\DynamicFunctionReturnTypeExtension
 {
+    use NormalizedArguments;
+
     public function isFunctionSupported(FunctionReflection $functionReflection): bool
     {
         return $functionReflection->getName() === 'wp_parse_args';
@@ -26,14 +28,12 @@ final class WpParseArgsDynamicFunctionReturnTypeExtension implements \PHPStan\Ty
 
     /**
      * @see https://developer.wordpress.org/reference/functions/wp_parse_args/
-     *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
     public function getTypeFromFunctionCall(FunctionReflection $functionReflection, FuncCall $functionCall, Scope $scope): ?Type
     {
-        $args = $functionCall->getArgs();
+        $args = $this->getNormalizedFunctionArgs($functionReflection, $functionCall, $scope);
 
-        if ($args === []) {
+        if ($args === null || $args === []) {
             return null;
         }
 
@@ -73,7 +73,7 @@ final class WpParseArgsDynamicFunctionReturnTypeExtension implements \PHPStan\Ty
         // The parsed arguments are merged over the defaults, which is what array_merge() does.
         $mergedType = $scope->getType(
             new FuncCall(
-                new Name('array_merge'),
+                new FullyQualified('array_merge'),
                 [new Arg($args[1]->value), new Arg($parsed)]
             )
         );
@@ -98,7 +98,7 @@ final class WpParseArgsDynamicFunctionReturnTypeExtension implements \PHPStan\Ty
         // sees public properties. The synthetic call below is resolved in the caller's scope,
         // which inside a class can see more than that, so it is only safe out of class scope.
         if ($argsType->isObject()->yes() && ! $scope->isInClass()) {
-            return new FuncCall(new Name('get_object_vars'), [new Arg($argsExpr)]);
+            return new FuncCall(new FullyQualified('get_object_vars'), [new Arg($argsExpr)]);
         }
 
         return null;

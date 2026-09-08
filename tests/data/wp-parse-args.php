@@ -7,6 +7,15 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use function PHPStan\Testing\assertType;
 
 /**
+ * The extension resolves array_merge() with a fully qualified name, so this
+ * namespaced function must not shadow the built-in one in the results below.
+ */
+function array_merge(): int
+{
+    return 1;
+}
+
+/**
  * The whole point of wp_parse_args() is that every default key is present in the
  * result, so optional keys of the given arguments become required ones.
  *

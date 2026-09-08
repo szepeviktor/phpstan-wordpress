@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SzepeViktor\PHPStan\WordPress\Tests;
 
+use const PHP_VERSION_ID;
+
 class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestCase
 {
     /**
@@ -21,6 +23,11 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
         if ($phpstanVersion->satisfies('^2.1.39')) {
             // Union types of array shapes (PHPStan 2.1.1) and the keys of get_object_vars() (PHPStan 2.1.39) differ in older versions
             yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-args-phpstan-2.1.39.php');
+        }
+
+        if (PHP_VERSION_ID >= 80000) {
+            // Named arguments are only supported in PHP 8.0 and later
+            yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-args-named-args.php');
         }
 
         // Include for all supported PHPStan versions

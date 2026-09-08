@@ -7,6 +7,15 @@ namespace SzepeViktor\PHPStan\WordPress\Tests;
 use function PHPStan\Testing\assertType;
 
 /**
+ * The extension resolves get_object_vars() with a fully qualified name, so this
+ * namespaced function must not shadow the built-in one in the results below.
+ */
+function get_object_vars(): int
+{
+    return 1;
+}
+
+/**
  * Defaults that may or may not be empty can only guarantee the keys of the arguments.
  *
  * @param array{page?: int} $args
