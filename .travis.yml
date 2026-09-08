@@ -23,7 +23,7 @@ jobs:
         name: "PHP 7.4"
         php: "7.4"
         script:
-        - "composer test:syntax -- --no-progress --exclude tests/data/hook-callback-named-args.php"
+        - "composer test:syntax -- --no-progress --exclude tests/data/hook-callback-named-args.php --exclude tests/data/wp-parse-args-named-args.php"
         - "composer test:phpunit -- --verbose"
         - "composer test:cs -- -s"
         - "composer test:phpstan -- --ansi --no-progress"
