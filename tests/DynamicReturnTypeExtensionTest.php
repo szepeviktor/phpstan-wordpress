@@ -18,6 +18,11 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
             yield from self::gatherAssertTypes(__DIR__ . '/data/slashit-functions.php');
         }
 
+        if ($phpstanVersion->satisfies('^2.1.39')) {
+            // Union types of array shapes (PHPStan 2.1.1) and the keys of get_object_vars() (PHPStan 2.1.39) differ in older versions
+            yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-args-phpstan-2.1.39.php');
+        }
+
         // Include for all supported PHPStan versions
         yield from self::gatherAssertTypes(__DIR__ . '/data/apply-filters.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/ApplyFiltersTestClass.php');
@@ -25,6 +30,7 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
         yield from self::gatherAssertTypes(__DIR__ . '/data/normalize-whitespace.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/shortcode-atts.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/stripslashes-from-strings-only.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-args.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-url.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/wp-slash.php');
     }

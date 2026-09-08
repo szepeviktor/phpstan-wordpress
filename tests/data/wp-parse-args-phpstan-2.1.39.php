@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SzepeViktor\PHPStan\WordPress\Tests;
+
+use function PHPStan\Testing\assertType;
+
+/**
+ * Defaults that may or may not be empty can only guarantee the keys of the arguments.
+ *
+ * @param array{page?: int} $args
+ */
+function wpParseArgsWithMaybeEmptyDefaults(array $args, bool $condition): void
+{
+    $defaults = $condition ? [] : ['page' => 1];
+
+    assertType('array{page?: int}', wp_parse_args($args, $defaults));
+}
+
+/**
+ * Objects are converted to an array of their properties before the defaults are merged in.
+ */
+function wpParseArgsWithObject(\WP_Post $post): void
+{
+    assertType("non-empty-array<mixed>&hasOffset('extra')", wp_parse_args($post, ['extra' => 1]));
+}
