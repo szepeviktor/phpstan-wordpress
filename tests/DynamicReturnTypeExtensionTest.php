@@ -30,6 +30,11 @@ class DynamicReturnTypeExtensionTest extends \PHPStan\Testing\TypeInferenceTestC
             yield from self::gatherAssertTypes(__DIR__ . '/data/wp-parse-args-named-args.php');
         }
 
+        if (PHP_VERSION_ID >= 80000) {
+            // password_hash() throws instead of returning null or false in PHP 8.0 and later
+            yield from self::gatherAssertTypes(__DIR__ . '/data/wp-hash-password.php');
+        }
+
         // Include for all supported PHPStan versions
         yield from self::gatherAssertTypes(__DIR__ . '/data/apply-filters.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/ApplyFiltersTestClass.php');
